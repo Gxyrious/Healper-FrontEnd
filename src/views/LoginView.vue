@@ -7,11 +7,18 @@
               >还没有账号，注册<el-icon color="#409eff"><Right /></el-icon
             ></el-link>
           </div>
-          <div id="signInTips">用户登录</div>
+          <el-row>
+            <el-col :span=7></el-col>
+            <el-col :span=4>
+              <img src="../assets/tjdx.png" style="width:160px;margin-left:25px"/>
+            </el-col>
+            <el-col :span=7>
+              <div id="signInTips">用户登录</div>
+            </el-col>
+          </el-row>
         </el-header>
         <el-container>
-          <el-aside width="300px">
-            <img src="../assets/tjdx.png" class="drawing" />
+          <el-aside width=38%>
           </el-aside>
           <el-main>
             <div class="loginField">
@@ -69,7 +76,7 @@ export default {
   },
   methods: {
     goRegister() {
-    //   this.$router.replace("/register");
+       //this.$router.replace("/register");
     },
     login() {
       /*此处日后需要加数据格式验证*/
@@ -95,6 +102,7 @@ export default {
               duration: 2000,
             });
             store.commit("loginIn", user_info); 
+            this.$router.replace("/main");
           } else {
             //若登录失败
             ElMessage.error("用户手机号或密码不正确！");
@@ -117,38 +125,49 @@ export default {
   padding-right: 20px;
   padding-top: 50px;
 }
+
 #registerTips .el-icon {
   margin-left: 5px;
 }
+
 #signInTips {
   font-size: 40px;
   color: #409eff;
   font-family: SimSun;
   font-weight: bolder;
+  padding-top:40px;
+  padding-left:30px;
 }
-.drawing {
-  height: 300px;
+
+.el-container{
+  height:100vh;
 }
+
 .loginField {
   margin-top: 30%;
 }
+
 .inputCard {
   color: #409eff;
   margin-top: 10%;
 }
+
 .inputCard .label {
   text-align: left;
   margin-bottom: 5px;
 }
+
 .buttonCard {
-  margin-right: 58%;
-  margin-top: 10%;
+  margin-left:15%;
+  margin-top:5%;
 }
+
 .el-input {
   --el-input-border-color: #a0cfff;
   --el-input-bg-color: #ffffff00;
   --el-input-hover-border-color: #88c3fe;
 }
+
 .body_card {
   width:98%;
   margin-left: 1%;
