@@ -50,7 +50,7 @@
              :column="3"
              size="large"
              border>
-            <el-descriptions-item width="150px">
+            <el-descriptions-item width="170px">
               <template #label>
               <div class="cell-item">
               <el-icon :style="iconStyle"><User /></el-icon>
@@ -61,7 +61,7 @@
               <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
             </el-descriptions-item>
              
-    <el-descriptions-item width="150px">
+    <el-descriptions-item width="170px">
       <template #label>
         <div class="cell-item" >
           性别
@@ -70,7 +70,7 @@
      {{gender}}
      <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
     </el-descriptions-item>
-    <el-descriptions-item width="150px">
+    <el-descriptions-item width="170px">
       <template #label>
         <div class="cell-item">
           年龄
@@ -88,18 +88,37 @@
           手机号码
         </div>
       </template>
-      18100000000
+      {{telephone}}
       <el-button type="primary" class="ebutton"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改绑定手机号</el-button>
     </el-descriptions-item>
   </el-descriptions>
 </el-column>
     </el-row>
-    <el-row :gutter="20" class="record">
+    <el-row :gutter="40" class="record">
+
         <el-col :span="12">
-            <el-table :data="tableData" border style="width: 100%">
-    <el-table-column prop="date" label="Date" width="180" />
-    <el-table-column prop="name" label="Name" width="180" />
-    <el-table-column prop="address" label="Address" />
+            <p class="retitle">最近的测评记录</p>
+            <el-table :data="recentTest" border style="width: 100%">
+    <el-table-column prop="date" label="时间" width="180" />
+    <el-table-column prop="name" label="名称" width="180" />
+    <el-table-column  label="操作">
+        <template #default>
+        <el-button link  size="small" @click="handleClick">查看</el-button>
+        </template>
+    </el-table-column>
+  </el-table>
+        </el-col>
+
+        <el-col :span="12">
+            <p class="retitle">最近的咨询档案</p>
+            <el-table :data="recentConsult" border style="width: 100%">
+    <el-table-column prop="date" label="时间" width="180" />
+    <el-table-column prop="name" label="名称" width="180" />
+    <el-table-column  label="操作">
+        <template #default>
+        <el-button link  size="small" @click="handleClick">查看</el-button>
+        </template>
+    </el-table-column>
   </el-table>
         </el-col>
     </el-row>
@@ -133,12 +152,34 @@ export default {
         userName: "Ken",
         age: 20,
         gender: "男",
+        telephone: "12345678900",
+        recentTest: [
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+        ],
+        recentConsult: [
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+            {date: "1234", name: "1234"},
+        ]
     };
   },
 };
 </script>
 
 <style scoped>
+.retitle{
+    font-size: 16px;
+    font-weight: bold;
+}
+.record{
+    margin-top: 30px;
+}
 .head .el-col{
     padding-top:30px;
     padding-left:15px;
