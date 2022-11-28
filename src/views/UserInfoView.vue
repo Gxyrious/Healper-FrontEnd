@@ -50,7 +50,7 @@
              :column="3"
              size="large"
              border>
-            <el-descriptions-item>
+            <el-descriptions-item width="150px">
               <template #label>
               <div class="cell-item">
               <el-icon :style="iconStyle"><User /></el-icon>
@@ -58,23 +58,26 @@
               </div>
               </template>
               {{userName}}
+              <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
             </el-descriptions-item>
              
-    <el-descriptions-item>
+    <el-descriptions-item width="150px">
       <template #label>
-        <div class="cell-item">
+        <div class="cell-item" >
           性别
         </div>
       </template>
      {{gender}}
+     <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
     </el-descriptions-item>
-    <el-descriptions-item>
+    <el-descriptions-item width="150px">
       <template #label>
         <div class="cell-item">
           年龄
         </div>
       </template>
       {{age}}
+      <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
     </el-descriptions-item>
     <el-descriptions-item >
       <template #label>
@@ -86,10 +89,19 @@
         </div>
       </template>
       18100000000
-      <el-button type="primary" class="pdbutton"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
+      <el-button type="primary" class="ebutton"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改绑定手机号</el-button>
     </el-descriptions-item>
   </el-descriptions>
 </el-column>
+    </el-row>
+    <el-row :gutter="20" class="record">
+        <el-col :span="12">
+            <el-table :data="tableData" border style="width: 100%">
+    <el-table-column prop="date" label="Date" width="180" />
+    <el-table-column prop="name" label="Name" width="180" />
+    <el-table-column prop="address" label="Address" />
+  </el-table>
+        </el-col>
     </el-row>
     </el-main>
 </el-container>
@@ -155,6 +167,9 @@ p.age{
     float:right;
     margin-right: 20px;
     margin-top:10px;
+}
+.ebutton{
+    float:right;
 }
 .avatar{
     float:left;
