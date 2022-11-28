@@ -11,7 +11,7 @@
           <template #breadcrumb>
             <el-breadcrumb :separator-icon="ArrowRight">
               <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-              <el-breadcrumb-item :to="{ path: '/userinfo' }">我的信息</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/userInfo' }">我的信息</el-breadcrumb-item>
             </el-breadcrumb>
           </template>
           <template #title>
@@ -97,7 +97,9 @@
     <el-row :gutter="40" class="record">
 
         <el-col :span="12">
-            <p class="retitle">最近的测评记录</p>
+            <p class="retitle">最近的测评记录
+                <el-button type="primary" class="ebutton" id="test" @click="viewAllTest()">查看全部</el-button></p>
+            
             <el-table :data="recentTest" border style="width: 100%">
     <el-table-column prop="date" label="时间" width="180" />
     <el-table-column prop="name" label="名称" width="180" />
@@ -110,10 +112,11 @@
         </el-col>
 
         <el-col :span="12">
-            <p class="retitle">最近的咨询档案</p>
-            <el-table :data="recentConsult" border style="width: 100%">
+            <p class="retitle">最近的咨询档案
+                <el-button type="primary" class="ebutton">查看全部</el-button></p>
+            <el-table :data="recentDocument" border style="width: 100%">
     <el-table-column prop="date" label="时间" width="180" />
-    <el-table-column prop="name" label="名称" width="180" />
+    <el-table-column prop="name" label="咨询师" width="180" />
     <el-table-column  label="操作">
         <template #default>
         <el-button link  size="small" @click="handleClick">查看</el-button>
@@ -140,6 +143,9 @@ export default {
     goHome() {
       router.push({ name: "main" });
     },
+    viewAllTest(){
+        router.push({name: "testRecord"});
+    },
   },
   components:{
     Edit,
@@ -160,7 +166,7 @@ export default {
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
         ],
-        recentConsult: [
+        recentDocument: [
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},

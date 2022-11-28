@@ -6,13 +6,13 @@
 <template>
 
     <el-menu
-        default-active="1"
+        default-active="main"
         class="el-menu-vertical"
-        
+        router=true
         length=1000px
         @select="handleSelect"
     >
-        <el-menu-item index="1" @click="goHome">
+        <el-menu-item index="main">
             <el-icon><House /></el-icon>
             <span>首页</span>
         </el-menu-item>
@@ -33,11 +33,11 @@
             <el-icon><User /></el-icon>
             <span>个人信息</span>
         </template>
-        <el-menu-item index="4-1" @click="goUserInfo">我的信息</el-menu-item>
-        <el-menu-item index="4-2">测评记录</el-menu-item>
-        <el-menu-item index="4-3">咨询档案</el-menu-item>
+        <el-menu-item index="userInfo">我的信息</el-menu-item>
+        <el-menu-item index="testRecord">测评记录</el-menu-item>
+        <el-menu-item index="documentRecord">咨询档案</el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="5">
+        <el-menu-item index="login">
         <el-icon><Remove /></el-icon>
         <span>退出登录</span>
         </el-menu-item>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import router from "@/router";
+//import router from "@/router";
 import {  
     House,
     ChatDotRound,
@@ -69,15 +69,7 @@ export default {
     return {};
   },
   methods: {
-    goHome() {
-      router.push({ name: "main" });
-    },
-    goTest(){//仅为测试用
-      router.push({name:"login"});
-    },
-    goUserInfo(){
-      router.push({name: "userinfo"})
-    },
+    
   },
 };
 </script>
