@@ -4,7 +4,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/', // 暂时后端放在本地，后续调研自动化部署方法如jekins
+        target: 'http://81.68.102.171:8080/',
         changeOrigin: true
       },
     }
