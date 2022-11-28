@@ -1,11 +1,22 @@
 <template>
-  <router-view></router-view>
+  <div class="content">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
+
 export default {
+  components: {
+
+  },
   mounted(){
-    this.$router.replace('/main')
+    let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo === null) {
+      this.$router.replace('/login');
+    } else {
+      this.$router.replace('/main');
+    }
   }
 };
 </script>

@@ -38,7 +38,7 @@
         <el-menu-item index="4-2">测评记录</el-menu-item>
         <el-menu-item index="4-3">咨询档案</el-menu-item>
         </el-sub-menu>
-        <el-menu-item index="5">
+        <el-menu-item index="5" @click="logout">
         <el-icon><Remove /></el-icon>
         <span>退出登录</span>
         </el-menu-item>
@@ -48,6 +48,7 @@
 
 <script>
 import router from "@/router";
+import store from "@/store";
 import {  
     House,
     ChatDotRound,
@@ -75,6 +76,11 @@ export default {
     },
     goTest(){//仅为测试用
       router.push({name:"login"});
+    },
+    logout() {
+      store.state.userInfo = null;
+      localStorage.clear();
+      router.replace('/login');
     }
   },
 };
