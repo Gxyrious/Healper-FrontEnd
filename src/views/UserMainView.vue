@@ -1,15 +1,12 @@
 <!--
   描述：用户首页
-  作者：王若晗
+  作者：王若晗，张泰圣
 -->
 
 <template>
-  <el-container>
-    <el-aside width=200px>
-      <nav-bar></nav-bar>
-    </el-aside>
     <el-container>
       <el-header style="padding:0">
+        
         <div>
         <el-row id="header">
           <el-col :span=5>
@@ -17,19 +14,19 @@
           </el-col>
         </el-row>
         </div>
+       
       </el-header>
       <el-main>
         这是首页
       </el-main>
     </el-container>
-  </el-container>
 </template>
 
 <script>
-import NavBar from "../../src/components/NavBar/NavBar";
+//import NavBar from "../../src/components/NavBar/NavBar";
 export default {
   components:{
-    NavBar,
+    //NavBar,
   },
   data() {
     return {
@@ -49,11 +46,11 @@ export default {
     box-shadow:5px 2px 10px rgb(199, 206, 206);
     font-size: 20px;
     font-weight: 500;
-    background:#e0fbfb;
+    
   }
 
   .el-main{
-    background:#f6ffff;
+    background: #f4f4f5;
     padding-top:100px;
     padding-left:40px;
   }

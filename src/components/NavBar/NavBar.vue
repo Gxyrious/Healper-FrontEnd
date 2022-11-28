@@ -4,12 +4,11 @@
 -->
 
 <template>
+
     <el-menu
         default-active="1"
         class="el-menu-vertical"
-        background-color="#6ac6c6"
-        text-color="#fff"
-        active-text-color="#2c698d"
+        
         length=1000px
         @select="handleSelect"
     >
@@ -34,7 +33,7 @@
             <el-icon><User /></el-icon>
             <span>个人信息</span>
         </template>
-        <el-menu-item index="4-1">我的信息</el-menu-item>
+        <el-menu-item index="4-1" @click="goUserInfo">我的信息</el-menu-item>
         <el-menu-item index="4-2">测评记录</el-menu-item>
         <el-menu-item index="4-3">咨询档案</el-menu-item>
         </el-sub-menu>
@@ -43,7 +42,7 @@
         <span>退出登录</span>
         </el-menu-item>
     </el-menu>
-    <router-view></router-view>
+
 </template>
 
 <script>
@@ -53,7 +52,7 @@ import {
     ChatDotRound,
     Notebook,
     User,
-    Remove} from "@element-plus/icons"
+    Remove} from "@element-plus/icons-vue"
 //import { ElMessage } from "element-plus";
 export default {
 //   components: {
@@ -75,7 +74,10 @@ export default {
     },
     goTest(){//仅为测试用
       router.push({name:"login"});
-    }
+    },
+    goUserInfo(){
+      router.push({name: "userinfo"})
+    },
   },
 };
 </script>
