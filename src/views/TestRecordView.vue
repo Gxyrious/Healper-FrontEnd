@@ -6,21 +6,11 @@
 <template>
     <el-container>
         <el-header>
-            <el-page-header @back="goUserInfo" >
-              <template #breadcrumb>
-                <el-breadcrumb :separator-icon="ArrowRight">
+          <el-breadcrumb>
                   <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
                   <el-breadcrumb-item :to="{ path: '/userInfo' }">我的信息</el-breadcrumb-item>
                   <el-breadcrumb-item :to="{ path: '/testRecord' }">测评记录</el-breadcrumb-item>
                 </el-breadcrumb>
-              </template>
-              <template #title>
-                <span>返回</span>
-              </template>
-              <template #content>
-                <span class="text-large font-600 mr-3"> 测评记录 </span>
-             </template>
-            </el-page-header>
         </el-header>
         <el-row justify="center" class="tabs">
             <el-col :span="23">
@@ -119,8 +109,11 @@
         
     }
     .el-header{
-        box-shadow: var(--el-box-shadow);
-    }
+    margin-left:5px;
+    border-bottom: 0.6px solid rgb(174, 174, 174);
+    padding-top:20px;
+    padding-bottom:20px;
+}
     
     
     
