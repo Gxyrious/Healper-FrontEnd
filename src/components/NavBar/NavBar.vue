@@ -26,11 +26,11 @@
             <el-menu-item index="consultation">预约咨询</el-menu-item>
             <el-menu-item index="2">我的订单</el-menu-item>
         </el-sub-menu>
-            <el-menu-item index="3">
+            <el-menu-item index="test">
             <el-icon><Notebook /></el-icon>
             <span>心理测评</span>
             </el-menu-item>
-            <el-sub-menu index="4"> 
+            <el-sub-menu> 
               <template #title>
                 <el-icon><User /></el-icon>
                 <span>个人信息</span>
