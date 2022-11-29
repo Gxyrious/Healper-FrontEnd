@@ -5,15 +5,11 @@
 
 <template>
     <el-container>
-      <el-header style="padding:0">
+      <el-header>
         
-        <div>
-        <el-row id="header">
-          <el-col :span=5>
-            首页
-          </el-col>
-        </el-row>
-        </div>
+        <el-breadcrumb>
+              <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+            </el-breadcrumb>
        
       </el-header>
       <el-main>
@@ -39,15 +35,12 @@ export default {
 </script>
 
 <style scoped>
-  #header{
-    padding-top:24px;
-    padding-left:5%;
-    height:80px;
-    box-shadow:5px 2px 10px rgb(199, 206, 206);
-    font-size: 20px;
-    font-weight: 500;
-    
-  }
+  .el-header{
+    margin-left:5px;
+    border-bottom: 0.6px solid rgb(174, 174, 174);
+    padding-top:20px;
+    padding-bottom:20px;
+}
 
   .el-main{
     background: #f4f4f5;
