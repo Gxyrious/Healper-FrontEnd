@@ -8,6 +8,7 @@ import ConsultationMainView from '../views/ConsultationMainView.vue'
 import DocumentRecordView from '../views/DocumentRecordView.vue'
 import TestMainView from '../views/TestMainView.vue'
 import OrderView from '../views/OrderView.vue'
+import ScaleDetailView from '../views/ScaleDetailView.vue'
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/order',
     name: 'order',
     component: OrderView,
+  },
+  {
+    path: '/scaleDetail',
+    name: 'scaleDetail',
+    component: ScaleDetailView,
   },
 ]
 
