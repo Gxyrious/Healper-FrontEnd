@@ -1,3 +1,7 @@
+<!--
+描述：问卷卡片
+作者：张泰圣
+-->
 <template>
     <el-card :body-style="{ padding: '0px' }">
         <img
