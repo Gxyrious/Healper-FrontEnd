@@ -4,7 +4,9 @@
 -->
 
 <template>
-
+    <div style="margin-left:20px;">
+        <img src="../../assets/healper.png" style="zoom:30%; object-fit: contain;"/>
+    </div>
     <el-menu
         default-active="main"
         class="el-menu-vertical"
@@ -67,7 +69,8 @@ export default {
     Remove,
   },
   data() {
-    return {};
+    return {
+    };
   },
   methods: {
     logout() {
