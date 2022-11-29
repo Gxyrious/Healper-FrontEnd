@@ -18,13 +18,9 @@
                         >
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">推荐</el-row>
             <el-row>
-                
-                <el-col :span="12">
-                    <consultation-card>
+                <el-col :span="12" v-for="i in consultant_info" :key=i>
+                    <consultation-card :info="i">
                     </consultation-card>
-                </el-col>
-                <el-col :span="12">
-                    <consultation-card/>
                 </el-col>
             </el-row>
         </el-main>
@@ -40,11 +36,58 @@ export default {
   },
   data() {
     return {
-        consultant_info:{
+        consultant_info:[{
             name:"美女",
+            sex:"女",
             age:20,
-        }
+            price:648,
+            tagList:[
+                {tag:"焦虑"}
+            ],
+            curNum:12,
+            maxNum:30,
+            time:"11/11 11:11",
+        },
+        {   name:"超级美女",
+            sex:"女",
+            age:20,
+            price:648,
+            tagList:[
+                {tag:"焦虑"}
+            ],
+            curNum:14,
+            maxNum:20,
+            time:"11/11 11:11",
+        },
+        {   name:"普通美女",
+            sex:"女",
+            age:20,
+            price:648,
+            tagList:[
+                {tag:"焦虑"},
+                {tag:"抑郁"}
+            ],
+            curNum:14,
+            maxNum:20,
+            time:"11/11 11:11",
+        },
+        {   name:"无敌美女",
+            sex:"女",
+            age:20,
+            price:648,
+            tagList:[
+                {tag:"焦虑"},
+                {tag:"抑郁"}
+            ],
+            curNum:14,
+            maxNum:20,
+            time:"11/11 11:11",
+        },
+        ]
     };
+  },
+  created(){
+    console.log(this.consultant_info);
   },
   methods: {
   },

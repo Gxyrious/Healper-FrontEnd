@@ -7,6 +7,7 @@ import TestRecordView from '../views/TestRecordView.vue'
 import ConsultationMainView from '../views/ConsultationMainView.vue'
 import DocumentRecordView from '../views/DocumentRecordView.vue'
 import TestMainView from '../views/TestMainView.vue'
+import OrderView from '../views/OrderView.vue'
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/test',
     name: 'test',
     component: TestMainView,
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: OrderView,
   },
 ]
 

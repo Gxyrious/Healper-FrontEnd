@@ -24,7 +24,7 @@
             <span>心理咨询</span>
         </template>
             <el-menu-item index="consultation">预约咨询</el-menu-item>
-            <el-menu-item index="2">我的订单</el-menu-item>
+            <el-menu-item index="order">我的订单</el-menu-item>
         </el-sub-menu>
             <el-menu-item index="test">
             <el-icon><Notebook /></el-icon>
