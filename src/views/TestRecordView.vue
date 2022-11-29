@@ -17,16 +17,12 @@
                 <el-tabs v-model="activeName">
     <el-tab-pane label="历史记录" name="first">
   <el-table :data="testRecord" height="600" style="width: 100%">
-    <el-table-column prop="date" label="时间" width="120" />
-    <el-table-column prop="name" label="名称" width="120" />
-    <el-table-column prop="emo1" label="情绪因子1" width="120" />
-    <el-table-column prop="emo2" label="情绪因子2" width="120" />
-    <el-table-column prop="emo3" label="情绪因子3" width="120" />
-    <el-table-column prop="emo4" label="情绪因子4" width="120" />
-    <el-table-column prop="emo5" label="情绪因子5" width="120" />
+    <el-table-column prop="date" label="时间" width="400" />
+    <el-table-column prop="name" label="名称" width="400" />
     <el-table-column  label="操作">
         <template #default>
         <el-button link  size="small" @click="handleClick">查看</el-button>
+        <el-button link  size="small" @click="handleClick">删除</el-button>
         </template>
     </el-table-column>
   </el-table>

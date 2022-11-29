@@ -5,6 +5,7 @@ import UserMainView from '../views/UserMainView.vue'
 import UserInfoView from '../views/UserInfoView.vue'
 import TestRecordView from '../views/TestRecordView.vue'
 import ConsultationMainView from '../views/ConsultationMainView.vue'
+import DocumentRecordView from '../views/DocumentRecordView.vue'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path:'/consultation',
     name:'consultation',
     component:ConsultationMainView,
+  },
+  {
+    path: '/documentRecord',
+    name: 'documentRecord',
+    component: DocumentRecordView,
   },
 ]
 

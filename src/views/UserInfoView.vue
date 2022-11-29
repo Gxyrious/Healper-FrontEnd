@@ -88,7 +88,7 @@
 
         <el-col :span="11">
             <p class="retitle">最近的测评记录
-                <el-button type="primary" class="ebutton" id="test" @click="viewAllTest()">查看全部</el-button></p>
+                <el-button type="primary" class="ebutton" id="test" @click="viewAllTest">查看全部</el-button></p>
             
             <el-table :data="recentTest" border style="width: 100%">
     <el-table-column prop="date" label="时间" width="170" />
@@ -103,7 +103,7 @@
 
         <el-col :span="11">
             <p class="retitle">最近的咨询档案
-                <el-button type="primary" class="ebutton">查看全部</el-button></p>
+                <el-button type="primary" class="ebutton" @click="viewAllDocument">查看全部</el-button></p>
             <el-table :data="recentDocument" border style="width: 100%">
     <el-table-column prop="date" label="时间" width="170" />
     <el-table-column prop="name" label="咨询师" width="170" />
@@ -135,6 +135,9 @@ export default {
     },
     viewAllTest(){
         router.push({name: "testRecord"});
+    },
+    viewAllDocumnet(){
+        router.push({name: "documentRecord"});
     },
   },
   components:{
