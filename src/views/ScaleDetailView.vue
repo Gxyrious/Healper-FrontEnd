@@ -13,25 +13,11 @@
         <span>量表名称：{{ this.scaleName }}</span>
       </div>
       <div class="scale-body">
-        <!-- <div class="question" v-for="(i, temp_questions) in this.questions" :key="i">
-          {{temp_questions}}
-          <div v-for="(j, question) in temp_questions" :key="j">
-            <el-row>
-            <el-col :span="6">问题：{{question}}</el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6"></el-col>
-              <el-col :span="6"></el-col>
-              <el-col :span="6"></el-col>
-              <el-col :span="6"></el-col>
-            </el-row>
-          </div>
-        </div> -->
-        <div class="question" v-for="i in 15" :key="i">
-          <span>{{i}}.你会感到头痛吗?</span>
+        <div class="question" v-for="(question, index) in this.questions" :key="index">
+          <span>{{index}}.{{question["question"]}}</span>
           <br/>
-          <el-radio-group class="ml-4">
-            <el-radio label="1" size="large" >没有</el-radio>
+          <el-radio-group class="ml-4" v-model="this.choices[index]">
+            <el-radio label="1" size="large">没有</el-radio>
             <el-radio label="2" size="large">很轻</el-radio>
             <el-radio label="3" size="large">中等</el-radio>
             <el-radio label="4" size="large">偏重</el-radio>
@@ -52,16 +38,6 @@
       <el-col>
         
       </el-col>
-    <!-- <el-card class="ques-card" v-for="i in 15" :key="i">
-      <template #header>
-        <div class="ques-card-header">
-            <span>问卷{{this.$route.query.scaleId}}问题{{i}}描述</span>
-        </div>
-      </template>
-      <div class="choices">
-          <span v-for="i in 5" :key="i">{{'选项' + i + '  '}}</span>
-      </div>
-    </el-card> -->
   </el-row>
   </div>
   
@@ -78,7 +54,8 @@ export default {
       scaleId: -1,
       quesNum: 0,
       scaleName: "",
-      factors: ["躯体化", "强迫", "人际关系敏感", "抑郁", "焦虑", "敌对", "恐怖", "偏执", "精神病性"],
+      factors: {},
+      choices: {},
       questions: [],
     }
   },
@@ -88,7 +65,7 @@ export default {
       url: "api/scale/single",
       method: "get",
       params: {
-        scaleId: this.scaleId,
+        scaleId: this.scaleId + 1,
       }
     })
       .then((res) => {
@@ -98,20 +75,26 @@ export default {
           this.quesNum = resData.quesNum;
           this.scaleName = resData.name;
           this.questions = JSON.parse(resData.content.replaceAll('/', ''));
-          console.log(this.questions)
-          for (var i=0;i<this.factors.length;i++) {
-            // console.log(this.factors[i]);
-            var li = this.questions[this.factors[i]];
-            for(var j=0;j<this.li.length;j++){
-              console.log(li[j]);
-            }
+          console.log(this.questions);
+          for (var i = 0; i < this.questions.length; i++) {
+            var ques = this.questions[i];
+            this.choices[i] = 0;
+            this.factors[ques["factor"]] = 0;
           }
+          console.log(this.choices);
         }
       })
   },
   methods: {
     submit() {
       // 提交量表
+      console.log(this.choices);
+      for (var i = 0; i < this.questions.length; i++) {
+        var score = parseInt(this.choices[i]);
+        var factor = this.questions[i]["factor"];
+        this.factors[factor] += score;
+      }
+      console.log(this.factors);
     }
   }
 }

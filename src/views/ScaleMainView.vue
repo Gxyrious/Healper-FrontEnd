@@ -18,7 +18,7 @@
         <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">选择问卷</el-row>
         <el-row gutter="20" justify="center" style="flex-wrap: wrap">
           <el-col :lg="{ span: 8 }" v-for="(name, index) in scaleNames" :key="name">
-            <scale-card :scaleId="index+1" :scaleName=name></scale-card>
+            <scale-card :scaleId="index" :scaleName=name></scale-card>
           </el-col>
         </el-row>
       </el-main>
@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      scaleNames: ["问卷11", "问卷22", "问卷33", "问卷44", "问卷55"]
+      scaleNames: ["情绪测试", "心理测试", "心理测试", "焦虑测试", "抑郁测试"]
     };
   },
   created() {
