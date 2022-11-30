@@ -17,8 +17,8 @@
       <el-main style="margin:20px 30px;background:#fff;">
         <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">选择问卷</el-row>
         <el-row gutter="20" justify="center" style="flex-wrap: wrap">
-          <el-col :lg="{ span: 8 }" v-for="(name, index) in scaleNames" :key="name">
-            <scale-card :scaleId="index" :scaleName=name></scale-card>
+          <el-col :lg="{ span: 8 }" v-for="(info, index) in scaleInfo" :key="index">
+            <scale-card :scaleId="index" :scaleName=info.name :quesNum=info.num></scale-card>
           </el-col>
         </el-row>
       </el-main>
@@ -43,19 +43,30 @@ export default {
   },
   data() {
     return {
-      scaleNames: ["情绪测试", "心理测试", "心理测试", "焦虑测试", "抑郁测试"]
+      scaleInfo: [],
     };
   },
   created() {
     axios({
-      url: "api/",
+      url: "api/scale/names",
       method: "get",
       params: {
-
+        page: 0,
+        size: 6
       }
     })
     .then((res) => {
       console.log(res);
+      if (res.status == 200) {
+        var resData = res.data;
+        console.log(resData);
+        for (var i = 0; i < resData.length; i++) {
+          var scaleName = resData[i].name;
+          var quesNum = resData[i].quesNum;
+          this.scaleInfo.push({"name": scaleName, "num": quesNum});
+        }
+        console.log(this.scaleInfo);
+      }
     })
     .catch((res) => {
       console.log(res);

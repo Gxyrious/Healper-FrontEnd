@@ -7,7 +7,10 @@
     <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
       class="image" />
     <div style="padding: 14px">
-      <span>{{scaleName}}</span>
+      <div>
+        <span>{{scaleName}}</span>
+        <span style="margin-left: 60%;">共{{quesNum}}题目</span>
+      </div>
       <div class="bottom">
         <p class="description">我是一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个问卷</p>
         <el-button text class="button" @click="goScaleDetail">开始</el-button>
@@ -20,6 +23,7 @@ export default {
   props: [
     'scaleId',
     'scaleName',
+    'quesNum',
   ],
   data() {
     return {

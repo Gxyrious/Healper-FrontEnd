@@ -60,7 +60,7 @@ export default {
     }
   },
   created() {
-    this.scaleId = this.$route.query.scaleId;
+    this.scaleId = parseInt(this.$route.query.scaleId);
     axios({
       url: "api/scale/single",
       method: "get",
@@ -95,6 +95,9 @@ export default {
         this.factors[factor] += score;
       }
       console.log(this.factors);
+      axios({
+        
+      })
     }
   }
 }
