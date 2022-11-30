@@ -29,11 +29,7 @@
 
     </el-tab-pane>
     <el-tab-pane label="统计分析" name="second">
-  
-  <div style="width: auto;height: 400px" id="main">
-  </div>
-
-
+      <result-chart dt="111"></result-chart>
     </el-tab-pane>
   </el-tabs>
             </el-col>
@@ -48,21 +44,23 @@
     import router from "@/router"
     
     import {  
-        
+
     } from "@element-plus/icons-vue"
+    import ResultChart from '../components/Scale/ResultChart.vue'
     
     export default {
+      
       methods: {
         goUserInfo() {
           router.push({ name: "userInfo" });
         },
       },
       components:{
-        
+        ResultChart,
       },
       data() {
         return {
-           activeName: "first",
+           activeName: "second",
            scaleRecord: [
             {date: "1234", name: "1234", emo1: 1, emo2: 1, emo3: 1, emo4: 5, emo5: 6},
             {date: "1234", name: "1234"},
