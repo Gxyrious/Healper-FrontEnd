@@ -12,7 +12,10 @@
                   <el-breadcrumb-item :to="{ path: '/documentRecord' }">咨询档案</el-breadcrumb-item>
                 </el-breadcrumb>
         </el-header>
-        <el-row justify="center" class="tabs">
+        
+        <el-main style="margin:20px 30px; background:#ffffff;">
+          <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">咨询档案</el-row>
+          <el-row justify="center" class="tabs">
             <el-col :span="23">
                 <el-table :data="documentRecord" height="600" style="width: 100%">
     <el-table-column prop="date" label="时间" width="150" />
@@ -28,8 +31,6 @@
   </el-table>
             </el-col>
         </el-row>
-        <el-main>
-            
         </el-main>
     </el-container>
 </template>
@@ -90,7 +91,7 @@
     .tabs{
         background:#ffffff
     }
-    .el-main{
+    .el-container{
         background: #f4f4f5;
         
     }
@@ -99,6 +100,7 @@
     border-bottom: 0.6px solid rgb(174, 174, 174);
     padding-top:20px;
     padding-bottom:20px;
+    background:#ffffff;
 }
     
     
