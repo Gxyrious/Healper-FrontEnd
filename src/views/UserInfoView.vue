@@ -88,9 +88,9 @@
 
         <el-col :span="11">
             <p class="retitle">最近的测评记录
-                <el-button type="primary" class="ebutton" id="test" @click="viewAllTest">查看全部</el-button></p>
+                <el-button type="primary" class="ebutton" id="test" @click="viewAllScale">查看全部</el-button></p>
             
-            <el-table :data="recentTest" border style="width: 100%">
+            <el-table :data="recentScale" border style="width: 100%">
     <el-table-column prop="date" label="时间" width="170" />
     <el-table-column prop="name" label="名称" width="170" />
     <el-table-column  label="操作">
@@ -126,15 +126,34 @@ import {
     User,
     Iphone
 } from "@element-plus/icons-vue"
+import axios from "axios";
 
 
 export default {
+  created(){
+    axios({
+      method: 'get',
+      url: 'api/user/info',
+      params:{
+        userphone: this.telephone
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.userName = res.data.nickname;
+      if (res.data.sex == "f"){
+        this.gender = "女";
+      }
+      else{
+        this.gender = "男";
+      }
+    })
+  },
   methods: {
     goHome() {
       router.push({ name: "main" });
     },
-    viewAllTest(){
-        router.push({name: "testRecord"});
+    viewAllScale(){
+        router.push({name: "scaleRecord"});
     },
     viewAllDocumnet(){
         router.push({name: "documentRecord"});
@@ -148,11 +167,11 @@ export default {
   data() {
     return {
         squareUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-        userName: "Ken",
-        age: 20,
-        gender: "男",
-        telephone: "12345678900",
-        recentTest: [
+        userName: "",
+        age: 0,
+        gender: "",
+        telephone: this.$store.state.userInfo.user.userphone,
+        recentScale: [
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},

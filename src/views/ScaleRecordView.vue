@@ -12,10 +12,15 @@
                   <el-breadcrumb-item :to="{ path: '/scaleRecord' }">测评记录</el-breadcrumb-item>
                 </el-breadcrumb>
         </el-header>
-        <el-row justify="center" class="tabs">
+        
+        <el-main style="margin:20px 30px; background:#ffffff;">
+          <el-row justify="center" class="tabs">
             <el-col :span="23">
                 <el-tabs v-model="activeName">
-    <el-tab-pane label="历史记录" name="first">
+                  <el-tab-pane label="统计分析" name="first">
+      <result-chart dt="111"></result-chart>
+    </el-tab-pane>
+    <el-tab-pane label="历史记录" name="second">
   <el-table :data="scaleRecord" height="600" style="width: 100%">
     <el-table-column prop="date" label="时间" width="400" />
     <el-table-column prop="name" label="名称" width="400" />
@@ -28,14 +33,10 @@
   </el-table>
 
     </el-tab-pane>
-    <el-tab-pane label="统计分析" name="second">
-      <result-chart dt="111"></result-chart>
-    </el-tab-pane>
+    
   </el-tabs>
             </el-col>
         </el-row>
-        <el-main>
-            
         </el-main>
     </el-container>
 </template>
@@ -60,7 +61,7 @@
       },
       data() {
         return {
-           activeName: "second",
+           activeName: "first",
            scaleRecord: [
             {date: "1234", name: "1234", emo1: 1, emo2: 1, emo3: 1, emo4: 5, emo5: 6},
             {date: "1234", name: "1234"},
@@ -98,7 +99,7 @@
     .tabs{
         background:#ffffff
     }
-    .el-main{
+    .el-container{
         background: #f4f4f5;
         
     }
@@ -107,6 +108,7 @@
     border-bottom: 0.6px solid rgb(174, 174, 174);
     padding-top:20px;
     padding-bottom:20px;
+    background: #ffffff;
 }
     
     
