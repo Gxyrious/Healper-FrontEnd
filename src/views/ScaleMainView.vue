@@ -9,7 +9,7 @@
     <el-header>
       <el-breadcrumb>
         <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/test' }">心理测评</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/scale' }">心理测评</el-breadcrumb-item>
       </el-breadcrumb>
     </el-header>
 
@@ -18,7 +18,7 @@
         <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">选择问卷</el-row>
         <el-row gutter="20" justify="center" style="flex-wrap: wrap">
           <el-col :lg="{ span: 8 }" v-for="(name, index) in scaleNames" :key="name">
-            <test-card :scaleId="index+1" :scaleName=name></test-card>
+            <scale-card :scaleId="index+1" :scaleName=name></scale-card>
           </el-col>
         </el-row>
       </el-main>
@@ -27,27 +27,19 @@
 </template>
     
 <script>
-import router from "@/router";
+//import router from "@/router";
 import {
 
 } from "@element-plus/icons-vue"
-import TestCard from "../components/Test/TestCard"
+import ScaleCard from "../components/Scale/ScaleCard"
 import axios from "axios";
 
 export default {
   methods: {
-    goHome() {
-      router.push({ name: "main" });
-    },
-    viewAllTest() {
-      router.push({ name: "testRecord" });
-    },
-    viewAllDocumnet() {
-      router.push({ name: "documentRecord" });
-    },
+    
   },
   components: {
-    TestCard
+    ScaleCard
   },
   data() {
     return {
