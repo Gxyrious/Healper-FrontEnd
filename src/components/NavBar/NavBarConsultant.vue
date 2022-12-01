@@ -15,30 +15,17 @@
         @select="handleSelect"
     >
         <el-menu-item index="consultantMain">
-            <el-icon><House /></el-icon>
-            <span>首页</span>
-        </el-menu-item>
-        <el-sub-menu index="2">
-        <template #title>
             <el-icon><ChatDotRound /></el-icon>
             <span>心理咨询</span>
-        </template>
-            <el-menu-item index="consultation">预约咨询</el-menu-item>
-            <el-menu-item index="order">我的订单</el-menu-item>
-        </el-sub-menu>
-            <el-menu-item index="scale">
+        </el-menu-item>
+            <el-menu-item index="consultantHistory">
             <el-icon><Notebook /></el-icon>
-            <span>心理测评</span>
+            <span>咨询历史</span>
             </el-menu-item>
-            <el-sub-menu> 
-              <template #title>
-                <el-icon><User /></el-icon>
-                <span>个人信息</span>
-              </template>
-              <el-menu-item index="userInfo">我的信息</el-menu-item>
-              <el-menu-item index="scaleRecord">测评记录</el-menu-item>
-              <el-menu-item index="documentRecord">咨询档案</el-menu-item>
-             </el-sub-menu>
+            <el-menu-item index="consultantInfo">
+            <el-icon><User /></el-icon>
+            <span>个人信息</span>
+            </el-menu-item>
         <el-menu-item index="login" @click="logout">
         <el-icon><Remove /></el-icon>
         <span>退出登录</span>
@@ -51,7 +38,6 @@
 import router from "@/router";
 import store from "@/store";
 import {  
-    House,
     ChatDotRound,
     Notebook,
     User,
@@ -62,7 +48,6 @@ export default {
 //     ElMessage,
 //   },
   components:{
-    House,
     ChatDotRound,
     Notebook,
     User,

@@ -2,7 +2,7 @@
     <el-container>
       <el-header>
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/main' }">咨询师首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
       <el-main style="background: #f4f4f5;
