@@ -54,6 +54,11 @@
                     </el-table-column>
                 </el-table>
             </el-row>
+            <el-row justify="center" style="margin-top: 30px;">
+    <el-col :span="7">
+  <el-pagination layout="prev, pager, next" :total="50" />
+</el-col>
+  </el-row>
         </el-main>
     </el-container>
 </el-container>
