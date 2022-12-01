@@ -3,11 +3,12 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import UserMainView from '../views/UserMainView.vue'
 import UserInfoView from '../views/UserInfoView.vue'
-import TestRecordView from '../views/TestRecordView.vue'
+import ScaleRecordView from '../views/ScaleRecordView.vue'
 import ConsultationMainView from '../views/ConsultationMainView.vue'
 import DocumentRecordView from '../views/DocumentRecordView.vue'
-import TestMainView from '../views/TestMainView.vue'
+import ScaleMainView from '../views/ScaleMainView.vue'
 import OrderView from '../views/OrderView.vue'
+import ScaleDetailView from '../views/ScaleDetailView.vue'
 
 const routes = [
   {
@@ -31,9 +32,9 @@ const routes = [
     component:UserInfoView,
   },
   {
-    path:'/testRecord',
-    name:'testRecord',
-    component:TestRecordView,
+    path:'/scaleRecord',
+    name:'scaleRecord',
+    component:ScaleRecordView,
   },
   {
     path:'/consultation',
@@ -46,14 +47,19 @@ const routes = [
     component: DocumentRecordView,
   },
   {
-    path: '/test',
-    name: 'test',
-    component: TestMainView,
+    path: '/scale',
+    name: 'scale',
+    component: ScaleMainView,
   },
   {
     path: '/order',
     name: 'order',
     component: OrderView,
+  },
+  {
+    path: '/scaleDetail',
+    name: 'scaleDetail',
+    component: ScaleDetailView,
   },
 ]
 

@@ -26,7 +26,7 @@
             <el-menu-item index="consultation">预约咨询</el-menu-item>
             <el-menu-item index="order">我的订单</el-menu-item>
         </el-sub-menu>
-            <el-menu-item index="test">
+            <el-menu-item index="scale">
             <el-icon><Notebook /></el-icon>
             <span>心理测评</span>
             </el-menu-item>
@@ -36,7 +36,7 @@
                 <span>个人信息</span>
               </template>
               <el-menu-item index="userInfo">我的信息</el-menu-item>
-              <el-menu-item index="testRecord">测评记录</el-menu-item>
+              <el-menu-item index="scaleRecord">测评记录</el-menu-item>
               <el-menu-item index="documentRecord">咨询档案</el-menu-item>
              </el-sub-menu>
         <el-menu-item index="login" @click="logout">
