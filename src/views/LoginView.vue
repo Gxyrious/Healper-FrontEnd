@@ -96,17 +96,23 @@ export default {
           console.log(res);
           if (res.status == 200) {
             var userInfo = res.data;
+
             //若成功登录
+            
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            store.state.userInfo = userInfo;
+            this.$emit('login');
+            userInfo = JSON.parse(localStorage.getItem("userInfo"));
+            if (userInfo.userType == "client")
+              this.$router.replace("/main");
+            else if (userInfo.userType == "consultant")
+            this.$router.replace("/consultantMain");
             ElMessage({
-              message: userInfo.username + "，欢迎您！",
+              message: userInfo.user.nickname + "，欢迎您！",
               type: "success",
               showClose: true,
               duration: 2000,
             });
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            store.state.userInfo = userInfo;
-            this.$emit('login');
-            this.$router.replace("/main");
           } else {
             //若登录失败
             ElMessage.error("用户手机号或密码不正确！");

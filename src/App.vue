@@ -1,8 +1,10 @@
 <template>
   <el-container>
     <el-aside width=200px v-if="userType == 'client'">
-    
       <nav-bar @logout="logout"></nav-bar>
+    </el-aside>
+    <el-aside width=200px v-if="userType == 'consultant'">
+      <nav-bar-consultant @logout="logout"></nav-bar-consultant>
     </el-aside>
     <router-view @login="login"></router-view>
   </el-container>
@@ -13,9 +15,11 @@ import NavBar from "../src/components/NavBar/NavBar";
 import { getCurrentInstance, onMounted } from "vue";
 import { useStore } from "vuex";
 import router from "./router";
+import NavBarConsultant from "./components/NavBar/NavBarConsultant.vue";
 export default {
   components: {
     NavBar,
+    NavBarConsultant
   },
   data() {
     return{
@@ -33,7 +37,10 @@ export default {
     } else {
       store.state.userInfo = userInfo;
       cur.data.userType = userInfo.userType;
-      router.replace('/main');
+      if (userInfo.userType == 'client')
+        router.replace('/main');
+      else if (userInfo.userType == 'consultant')
+        router.replace('/consultantMain');
     }
   })
 },
