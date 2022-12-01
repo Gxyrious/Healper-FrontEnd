@@ -36,6 +36,7 @@ export default {
       router.replace('/login');
     } else {
       store.state.userInfo = userInfo;
+      console.log(userInfo);
       cur.data.userType = userInfo.userType;
       if (userInfo.userType == 'client')
         router.replace('/main');

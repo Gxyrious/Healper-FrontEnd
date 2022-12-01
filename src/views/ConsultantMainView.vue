@@ -2,7 +2,7 @@
     <el-container>
       <el-header>
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/main' }">心理咨询</el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
       <el-main style="background: #f4f4f5;
@@ -91,7 +91,7 @@
 
 <script>
 //import NavBar from "../../src/components/NavBar/NavBar";
-import ConsultationCard from "../../src/components/Consult/ConsultantCard.vue"
+import ConsultationCard from "../components/Consult/ConsultantCard.vue"
 import ScaleCard from "../components/Scale/ScaleCard"
 import {  
     Search

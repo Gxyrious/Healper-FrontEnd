@@ -96,19 +96,23 @@ export default {
           console.log(res);
           if (res.status == 200) {
             var userInfo = res.data;
-
+            var name = "";
             //若成功登录
             
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
             store.state.userInfo = userInfo;
             this.$emit('login');
             userInfo = JSON.parse(localStorage.getItem("userInfo"));
-            if (userInfo.userType == "client")
+            if (userInfo.userType == "client"){
               this.$router.replace("/main");
-            else if (userInfo.userType == "consultant")
-            this.$router.replace("/consultantMain");
+              name = userInfo.user.nickname;
+            }
+            else if (userInfo.userType == "consultant"){
+              this.$router.replace("/consultantMain");
+              name = userInfo.user.realname;
+            }
             ElMessage({
-              message: userInfo.user.nickname + "，欢迎您！",
+              message: name + "，欢迎您！",
               type: "success",
               showClose: true,
               duration: 2000,

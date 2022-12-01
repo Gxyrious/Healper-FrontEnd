@@ -140,6 +140,8 @@ export default {
     }).then((res)=>{
       console.log("res", res);
       this.userName = res.data.nickname;
+      this.age = res.data.age;
+      this.squareUrl = res.data.profile;
       if (res.data.sex == "f"){
         this.gender = "女";
       }
