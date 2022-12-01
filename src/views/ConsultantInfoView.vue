@@ -83,7 +83,7 @@
               标签
             </div>
           </template>
-          <el-tag v-for="item in label" style="margin: 5px">{{item}}</el-tag>
+          <el-tag v-for="item in label" style="margin: 5px" :key="item">{{item}}</el-tag>
           <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
         </el-descriptions-item>
       </el-descriptions>
@@ -98,7 +98,6 @@
     import {  
         Edit,
         User,
-        Iphone
     } from "@element-plus/icons-vue"
     import axios from "axios";
     
@@ -140,7 +139,6 @@
       components:{
         Edit,
         User,
-        Iphone
       },
       data() {
         return {
