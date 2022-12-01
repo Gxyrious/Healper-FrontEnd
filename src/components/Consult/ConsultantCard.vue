@@ -43,7 +43,7 @@
 <script>
 export default {
   name: 'ConsultantCard',
-  props:['info'],
+  props:['info','curwidth'],
   computed: {
   },
   created(){
@@ -59,6 +59,7 @@ export default {
     margin-left:30px;
     margin-right:40px;
     margin-bottom:40px;
+    padding-bottom:20px;
 }
 
 .el-tag{
