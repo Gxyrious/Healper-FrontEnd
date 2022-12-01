@@ -105,6 +105,7 @@ export default {
             });
             localStorage.setItem("userInfo", JSON.stringify(userInfo));
             store.state.userInfo = userInfo;
+            this.$emit('login');
             this.$router.replace("/main");
           } else {
             //若登录失败

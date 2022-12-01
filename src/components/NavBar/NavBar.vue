@@ -77,6 +77,7 @@ export default {
       store.state.userInfo = null;
       localStorage.clear();
       router.replace('/login');
+      this.$emit('logout');
     },
   },
 };
