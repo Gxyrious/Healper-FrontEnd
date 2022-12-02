@@ -150,8 +150,19 @@
     <el-table-column prop="endTime" label="时间" width="170" />
     <el-table-column prop="consultantRealName" label="咨询师" width="170" />
     <el-table-column  label="操作">
-        <template #default>
+        <template #default="scope">
+          <el-popover
+    placement="top-start"
+    title="建议"
+    :width="400"
+    trigger="click"
+    :content="scope.row.advice"
+  >
+  
+  <template #reference>
         <el-button link  size="small" @click="handleClick">查看</el-button>
+      </template>
+          </el-popover>
         </template>
     </el-table-column>
   </el-table>
@@ -222,7 +233,7 @@ export default {
     viewAllScale(){
         router.push({name: "scaleRecord"});
     },
-    viewAllDocumnet(){
+    viewAllDocument(){
         router.push({name: "documentRecord"});
     },
     editName(){
