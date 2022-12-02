@@ -41,7 +41,7 @@
                     <el-table-column prop="cost" label="费用" width="90"/>
                     <el-table-column label="操作">
                         <template #default="scope">
-                                <el-link type="primary" :underline="false" v-if="scope.row.status=='已完成'||scope.row.status=='待开始'">
+                                <el-link type="primary" :underline="false" v-if="scope.row.status=='已完成'||scope.row.status=='待开始'" @click="handleClick">
                                     进入咨询室
                                 </el-link>
                                 <el-link type="primary" :underline="false" v-if="scope.row.status=='待付款'">
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import router from "@/router";
 export default {
   components:{
   },
@@ -103,6 +104,9 @@ export default {
     };
   },
   methods: {
+    handleClick(){
+        router.push({name: "testChat"});
+    },
   },
 };
 

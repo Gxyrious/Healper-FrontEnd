@@ -11,6 +11,7 @@ import OrderView from '../views/OrderView.vue'
 import ScaleDetailView from '../views/ScaleDetailView.vue'
 import ConsultantMainView from '../views/ConsultantMainView.vue'
 import ConsultantInfoView from '../views/ConsultantInfoView.vue'
+import TestChatView from '../views/TestChatView.vue'
 const routes = [
   {
     path: '/login',
@@ -71,6 +72,11 @@ const routes = [
     path: '/consultantInfo',
     name: 'consultantInfo',
     component: ConsultantInfoView,
+  },
+  {
+    path: '/testChat',
+    name: 'testChat',
+    component: TestChatView,
   }
 ]
 
