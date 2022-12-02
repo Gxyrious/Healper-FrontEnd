@@ -47,8 +47,18 @@
               昵称
               </div>
               </template>
+              <div v-if="!isEditingName">
               {{userName}}
-              <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+              <el-button class="ebutton"  @click="editName" circle><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+            </div>
+              <div v-else>
+                <el-input v-model="userName">
+                  <template #append>
+                    <el-button class="ebutton"  @click="saveName"><el-icon :style="iconStyle"><Check /></el-icon></el-button>
+                    </template>
+                </el-input>
+              
+            </div>
             </el-descriptions-item>
              
     <el-descriptions-item width="150px">
@@ -57,8 +67,26 @@
           性别
         </div>
       </template>
+      <div v-if="!isEditingGender">
      {{gender}}
-     <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+     <el-button class="ebutton" circle @click="editGender"><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+      </div>
+     <div v-else>
+      <el-row>
+        <el-col :span="12">
+      <el-select v-model="gender">
+    <el-option
+      v-for="item in genders"
+      :key="item"
+      :value="item"
+    />
+  </el-select>
+</el-col>
+<el-col :span="12">
+  <el-button class="ebutton"  @click="saveGender"><el-icon :style="iconStyle"><Check /></el-icon></el-button>
+</el-col>
+</el-row>
+     </div>
     </el-descriptions-item>
     <el-descriptions-item width="150px">
       <template #label>
@@ -66,8 +94,22 @@
           年龄
         </div>
       </template>
+      <div v-if="!isEditingAge">
       {{age}}
-      <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+      <el-button class="ebutton" circle @click="editAge"><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+    </div>
+    <div v-else>
+
+      <el-input-number
+    v-model="age"
+    :min="0"
+    :max="120"
+    controls-position="right"
+  />
+
+
+  <el-button class="ebutton"  @click="saveAge"><el-icon :style="iconStyle"><Check /></el-icon></el-button>
+    </div>
     </el-descriptions-item>
     <el-descriptions-item >
       <template #label>
@@ -95,7 +137,7 @@
     <el-table-column prop="name" label="名称" width="170" />
     <el-table-column  label="操作">
         <template #default>
-        <el-button link  size="small" @click="handleClick">查看</el-button>
+        <el-button link  size="small" @click="viewDocument">查看</el-button>
         </template>
     </el-table-column>
   </el-table>
@@ -105,11 +147,22 @@
             <p class="retitle">最近的咨询档案
                 <el-button type="primary" class="ebutton" @click="viewAllDocument">查看全部</el-button></p>
             <el-table :data="recentDocument" border style="width: 100%">
-    <el-table-column prop="date" label="时间" width="170" />
-    <el-table-column prop="name" label="咨询师" width="170" />
+    <el-table-column prop="endTime" label="时间" width="170" />
+    <el-table-column prop="consultantRealName" label="咨询师" width="170" />
     <el-table-column  label="操作">
-        <template #default>
+        <template #default="scope">
+          <el-popover
+    placement="top-start"
+    title="建议"
+    :width="400"
+    trigger="click"
+    :content="scope.row.advice"
+  >
+  
+  <template #reference>
         <el-button link  size="small" @click="handleClick">查看</el-button>
+      </template>
+          </el-popover>
         </template>
     </el-table-column>
   </el-table>
@@ -124,7 +177,8 @@ import router from "@/router";
 import {  
     Edit,
     User,
-    Iphone
+    Iphone,
+Check
 } from "@element-plus/icons-vue"
 import axios from "axios";
 
@@ -135,50 +189,122 @@ export default {
       method: 'get',
       url: 'api/user/info',
       params:{
-        userphone: this.telephone
+        id: this.id,
+        userType: "client",
       }
     }).then((res)=>{
       console.log("res", res);
       this.userName = res.data.nickname;
       this.age = res.data.age;
       this.squareUrl = res.data.profile;
+      this.telephone = res.data.userphone;
       if (res.data.sex == "f"){
         this.gender = "女";
       }
       else{
         this.gender = "男";
       }
+    });
+
+    axios({
+      method: 'get',
+      url: 'api/history/archive/getSome',
+      params:{
+        clientId: this.id,
+        page: 1,
+        size: 5,
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.recentDocument = res.data;
+      for (var i = 0; i < this.recentDocument.length; i++){
+        this.recentDocument[i].endTime = this.getDate(this.recentDocument[i].endTime);
+      }
     })
   },
   methods: {
+    getDate(n){
+      n=new Date(n)
+      return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
+    },
     goHome() {
       router.push({ name: "main" });
     },
     viewAllScale(){
         router.push({name: "scaleRecord"});
     },
-    viewAllDocumnet(){
+    viewAllDocument(){
         router.push({name: "documentRecord"});
+    },
+    editName(){
+      this.isEditingName = true;
+    },
+    saveName(){
+      this.isEditingName = false;
+      axios({
+      method: 'put',
+      url: 'api/user/info',
+      data:{
+        id: this.id,
+        nickname: this.userName,
+      }
+    })
+    },
+    editGender(){
+      this.isEditingGender = true;
+    },
+    saveGender(){
+      this.isEditingGender = false;
+      var sex = "";
+      if (this.gender == "男")
+        sex = "m";
+      else
+        sex = "f";
+      axios({
+      method: 'put',
+      url: 'api/user/info',
+      data:{
+        id: this.id,
+        sex: sex,
+      }
+    })
+    },
+    editAge(){
+      this.isEditingAge = true;
+    },
+    saveAge(){
+      this.isEditingAge = false;
+      axios({
+      method: 'put',
+      url: 'api/user/info',
+      data:{
+        id: this.id,
+        age: this.age,
+      }
+    })
     },
   },
   components:{
     Edit,
     User,
-    Iphone
-  },
+    Iphone,
+    Check
+},
   data() {
     return {
+        id: this.$store.state.userInfo.user.id,
         squareUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         userName: "",
         age: 0,
         gender: "",
-        telephone: this.$store.state.userInfo.user.userphone,
+        telephone: "",
+        isEditingName: false,
+        isEditingGender: false,
+        isEditingAge: false,
+        genders: [
+          "男", "女",
+        ],
         recentScale: [
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
         ],
         recentDocument: [
             {date: "1234", name: "1234"},
