@@ -147,8 +147,8 @@
             <p class="retitle">最近的咨询档案
                 <el-button type="primary" class="ebutton" @click="viewAllDocument">查看全部</el-button></p>
             <el-table :data="recentDocument" border style="width: 100%">
-    <el-table-column prop="date" label="时间" width="170" />
-    <el-table-column prop="name" label="咨询师" width="170" />
+    <el-table-column prop="endTime" label="时间" width="170" />
+    <el-table-column prop="consultantRealName" label="咨询师" width="170" />
     <el-table-column  label="操作">
         <template #default>
         <el-button link  size="small" @click="handleClick">查看</el-button>
@@ -193,6 +193,19 @@ export default {
       else{
         this.gender = "男";
       }
+    });
+
+    axios({
+      method: 'get',
+      url: 'api/history/archive/getSome',
+      params:{
+        clientId: this.id,
+        page: 1,
+        size: 5,
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      //this.recentDocument = JSON.parse(res.data);
     })
   },
   methods: {
@@ -205,9 +218,13 @@ export default {
     viewAllDocumnet(){
         router.push({name: "documentRecord"});
     },
-    saveInfo(){
+    editName(){
+      this.isEditingName = true;
+    },
+    saveName(){
+      this.isEditingName = false;
       axios({
-      method: 'post',
+      method: 'put',
       url: 'api/user/info',
       data:{
         id: this.id,
@@ -215,23 +232,38 @@ export default {
       }
     })
     },
-    editName(){
-      this.isEditingName = true;
-    },
-    saveName(){
-      this.isEditingName = false;
-    },
     editGender(){
       this.isEditingGender = true;
     },
     saveGender(){
       this.isEditingGender = false;
+      var sex = "";
+      if (this.gender == "男")
+        sex = "m";
+      else
+        sex = "f";
+      axios({
+      method: 'put',
+      url: 'api/user/info',
+      data:{
+        id: this.id,
+        sex: sex,
+      }
+    })
     },
     editAge(){
       this.isEditingAge = true;
     },
     saveAge(){
       this.isEditingAge = false;
+      axios({
+      method: 'put',
+      url: 'api/user/info',
+      data:{
+        id: this.id,
+        age: this.age,
+      }
+    })
     },
   },
   components:{
