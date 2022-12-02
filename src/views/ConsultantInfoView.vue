@@ -108,7 +108,8 @@
           method: 'get',
           url: 'api/user/info',
           params:{
-            userphone: this.telephone
+            id: this.id,
+            userType: "consultant",
           }
         }).then((res)=>{
           console.log("res", res);
@@ -116,6 +117,7 @@
           this.age = res.data.age;
           this.squareUrl = res.data.profile;
           this.fee = res.data.expense;
+          this.telephone = res.data.userphone;
           this.label = JSON.parse(res.data.label);
           if (res.data.sex == "f"){
             this.gender = "女";
@@ -142,11 +144,12 @@
       },
       data() {
         return {
+            id: this.$store.state.userInfo.user.id,
             squareUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
             userName: "",
             age: 0,
             gender: "",
-            telephone: this.$store.state.userInfo.user.userphone,
+            telephone: "",
             fee: 0,
             label:[
                 "标签1", "标签2"

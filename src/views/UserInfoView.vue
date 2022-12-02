@@ -135,13 +135,15 @@ export default {
       method: 'get',
       url: 'api/user/info',
       params:{
-        userphone: this.telephone
+        id: this.id,
+        userType: "client",
       }
     }).then((res)=>{
       console.log("res", res);
       this.userName = res.data.nickname;
       this.age = res.data.age;
       this.squareUrl = res.data.profile;
+      this.telephone = res.data.userphone;
       if (res.data.sex == "f"){
         this.gender = "女";
       }
@@ -168,11 +170,12 @@ export default {
   },
   data() {
     return {
+        id: this.$store.state.userInfo.user.id,
         squareUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         userName: "",
         age: 0,
         gender: "",
-        telephone: this.$store.state.userInfo.user.userphone,
+        telephone: "",
         recentScale: [
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
