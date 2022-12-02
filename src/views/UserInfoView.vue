@@ -137,7 +137,7 @@
     <el-table-column prop="name" label="名称" width="170" />
     <el-table-column  label="操作">
         <template #default>
-        <el-button link  size="small" @click="handleClick">查看</el-button>
+        <el-button link  size="small" @click="viewDocument">查看</el-button>
         </template>
     </el-table-column>
   </el-table>
@@ -205,10 +205,17 @@ export default {
       }
     }).then((res)=>{
       console.log("res", res);
-      //this.recentDocument = JSON.parse(res.data);
+      this.recentDocument = res.data;
+      for (var i = 0; i < this.recentDocument.length; i++){
+        this.recentDocument[i].endTime = this.getDate(this.recentDocument[i].endTime);
+      }
     })
   },
   methods: {
+    getDate(n){
+      n=new Date(n)
+      return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
+    },
     goHome() {
       router.push({ name: "main" });
     },
@@ -287,11 +294,6 @@ export default {
           "男", "女",
         ],
         recentScale: [
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
         ],
         recentDocument: [
             {date: "1234", name: "1234"},
