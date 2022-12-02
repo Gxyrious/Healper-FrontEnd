@@ -47,8 +47,18 @@
               昵称
               </div>
               </template>
+              <div v-if="!isEditingName">
               {{userName}}
-              <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+              <el-button class="ebutton"  @click="editName" circle><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+            </div>
+              <div v-else>
+                <el-input v-model="userName">
+                  <template #append>
+                    <el-button class="ebutton"  @click="saveName"><el-icon :style="iconStyle"><Check /></el-icon></el-button>
+                    </template>
+                </el-input>
+              
+            </div>
             </el-descriptions-item>
              
     <el-descriptions-item width="150px">
@@ -57,8 +67,26 @@
           性别
         </div>
       </template>
+      <div v-if="!isEditingGender">
      {{gender}}
-     <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+     <el-button class="ebutton" circle @click="editGender"><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+      </div>
+     <div v-else>
+      <el-row>
+        <el-col :span="12">
+      <el-select v-model="gender">
+    <el-option
+      v-for="item in genders"
+      :key="item"
+      :value="item"
+    />
+  </el-select>
+</el-col>
+<el-col :span="12">
+  <el-button class="ebutton"  @click="saveGender"><el-icon :style="iconStyle"><Check /></el-icon></el-button>
+</el-col>
+</el-row>
+     </div>
     </el-descriptions-item>
     <el-descriptions-item width="150px">
       <template #label>
@@ -66,8 +94,22 @@
           年龄
         </div>
       </template>
+      <div v-if="!isEditingAge">
       {{age}}
-      <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+      <el-button class="ebutton" circle @click="editAge"><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+    </div>
+    <div v-else>
+
+      <el-input-number
+    v-model="age"
+    :min="0"
+    :max="120"
+    controls-position="right"
+  />
+
+
+  <el-button class="ebutton"  @click="saveAge"><el-icon :style="iconStyle"><Check /></el-icon></el-button>
+    </div>
     </el-descriptions-item>
     <el-descriptions-item >
       <template #label>
@@ -124,7 +166,8 @@ import router from "@/router";
 import {  
     Edit,
     User,
-    Iphone
+    Iphone,
+Check
 } from "@element-plus/icons-vue"
 import axios from "axios";
 
@@ -162,12 +205,41 @@ export default {
     viewAllDocumnet(){
         router.push({name: "documentRecord"});
     },
+    saveInfo(){
+      axios({
+      method: 'post',
+      url: 'api/user/info',
+      data:{
+        id: this.id,
+        nickname: this.userName,
+      }
+    })
+    },
+    editName(){
+      this.isEditingName = true;
+    },
+    saveName(){
+      this.isEditingName = false;
+    },
+    editGender(){
+      this.isEditingGender = true;
+    },
+    saveGender(){
+      this.isEditingGender = false;
+    },
+    editAge(){
+      this.isEditingAge = true;
+    },
+    saveAge(){
+      this.isEditingAge = false;
+    },
   },
   components:{
     Edit,
     User,
-    Iphone
-  },
+    Iphone,
+    Check
+},
   data() {
     return {
         id: this.$store.state.userInfo.user.id,
@@ -176,6 +248,12 @@ export default {
         age: 0,
         gender: "",
         telephone: "",
+        isEditingName: false,
+        isEditingGender: false,
+        isEditingAge: false,
+        genders: [
+          "男", "女",
+        ],
         recentScale: [
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
