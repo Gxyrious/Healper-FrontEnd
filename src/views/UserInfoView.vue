@@ -5,18 +5,18 @@
 
 <template>
   <el-dialog v-model="isEditingPassword" title="修改密码">
-    <el-form :model="form">
-      <el-form-item label="原密码" :label-width="formLabelWidth">
+    <el-form :model="form" :rules="rules">
+      <el-form-item label="原密码" :label-width="formLabelWidth" prop="oldPassword">
         <el-input v-model="form.oldPassword" autocomplete="off" type="password"/>
       </el-form-item>
-      <el-form-item label="新密码" :label-width="formLabelWidth">
+      <el-form-item label="新密码" :label-width="formLabelWidth" prop="newPassword">
         <el-input v-model="form.newPassword" autocomplete="off" type="password"/>
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="isEditingPassword = false">取消</el-button>
-        <el-button type="primary" @click="editPassword">
+        <el-button type="primary" @click="editPassword()">
           修改
         </el-button>
       </span>
@@ -199,7 +199,7 @@ import {
 Check
 } from "@element-plus/icons-vue"
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import { ElMessage} from "element-plus";
 
 
 export default {
@@ -302,7 +302,7 @@ export default {
       }
     })
     },
-    editPassword(){
+    savePassword(){
       this.isEditingPassword = false;
       axios({
       method: 'put',
@@ -332,8 +332,19 @@ export default {
     });
     this.form.oldPassword = "";
     this.form.newPassword = "";
-    
-
+    },
+    editPassword(){
+      if (this.form.newPassword == this.form.oldPassword){
+        ElMessage({
+              message: "不能输入相同的密码",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else if (this.form.newPassword != "" && this.form.oldPassword != "")
+        this.savePassword();
+      
   },
 },
   components:{
@@ -367,6 +378,10 @@ export default {
             {date: "1234", name: "1234"},
         ],
         form: {oldPassword: "", newPassword: ""},
+        rules: {
+          oldPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
+          newPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
+        }
     };
   },
 }
