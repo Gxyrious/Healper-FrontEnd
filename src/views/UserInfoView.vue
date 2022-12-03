@@ -15,7 +15,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="isEditingPassword = false">取消</el-button>
+        <el-button @click="(isEditingPassword = false)">取消</el-button>
         <el-button type="primary" @click="editPassword()">
           修改
         </el-button>
@@ -26,18 +26,18 @@
   <el-dialog v-model="isEditingAvatar" title="修改头像">
     <el-upload
     class="avatar-uploader"
-    action=""
+    :on-change="onChange"
+    :auto-upload="false"
+    limit="1"
     :show-file-list="false"
-    :on-success="handleAvatarSuccess"
-    :before-upload="beforeAvatarUpload"
   >
-    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <img v-if="newProfile" :src="newProfile" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
   </el-upload>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="isEditingAvatar = false">取消</el-button>
-        <el-button type="primary" @click="editAvator()">
+        <el-button type="primary" @click="editAvatar">
           修改
         </el-button>
       </span>
@@ -264,6 +264,23 @@ export default {
     })
   },
   methods: {
+    onChange(uploadFile){
+  if (uploadFile.raw.type !== 'image/jpeg' && uploadFile.raw.type !== 'image/png') {
+    ElMessage.error('请上传JPG/PNG格式文件')
+    return false
+  } else if (uploadFile.raw.size / 1024 / 1024 > 10) {
+    ElMessage.error('文件不能超过10MB!')
+    return false
+  }
+  console.log(uploadFile);
+  var reader = new FileReader();
+      reader.readAsDataURL(uploadFile.raw);
+      reader.onload = (e) => {
+        this.newProfile = e.target.result;
+        console.log(this.newProfile);
+      };
+  return true
+},
     getDate(n){
       n=new Date(n)
       return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
@@ -368,6 +385,19 @@ export default {
         this.savePassword();
       
   },
+  editAvatar(){
+    axios({
+      method: 'post',
+      url: 'api/user/uploadImage',
+      data:{
+        base64: this.newProfile,
+        id: this.id,
+        userType: "client",
+      }
+  });
+  this.isEditingAvatar = false;
+  this.squareUrl = this.newProfile;
+}
 },
   components:{
     Edit,
@@ -389,6 +419,7 @@ export default {
         isEditingAge: false,
         isEditingPassword: false,
         isEditingAvatar: false,
+        newProfile: null,
         genders: [
           "男", "女",
         ],
