@@ -29,7 +29,7 @@
     :on-change="onChange"
     :auto-upload="false"
     limit="1"
-    :show-file-list="false"
+    ref="uploadRef"
   >
     <img v-if="newProfile" :src="newProfile" class="avatar" />
     <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -221,7 +221,8 @@ Check,
 Plus
 } from "@element-plus/icons-vue"
 import axios from "axios";
-import { ElMessage} from "element-plus";
+import { ElMessage, UploadInstance} from "element-plus";
+import { ref } from "vue";
 
 
 export default {
@@ -237,7 +238,8 @@ export default {
       console.log("res", res);
       this.userName = res.data.nickname;
       this.age = res.data.age;
-      this.squareUrl = res.data.profile;
+      var random = Math.ceil(Math.random() * 100000);
+      this.squareUrl = res.data.profile + '?' + random;
       this.telephone = res.data.userphone;
       if (res.data.sex == "f"){
         this.gender = "女";
@@ -394,7 +396,24 @@ export default {
         id: this.id,
         userType: "client",
       }
-  });
+  }).then((res)=>{
+      if (res.status == 200){
+        ElMessage({
+              message: "修改成功",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else{
+        ElMessage({
+              message: "修改失败",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+    });
   this.isEditingAvatar = false;
   this.squareUrl = this.newProfile;
 }
@@ -420,6 +439,7 @@ export default {
         isEditingPassword: false,
         isEditingAvatar: false,
         newProfile: null,
+        uploadRef: ref<UploadInstance>(null),
         genders: [
           "男", "女",
         ],
