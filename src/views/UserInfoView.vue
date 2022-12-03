@@ -4,6 +4,45 @@
 -->
 
 <template>
+  <el-dialog v-model="isEditingPassword" title="修改密码">
+    <el-form :model="form" :rules="rules">
+      <el-form-item label="原密码" :label-width="formLabelWidth" prop="oldPassword">
+        <el-input v-model="form.oldPassword" autocomplete="off" type="password"/>
+      </el-form-item>
+      <el-form-item label="新密码" :label-width="formLabelWidth" prop="newPassword">
+        <el-input v-model="form.newPassword" autocomplete="off" type="password"/>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="isEditingPassword = false">取消</el-button>
+        <el-button type="primary" @click="editPassword()">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+
+  <el-dialog v-model="isEditingAvatar" title="修改头像">
+    <el-upload
+    class="avatar-uploader"
+    action=""
+    :show-file-list="false"
+    :on-success="handleAvatarSuccess"
+    :before-upload="beforeAvatarUpload"
+  >
+    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+  </el-upload>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="isEditingAvatar = false">取消</el-button>
+        <el-button type="primary" @click="editAvator()">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 <el-container>
   
     <el-header>
@@ -18,7 +57,7 @@
         <el-row class="head" justify="center">
             <el-col :span="2" >
                 <div class="avator">
-                   <el-avatar shape="square" :size="60" :src="squareUrl" />
+                   <el-avatar shape="square" :size="60" :src="squareUrl" @click="isEditingAvatar = true"/>
                 </div>
             </el-col>
             <el-col :span="9">
@@ -29,7 +68,7 @@
             </el-col>
             <el-col :span="11">
                 <div class="password">
-                    <el-button type="primary" class="pdbutton"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
+                    <el-button type="primary" class="pdbutton" @click="isEditingPassword = true"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
                 </div>
             </el-col>
         </el-row>
@@ -178,9 +217,11 @@ import {
     Edit,
     User,
     Iphone,
-Check
+Check,
+Plus
 } from "@element-plus/icons-vue"
 import axios from "axios";
+import { ElMessage} from "element-plus";
 
 
 export default {
@@ -283,12 +324,57 @@ export default {
       }
     })
     },
+    savePassword(){
+      this.isEditingPassword = false;
+      axios({
+      method: 'put',
+      url: 'api/user/passwd',
+      data:{
+        id: this.id,
+        oldPasswd: this.form.oldPassword,
+        newPasswd: this.form.newPassword,
+      }
+    }).then((res)=>{
+      if (res.status == 200){
+        ElMessage({
+              message: "修改成功",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else{
+        ElMessage({
+              message: "密码错误",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+    });
+    this.form.oldPassword = "";
+    this.form.newPassword = "";
+    },
+    editPassword(){
+      if (this.form.newPassword == this.form.oldPassword){
+        ElMessage({
+              message: "不能输入相同的密码",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else if (this.form.newPassword != "" && this.form.oldPassword != "")
+        this.savePassword();
+      
   },
+},
   components:{
     Edit,
     User,
     Iphone,
-    Check
+    Check,
+    Plus
 },
   data() {
     return {
@@ -301,6 +387,8 @@ export default {
         isEditingName: false,
         isEditingGender: false,
         isEditingAge: false,
+        isEditingPassword: false,
+        isEditingAvatar: false,
         genders: [
           "男", "女",
         ],
@@ -312,10 +400,15 @@ export default {
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
-        ]
+        ],
+        form: {oldPassword: "", newPassword: ""},
+        rules: {
+          oldPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
+          newPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
+        }
     };
   },
-};
+}
 </script>
 
 <style scoped>
@@ -373,5 +466,32 @@ p.age{
     border-bottom: 0.6px solid rgb(174, 174, 174);
     padding-top:20px;
     padding-bottom:20px;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
