@@ -4,6 +4,24 @@
 -->
 
 <template>
+  <el-dialog v-model="isEditingPassword" title="修改密码">
+    <el-form :model="form">
+      <el-form-item label="原密码" :label-width="formLabelWidth">
+        <el-input v-model="form.oldPassword" autocomplete="off" type="password"/>
+      </el-form-item>
+      <el-form-item label="新密码" :label-width="formLabelWidth">
+        <el-input v-model="form.newPassword" autocomplete="off" type="password"/>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="isEditingPassword = false">取消</el-button>
+        <el-button type="primary" @click="editPassword">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 <el-container>
   
     <el-header>
@@ -29,7 +47,7 @@
             </el-col>
             <el-col :span="11">
                 <div class="password">
-                    <el-button type="primary" class="pdbutton"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
+                    <el-button type="primary" class="pdbutton" @click="isEditingPassword = true"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
                 </div>
             </el-col>
         </el-row>
@@ -181,6 +199,7 @@ import {
 Check
 } from "@element-plus/icons-vue"
 import axios from "axios";
+import { ElMessage } from "element-plus";
 
 
 export default {
@@ -283,7 +302,40 @@ export default {
       }
     })
     },
+    editPassword(){
+      this.isEditingPassword = false;
+      axios({
+      method: 'put',
+      url: 'api/user/passwd',
+      data:{
+        id: this.id,
+        oldPasswd: this.form.oldPassword,
+        newPasswd: this.form.newPassword,
+      }
+    }).then((res)=>{
+      if (res.status == 200){
+        ElMessage({
+              message: "修改成功",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else{
+        ElMessage({
+              message: "密码错误",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+    });
+    this.form.oldPassword = "";
+    this.form.newPassword = "";
+    
+
   },
+},
   components:{
     Edit,
     User,
@@ -301,6 +353,7 @@ export default {
         isEditingName: false,
         isEditingGender: false,
         isEditingAge: false,
+        isEditingPassword: false,
         genders: [
           "男", "女",
         ],
@@ -312,10 +365,11 @@ export default {
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
             {date: "1234", name: "1234"},
-        ]
+        ],
+        form: {oldPassword: "", newPassword: ""},
     };
   },
-};
+}
 </script>
 
 <style scoped>
