@@ -21,9 +21,9 @@
       <result-chart dt="111"></result-chart>
     </el-tab-pane>
     <el-tab-pane label="历史记录" name="second">
-  <el-table :data="scaleRecord" height="600" style="width: 100%">
-    <el-table-column prop="date" label="时间" width="400" />
-    <el-table-column prop="name" label="名称" width="400" />
+  <el-table :data="scaleRecord"  style="width: 100%">
+    <el-table-column prop="endTime" label="时间" width="400" />
+    <el-table-column prop="scaleName" label="名称" width="400" />
     <el-table-column  label="操作">
         <template #default>
         <el-button link  size="small" @click="handleClick">查看</el-button>
@@ -33,7 +33,7 @@
   </el-table>
   <el-row justify="center" style="margin-top: 30px;">
     <el-col :span="7">
-  <el-pagination layout="prev, pager, next" :total="50" />
+  <el-pagination layout="prev, pager, next" :total="scaleSum" v-model:current-page="page" @current-change="getNewPage"/>
 </el-col>
   </el-row>
     </el-tab-pane>
@@ -47,18 +47,69 @@
 
 <script>
     import router from "@/router"
-    
+    import axios from "axios";
     import {  
 
     } from "@element-plus/icons-vue"
     import ResultChart from '../components/Scale/ResultChart.vue'
     
     export default {
-      
+      created(){
+        axios({
+      method: 'get',
+      url: 'api/scale/sum',
+      params:{
+        clientId: this.id,
+
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.scaleSum = res.data;
+    });
+    axios({
+      method: 'get',
+      url: 'api/scale/getRecord',
+      params:{
+        clientId: this.id,
+        page: 1,
+        size: 10,
+      }
+    }).then((res)=>{
+      if (res.status == 200){
+      console.log("res", res);
+      this.scaleRecord = res.data;
+      for (var i = 0; i < this.scaleRecord.length; i++){
+        this.scaleRecord[i].endTime = this.getDate(this.scaleRecord[i].endTime);
+        }
+      }
+
+    })
+      },
       methods: {
         goUserInfo() {
           router.push({ name: "userInfo" });
         },
+        getDate(n){
+      n=new Date(n)
+      return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
+    },
+    getNewPage(){
+      axios({
+      method: 'get',
+      url: 'api/scale/getRecord',
+      params:{
+        clientId: this.id,
+        page: this.page,
+        size: 10,
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.scaleRecord = res.data;
+      for (var i = 0; i < this.scaleRecord.length; i++){
+        this.scaleRecord[i].endTime = this.getDate(this.scaleRecord[i].endTime);
+      }
+    })
+    },
       },
       components:{
         ResultChart,
@@ -66,32 +117,11 @@
       data() {
         return {
            activeName: "first",
+           scaleSum: 0,
+           page: 1,
+           id: this.$store.state.userInfo.user.id,
            scaleRecord: [
-            {date: "1234", name: "1234", emo1: 1, emo2: 1, emo3: 1, emo4: 5, emo5: 6},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
+            
         ],
         };
       },

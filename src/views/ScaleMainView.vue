@@ -51,7 +51,7 @@ export default {
       url: "api/scale/names",
       method: "get",
       params: {
-        page: 0,
+        page: 1,
         size: 6
       }
     })

@@ -4,6 +4,7 @@
 -->
 
 <template>
+  
   <el-dialog v-model="isEditingPassword" title="修改密码">
     <el-form :model="form" :rules="rules">
       <el-form-item label="原密码" :label-width="formLabelWidth" prop="oldPassword">
@@ -50,6 +51,7 @@
               <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
               <el-breadcrumb-item :to="{ path: '/userInfo' }">我的信息</el-breadcrumb-item>
             </el-breadcrumb>
+            
     </el-header>
 
     
@@ -172,8 +174,8 @@
                 <el-button type="primary" class="ebutton" id="test" @click="viewAllScale">查看全部</el-button></p>
             
             <el-table :data="recentScale" border style="width: 100%">
-    <el-table-column prop="date" label="时间" width="170" />
-    <el-table-column prop="name" label="名称" width="170" />
+    <el-table-column prop="endTime" label="时间" width="170" />
+    <el-table-column prop="scaleName" label="名称" width="170" />
     <el-table-column  label="操作">
         <template #default>
         <el-button link  size="small" @click="viewDocument">查看</el-button>
@@ -218,12 +220,11 @@ import {
     User,
     Iphone,
 Check,
-Plus
+Plus,
 } from "@element-plus/icons-vue"
 import axios from "axios";
 import { ElMessage, UploadInstance} from "element-plus";
 import { ref } from "vue";
-
 
 export default {
   created(){
@@ -262,6 +263,22 @@ export default {
       this.recentDocument = res.data;
       for (var i = 0; i < this.recentDocument.length; i++){
         this.recentDocument[i].endTime = this.getDate(this.recentDocument[i].endTime);
+      }
+    });
+
+    axios({
+      method: 'get',
+      url: 'api/scale/getRecord',
+      params:{
+        clientId: this.id,
+        page: 1,
+        size: 5,
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.recentScale = res.data;
+      for (var i = 0; i < this.recentScale.length; i++){
+        this.recentScale[i].endTime = this.getDate(this.recentScale[i].endTime);
       }
     })
   },
@@ -423,7 +440,7 @@ export default {
     User,
     Iphone,
     Check,
-    Plus
+    Plus,
 },
   data() {
     return {
@@ -440,6 +457,7 @@ export default {
         isEditingAvatar: false,
         newProfile: null,
         uploadRef: ref<UploadInstance>(null),
+        isShowingResult: true,
         genders: [
           "男", "女",
         ],
