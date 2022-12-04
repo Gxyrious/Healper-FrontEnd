@@ -446,11 +446,7 @@ export default {
         recentScale: [
         ],
         recentDocument: [
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
-            {date: "1234", name: "1234"},
+           
         ],
         form: {oldPassword: "", newPassword: ""},
         rules: {
