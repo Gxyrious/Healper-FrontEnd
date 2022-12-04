@@ -64,7 +64,7 @@
     });
     axios({
       method: 'get',
-      url: 'api/history/archive/getSome',
+      url: 'api/history/archives',
       params:{
         clientId: this.id,
         page: 1,
@@ -92,7 +92,7 @@
     getNewPage(){
       axios({
       method: 'get',
-      url: 'api/history/archive/getSome',
+      url: 'api/history/archives',
       params:{
         clientId: this.id,
         page: this.page,
