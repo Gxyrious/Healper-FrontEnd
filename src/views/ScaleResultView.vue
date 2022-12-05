@@ -13,7 +13,7 @@
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">{{scaleName}}</el-row>
           <el-row justify="center">
             <el-col :span="23">
-                <ResultChart ></ResultChart>
+                <ResultChart :factors="factors" :values="values"></ResultChart>
             </el-col>
         </el-row>
         </el-main>
@@ -22,14 +22,31 @@
 
 <script>
     import router from "@/router"
-    
+    import axios from "axios";
     import {  
 
     } from "@element-plus/icons-vue"
     import ResultChart from '../components/Scale/ResultChart.vue'
     
     export default {
-      
+        created(){
+            this.recordId = parseInt(this.$route.query.recordId);
+    axios({
+      method: 'get',
+      url: 'api/scale/record',
+      params:{
+        recordId: this.recordId,
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.scaleName = res.data.scaleName;
+      this.record = JSON.parse(res.data.record);
+      for(var i = 0; i <= this.record.length; i++){
+        this.factors[i] = this.record[i].factor;
+        this.values[i] = this.record[i].value;
+      }
+    });
+},
       methods: {
         goUserInfo() {
           router.push({ name: "userInfo" });
@@ -40,9 +57,11 @@
       },
       data() {
         return {
-           record: null,
+           record: [],
            scaleName: "",
-        
+           scaleRecordId: 0,
+           factors: [],
+           values: [],
         };
       },
     };

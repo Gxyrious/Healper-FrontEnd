@@ -174,6 +174,7 @@
       url: 'api/user/passwd',
       data:{
         id: this.id,
+        userType: "consultant",
         oldPasswd: this.form.oldPassword,
         newPasswd: this.form.newPassword,
       }

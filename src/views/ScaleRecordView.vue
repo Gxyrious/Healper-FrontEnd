@@ -25,8 +25,8 @@
     <el-table-column prop="endTime" label="时间" width="400" />
     <el-table-column prop="scaleName" label="名称" width="400" />
     <el-table-column  label="操作">
-        <template #default>
-        <el-button link  size="small" @click="handleClick">查看</el-button>
+        <template #default="scope">
+        <el-button link  size="small" @click="viewResult(scope.row.scaleRecordId)">查看</el-button>
         <el-button link  size="small" @click="handleClick">删除</el-button>
         </template>
     </el-table-column>
@@ -68,7 +68,7 @@
     });
     axios({
       method: 'get',
-      url: 'api/scale/getRecord',
+      url: 'api/scale/records',
       params:{
         clientId: this.id,
         page: 1,
@@ -96,7 +96,7 @@
     getNewPage(){
       axios({
       method: 'get',
-      url: 'api/scale/getRecord',
+      url: 'api/scale/records',
       params:{
         clientId: this.id,
         page: this.page,
@@ -110,12 +110,11 @@
       }
     })
     },
-    viewResult(scaleName, record){
+    viewResult(scaleRecordId){
       this.$router.push({
         path: '/scaleResult',
         query: {
-          scaleName: scaleName,
-          record: record,
+          recordId: scaleRecordId,
         }
       })
     }

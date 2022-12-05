@@ -178,7 +178,7 @@
     <el-table-column prop="scaleName" label="名称" width="170" />
     <el-table-column  label="操作">
         <template #default="scope">
-        <el-button link  size="small" @click="viewResult(scope.row.scaleName, scope.row.record)">查看</el-button>
+        <el-button link  size="small" @click="viewResult(scope.row.scaleRecordId)">查看</el-button>
         </template>
     </el-table-column>
   </el-table>
@@ -268,7 +268,7 @@ export default {
 
     axios({
       method: 'get',
-      url: 'api/scale/getRecord',
+      url: 'api/scale/records',
       params:{
         clientId: this.id,
         page: 1,
@@ -367,6 +367,7 @@ export default {
       url: 'api/user/passwd',
       data:{
         id: this.id,
+        userType: "client",
         oldPasswd: this.form.oldPassword,
         newPasswd: this.form.newPassword,
       }
@@ -434,12 +435,11 @@ export default {
   this.isEditingAvatar = false;
   this.squareUrl = this.newProfile;
 },
-viewResult(scaleName, record){
+viewResult(scaleRecordId){
       this.$router.push({
         path: '/scaleResult',
         query: {
-          scaleName: scaleName,
-          record: record,
+          recordId: scaleRecordId,
         }
       })
     }
