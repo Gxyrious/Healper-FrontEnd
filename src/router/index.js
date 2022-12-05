@@ -12,6 +12,7 @@ import ScaleDetailView from '../views/ScaleDetailView.vue'
 import ConsultantMainView from '../views/ConsultantMainView.vue'
 import ConsultantInfoView from '../views/ConsultantInfoView.vue'
 import TestChatView from '../views/TestChatView.vue'
+import SummaryAdviceEditor from '../views/SummaryAdviceEditor.vue'
 const routes = [
   {
     path: '/login',
@@ -24,24 +25,24 @@ const routes = [
     component: RegisterView
   },
   {
-    path:'/main',
-    name:'main',
-    component:UserMainView,
+    path: '/main',
+    name: 'main',
+    component: UserMainView,
   },
   {
-    path:'/userInfo',
-    name:'userInfo',
-    component:UserInfoView,
+    path: '/userInfo',
+    name: 'userInfo',
+    component: UserInfoView,
   },
   {
-    path:'/scaleRecord',
-    name:'scaleRecord',
-    component:ScaleRecordView,
+    path: '/scaleRecord',
+    name: 'scaleRecord',
+    component: ScaleRecordView,
   },
   {
-    path:'/consultation',
-    name:'consultation',
-    component:ConsultationMainView,
+    path: '/consultation',
+    name: 'consultation',
+    component: ConsultationMainView,
   },
   {
     path: '/documentRecord',
@@ -77,11 +78,16 @@ const routes = [
     path: '/testChat',
     name: 'testChat',
     component: TestChatView,
+  },
+  {
+    path: '/SAEditor',
+    name: 'SAEditor',
+    component: SummaryAdviceEditor,
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),routes
+  history: createWebHistory(process.env.BASE_URL), routes
 })
 
 export default router

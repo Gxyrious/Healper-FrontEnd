@@ -50,6 +50,9 @@
                                 <el-link type="primary" :underline="false" v-if="scope.row.status=='待开始'||scope.row.status=='待付款'">
                                     取消
                                 </el-link>
+                                <el-link type="primary" :underline="false" v-if="scope.row.status=='待付款'" @click="goSAEditor">
+                                    编辑档案
+                                </el-link>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -107,6 +110,9 @@ export default {
     handleClick(){
         router.push({name: "testChat"});
     },
+    goSAEditor(){
+        router.push({name: "SAEditor"});
+    }
   },
 };
 
