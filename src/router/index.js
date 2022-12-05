@@ -12,6 +12,7 @@ import ScaleDetailView from '../views/ScaleDetailView.vue'
 import ConsultantMainView from '../views/ConsultantMainView.vue'
 import ConsultantInfoView from '../views/ConsultantInfoView.vue'
 import TestChatView from '../views/TestChatView.vue'
+import ScaleResultView from '../views/ScaleResultView.vue'
 const routes = [
   {
     path: '/login',
@@ -77,7 +78,12 @@ const routes = [
     path: '/testChat',
     name: 'testChat',
     component: TestChatView,
-  }
+  },
+  {
+    path: '/scaleResult',
+    name: 'scaleResult',
+    component: ScaleResultView,
+  },
 ]
 
 const router = createRouter({

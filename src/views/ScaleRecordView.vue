@@ -110,6 +110,15 @@
       }
     })
     },
+    viewResult(scaleName, record){
+      this.$router.push({
+        path: '/scaleResult',
+        query: {
+          scaleName: scaleName,
+          record: record,
+        }
+      })
+    }
       },
       components:{
         ResultChart,

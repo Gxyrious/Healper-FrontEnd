@@ -10,9 +10,10 @@
         </el-header>
         
         <el-main style="margin:20px 30px; background:#ffffff;">
+            <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">{{scaleName}}</el-row>
           <el-row justify="center">
             <el-col :span="23">
-                <ResultChart></ResultChart>
+                <ResultChart ></ResultChart>
             </el-col>
         </el-row>
         </el-main>
@@ -39,7 +40,9 @@
       },
       data() {
         return {
-           
+           record: null,
+           scaleName: "",
+        
         };
       },
     };
