@@ -1,132 +1,139 @@
 <template>
-    <div class="common-layout body_card">
+  <div class="common-layout body_card">
+    <el-container>
+      <el-header height="100px">
+        <el-link type="primary" style="font-size: small;text-align: left;padding-left: 20px;padding-top: 50px;"
+          @click="goLogin">
+          <el-icon>
+            <Right />
+          </el-icon>
+          <span>已有账号，登陆</span>
+        </el-link>
+        <div id="registerTips" style="text-align: center;margin-top: 50px;">
+          <span>用户注册</span>
+        </div>
+      </el-header>
       <el-container>
-        <el-header height="100px">
-          <el-link type="primary" style="font-size: small;text-align: left;padding-left: 20px;padding-top: 50px;" @click="goLogin">
-            <el-icon><Right /></el-icon>
-            <span>已有账号，登陆</span>
-          </el-link>
-          <div id="registerTips" style="text-align: center;margin-top: 50px;">
-            <span>用户注册</span>
-          </div>
-        </el-header>
-        <el-container>
-          <el-aside width="700px">
-            <img src="../assets/healper.png" class="drawing" style="zoom:40%;margin-top: 300px;margin-left: 500px;"/>
-          </el-aside>
-  
-          <el-main>
-            <div class="registerField">
-              <div class="inputCard">
-                <div class="label">手机号</div>
-                <el-row>
-                  <el-col :span="15">
-                    <el-input
-                      v-model="userPhone"
-                      class="w-50 m-2"
-                    >
-                      <template #suffix>
-                        <el-icon color="#409eff"><UserFilled /></el-icon>
-                      </template>
-                    </el-input>
-                  </el-col>
-                </el-row>
-              </div>
-  
-              <div class="inputCard">
-                <div class="label">验证码</div>
-                <el-row>
-                  <el-col :span="15">
-                    <el-input
-                      v-model="idenCode"
-                      style="width:340px"
-                      v-on:input="validateCAPTCHA()"
-                    >
-                      <template #append>
-                        <el-button
-                          type="primary"
-                          @click="getIdeCode"
-                          :disabled="isDisposed"
-                        >
-                          {{
+        <el-aside width="700px">
+          <img src="../assets/healper.png" class="drawing" style="zoom:40%;margin-top: 300px;margin-left: 500px;" />
+        </el-aside>
+
+        <el-main>
+          <div class="registerField">
+            <div class="inputCard">
+              <div class="label">昵称</div>
+              <el-row>
+                <el-col :span="15">
+                  <el-input v-model="nickname" class="w-50 m-2">
+                    <template #suffix>
+                      <el-icon color="#409eff">
+                        <UserFilled />
+                      </el-icon>
+                    </template>
+                  </el-input>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="inputCard">
+              <div class="label">手机号</div>
+              <el-row>
+                <el-col :span="15">
+                  <el-input v-model="userPhone" class="w-50 m-2">
+                    <template #suffix>
+                      <el-icon color="#409eff">
+                        <UserFilled />
+                      </el-icon>
+                    </template>
+                  </el-input>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="inputCard">
+              <div class="label">验证码</div>
+              <el-row>
+                <el-col :span="15">
+                  <el-input v-model="idenCode" style="width:340px" v-on:input="validateCAPTCHA()">
+                    <template #append>
+                      <el-button type="primary" @click="getIdeCode" :disabled="isDisposed">
+                        {{
                             this.isDisposed
                               ? `${this.time}s后重新获取`
                               : "获取验证码"
-                          }}
-                        </el-button>
-                      </template>
-                    </el-input>
-                  </el-col>
-                </el-row>
-              </div>
-  
-              <div class="inputCard">
-                <div class="label">密码</div>
-                <el-row>
-                  <el-col :span="15">
-                    <el-input
-                      v-model="userPassword"
-                      class="w-50 m-2"
-                      type="password"
-                      clearable
-                    />
-                  </el-col>
-                </el-row>
-              </div>
-  
-              <div class="inputCard">
-                <div class="label">确认密码</div>
-                <el-row>
-                  <el-col :span="15">
-                    <el-input
-                      v-model="tmpPassword"
-                      class="w-50 m-2"
-                      type="password"
-                      v-on:input="validatePassword()"
-                      clearable
-                    >
-                      <template #append>
-                        <el-icon v-if="check" style="color: green"
-                          ><SuccessFilled
-                        /></el-icon>
-                        <el-icon v-else style="color: #f56c6c"
-                          ><WarningFilled
-                        /></el-icon>
-                      </template>
-                    </el-input>
-                  </el-col>
-                </el-row>
-              </div>
-  
-              <div class="buttonCard">
-                <el-button type="primary" @click="register">注册</el-button>
-              </div>
+                        }}
+                      </el-button>
+                    </template>
+                  </el-input>
+                </el-col>
+              </el-row>
             </div>
-          </el-main>
-        </el-container>
+
+            <div class="inputCard">
+              <div class="label">密码</div>
+              <el-row>
+                <el-col :span="15">
+                  <el-input v-model="userPassword" class="w-50 m-2" type="password" clearable />
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="inputCard">
+              <div class="label">确认密码</div>
+              <el-row>
+                <el-col :span="15">
+                  <el-input v-model="tmpPassword" class="w-50 m-2" type="password" v-on:input="validatePassword()"
+                    clearable>
+                    <template #append>
+                      <el-icon v-if="check" style="color: green">
+                        <SuccessFilled />
+                      </el-icon>
+                      <el-icon v-else style="color: #f56c6c">
+                        <WarningFilled />
+                      </el-icon>
+                    </template>
+                  </el-input>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="inputCard">
+              <el-row>
+                <el-col :span="3" style="padding-top: 4px">性别</el-col>
+                <el-col :span="12">
+                  <el-radio-group class="select-sex" v-model="this.sex">
+                    <el-radio label="m">男</el-radio>
+                    <el-radio label="f">女</el-radio>
+                  </el-radio-group>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="buttonCard">
+              <el-button type="primary" @click="register">注册</el-button>
+            </div>
+          </div>
+        </el-main>
       </el-container>
-      <el-dialog
-        v-model="dialogVisible"
-        title="注册成功"
-        width="40%"
-        :before-close="handleClose"
-        append-to-body
-      >
-        <span>您的注册手机号为 {{ this.userPhone }} </span>
-        <br />
-        <span>您的ID为 {{ this.userId }} </span>
-        <br />
-        <span>您的密码为 {{ this.userPassword }} </span>
-        <br />
-        <span>请您牢记以上信息, ID及密码将作为用户登录唯一凭证</span>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button type="primary" @click="closeDialog">确认</el-button>
-          </span>
-        </template>
-      </el-dialog>
-    </div>
-  </template>
+    </el-container>
+    <el-dialog v-model="dialogVisible" title="注册成功" width="40%" :before-close="handleClose" append-to-body>
+      <span>您的昵称为 {{ this.nickname }} </span>
+      <br />
+      <span>您的注册手机号为 {{ this.userPhone }} </span>
+      <br />
+      <span>您的ID为 {{ this.userId }} </span>
+      <br />
+      <span>您的密码为 {{ this.userPassword }} </span>
+      <br />
+      <span>请您牢记以上信息, 手机号及密码将作为用户登录唯一凭证</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="closeDialog">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
+</template>
 
 <script>
 // import { ref } from "vue";
@@ -136,12 +143,14 @@ import axios from "axios";
 // import store from "@/store";
 // import { tryOnBeforeMount } from "@vueuse/core";
 export default {
-//   components: { ElMessage },
+  //   components: { ElMessage },
   data() {
     return {
       idenCode: "",
+      nickname: "",
       userPhone: "",
       userPassword: "",
+      sex: "",
       userId: "",
       tmpPassword: "",
       time: 60,
@@ -156,10 +165,12 @@ export default {
     },
     register() {
       if (
+        this.nickname === "" ||
         this.userPhone === "" ||
-        this.idenCode === "" ||
+        // this.idenCode === "" ||
         this.userPassword === "" ||
-        this.tmpPassword === ""
+        this.tmpPassword === "" ||
+        this.sex === ""
       ) {
         ElMessage.error("以上四项均为必填项！");
         return;
@@ -167,12 +178,16 @@ export default {
         ElMessage.error("两次输入密码不相同！请再次确认密码");
         return;
       } else {
-        axios
-          .post("/api/register", {
+        axios({
+          url: "/api/user/register",
+          method: "post",
+          data: {
+            nickname: this.nickname,
             userPhone: this.userPhone,
-            userPassword: this.userPassword,
-            code:this.idenCode,
-          })
+            password: this.userPassword,
+            sex: this.sex,
+          }
+        })
           .then((res) => {
             console.log(res);
             console.log(res.data);
@@ -275,13 +290,13 @@ export default {
         return;
       }
       axios
-        .post("/api/register/verifycode",{
-          userPhone:this.userPhone,
+        .post("/api/register/verifycode", {
+          userPhone: this.userPhone,
         })
         .then((res) => {
           console.log(res);
           console.log(res.data);
-          if(res.data.status == true){
+          if (res.data.status == true) {
             console.log("验证码发送成功！");
             ElMessage({
               message: "验证码发送成功！",
@@ -291,7 +306,7 @@ export default {
             this.isDisposed = true;
             this.handleTimeChange();
           }
-          else{
+          else {
             ElMessage({
               message: "验证码发送失败！",
               grouping: true,
@@ -302,7 +317,7 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-      },
+    },
     handleClose() {
       ElMessageBox.confirm("确认关闭此对话框吗?")
         .then(() => {
@@ -328,32 +343,40 @@ export default {
   font-weight: bolder;
   margin-top: 5%;
 }
+
 .drawing {
   height: 600px;
 }
+
 .registerField {
   margin-top: 15%;
 }
+
 .inputCard {
   margin-top: 5%;
 }
+
 .inputCard .label {
   text-align: left;
   margin-bottom: 5px;
 }
+
 .buttonCard {
   margin-right: 58%;
   margin-top: 10%;
 }
+
 .el-input {
   --el-input-bg-color: #ffffff00;
   --el-input-hover-border-color: #88c3fe;
 }
+
 .dialog-footer button:first-child {
   margin-right: 10px;
 }
+
 .body_card {
-  width:98%;
+  width: 98%;
   margin-left: 1%;
   border-radius: 17px;
   box-shadow: -5px -5px 10px #eff0f0, 5px 5px 10px #ffffff;
