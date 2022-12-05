@@ -150,7 +150,8 @@
             });
       }
     });
-    this.getNewPage();
+    setTimeout(()=>{this.getNewPage();}, 1000)
+    
     }
       },
       components:{
