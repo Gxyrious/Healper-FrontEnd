@@ -4,6 +4,24 @@
 -->
 
 <template>
+  <el-dialog v-model="isEditingPassword" title="修改密码">
+    <el-form :model="form" :rules="rules">
+      <el-form-item label="原密码" :label-width="formLabelWidth" prop="oldPassword">
+        <el-input v-model="form.oldPassword" autocomplete="off" type="password"/>
+      </el-form-item>
+      <el-form-item label="新密码" :label-width="formLabelWidth" prop="newPassword">
+        <el-input v-model="form.newPassword" autocomplete="off" type="password"/>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="(isEditingPassword = false)">取消</el-button>
+        <el-button type="primary" @click="editPassword()">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
     <el-container>
       <el-dialog v-model="isEditingAvatar" title="修改头像">
     <el-upload
@@ -47,7 +65,7 @@
                 </el-col>
                 <el-col :span="11">
                     <div class="password">
-                       
+                      <el-button type="primary" class="pdbutton" @click="isEditingPassword = true"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -149,6 +167,50 @@
         })
       },
       methods: {
+        savePassword(){
+      this.isEditingPassword = false;
+      axios({
+      method: 'put',
+      url: 'api/user/passwd',
+      data:{
+        id: this.id,
+        oldPasswd: this.form.oldPassword,
+        newPasswd: this.form.newPassword,
+      }
+    }).then((res)=>{
+      if (res.status == 200){
+        ElMessage({
+              message: "修改成功",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else{
+        ElMessage({
+              message: "密码错误",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+    });
+    this.form.oldPassword = "";
+    this.form.newPassword = "";
+    },
+    editPassword(){
+      if (this.form.newPassword == this.form.oldPassword){
+        ElMessage({
+              message: "不能输入相同的密码",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else if (this.form.newPassword != "" && this.form.oldPassword != "")
+        this.savePassword();
+      
+  },
         onChange(uploadFile){
   if (uploadFile.raw.type !== 'image/jpeg' && uploadFile.raw.type !== 'image/png') {
     ElMessage.error('请上传JPG/PNG格式文件')
@@ -216,6 +278,12 @@
             ],
             isEditingAvatar: false,
             newProfile: null,
+            isEditingPassword: false,
+            form: {oldPassword: "", newPassword: ""},
+        rules: {
+          oldPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
+          newPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
+        }
         };
       },
     };
