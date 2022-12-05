@@ -86,7 +86,7 @@
           </div>
           <div style="padding:20px 30px;background:#fff;margin-top:30px;">
             <div style="font-weight:bolder;margin-bottom:20px;">推荐量表</div>
-            <test-card></test-card>
+            <scale-card></scale-card>
           </div>
         </el-main>
         </el-container>
@@ -97,7 +97,7 @@
 <script>
 //import NavBar from "../../src/components/NavBar/NavBar";
 import ConsultationCard from "../../src/components/Consult/ConsultantCard.vue"
-import TestCard from "../components/Test/TestCard"
+import ScaleCard from "../components/Scale/ScaleCard"
 import {  
     Search
 } from "@element-plus/icons-vue"
@@ -105,7 +105,7 @@ export default {
   components:{
     Search,
     ConsultationCard,
-    TestCard,
+    ScaleCard,
     //NavBar
   },
   data() {
@@ -168,7 +168,7 @@ export default {
       this.$router.replace("/userInfo");
     },
     goTest(){
-      this.$router.replace("/test");
+      this.$router.replace("/scale");
     },
     goConsult(){
       this.$router.replace("/consultation");
