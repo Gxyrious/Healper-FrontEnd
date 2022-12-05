@@ -25,9 +25,16 @@
     <el-table-column prop="endTime" label="时间" width="400" />
     <el-table-column prop="scaleName" label="名称" width="400" />
     <el-table-column  label="操作">
-        <template #default>
-        <el-button link  size="small" @click="handleClick">查看</el-button>
-        <el-button link  size="small" @click="handleClick">删除</el-button>
+        <template #default="scope">
+        <el-button link  size="small" @click="viewResult(scope.row.scaleRecordId)">查看</el-button>
+        <el-popconfirm title="您确定要删除这条测评记录吗？" confirm-button-text="是"
+    cancel-button-text="否" @confirm="deleteRecord(scope.row.scaleRecordId)">
+    
+    <template #reference>
+      <el-button link  size="small">删除</el-button>
+    </template>
+  </el-popconfirm>
+        
         </template>
     </el-table-column>
   </el-table>
@@ -52,7 +59,7 @@
 
     } from "@element-plus/icons-vue"
     import ResultChart from '../components/Scale/ResultChart.vue'
-    
+    import { ElMessage } from "element-plus";
     export default {
       created(){
         axios({
@@ -68,7 +75,7 @@
     });
     axios({
       method: 'get',
-      url: 'api/scale/getRecord',
+      url: 'api/scale/records',
       params:{
         clientId: this.id,
         page: 1,
@@ -96,7 +103,7 @@
     getNewPage(){
       axios({
       method: 'get',
-      url: 'api/scale/getRecord',
+      url: 'api/scale/records',
       params:{
         clientId: this.id,
         page: this.page,
@@ -110,6 +117,42 @@
       }
     })
     },
+    viewResult(scaleRecordId){
+      this.$router.push({
+        path: '/scaleResult',
+        query: {
+          recordId: scaleRecordId,
+        }
+      })
+    },
+    deleteRecord(scaleRecordId){
+      axios({
+      method: 'delete',
+      url: 'api/scale/delete',
+      params:{
+       id: scaleRecordId,
+      }
+  }).then((res)=>{
+      if (res.status == 200){
+        ElMessage({
+              message: "删除成功",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else{
+        ElMessage({
+              message: "删除失败",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+    });
+    setTimeout(()=>{this.getNewPage();}, 1000)
+    
+    }
       },
       components:{
         ResultChart,

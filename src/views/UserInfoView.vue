@@ -177,8 +177,8 @@
     <el-table-column prop="endTime" label="时间" width="170" />
     <el-table-column prop="scaleName" label="名称" width="170" />
     <el-table-column  label="操作">
-        <template #default>
-        <el-button link  size="small" @click="viewDocument">查看</el-button>
+        <template #default="scope">
+        <el-button link  size="small" @click="viewResult(scope.row.scaleRecordId)">查看</el-button>
         </template>
     </el-table-column>
   </el-table>
@@ -268,7 +268,7 @@ export default {
 
     axios({
       method: 'get',
-      url: 'api/scale/getRecord',
+      url: 'api/scale/records',
       params:{
         clientId: this.id,
         page: 1,
@@ -367,6 +367,7 @@ export default {
       url: 'api/user/passwd',
       data:{
         id: this.id,
+        userType: "client",
         oldPasswd: this.form.oldPassword,
         newPasswd: this.form.newPassword,
       }
@@ -407,7 +408,7 @@ export default {
   editAvatar(){
     axios({
       method: 'post',
-      url: 'api/user/uploadImage',
+      url: 'api/user/uploadProfile',
       data:{
         base64: this.newProfile,
         id: this.id,
@@ -433,7 +434,15 @@ export default {
     });
   this.isEditingAvatar = false;
   this.squareUrl = this.newProfile;
-}
+},
+viewResult(scaleRecordId){
+      this.$router.push({
+        path: '/scaleResult',
+        query: {
+          recordId: scaleRecordId,
+        }
+      })
+    }
 },
   components:{
     Edit,

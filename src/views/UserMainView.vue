@@ -168,7 +168,7 @@ export default {
       this.$router.replace("/userInfo");
     },
     goTest(){
-      this.$router.replace("/test");
+      this.$router.replace("/scale");
     },
     goConsult(){
       this.$router.replace("/consultation");

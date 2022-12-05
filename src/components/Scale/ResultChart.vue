@@ -7,26 +7,35 @@ import * as echarts from 'echarts'
 import { onMounted } from 'vue';
 export default {
     setup(props){
-        onMounted(()=>{let chart = echarts.init(document.getElementById("chart"));
+        onMounted(()=>{
+          setTimeout(()=>{ let chart = echarts.init(document.getElementById("chart"));
           chart.setOption({
-        title: { text: props.dt },
-        tooltip: {},
-        xAxis: {
-          data: ["12-3", "12-4", "12-5", "12-6", "12-7", "12-8"],
-        },
-        yAxis: {},
-        series: [
-          {
-            name: "用户量",
-            type: "line",
-            data: [5, 20, 36, 10, 10, 20],
-          },
-        ],})
+            xAxis: {
+    type: 'category',
+    data: props.factors,
+    axisLabel:{
+      interval: 0,
+    }
+    
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      data: props.values,
+      //data: [1,2,3],
+      type: 'bar'
+    }
+  ]})}, 1000);
+          //echarts.init(document.getElementById("chart")).dispose();
+         
           
       }
         )},
     props: [
-    'dt',
+    'factors',
+    'values'
     ],
     data() {
     return {
