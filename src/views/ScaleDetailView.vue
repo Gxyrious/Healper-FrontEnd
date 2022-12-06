@@ -15,7 +15,7 @@
       <div class="scale-body">
         <div class="question" v-for="(question, index) in this.questions" :key="index">
           <el-divider />
-          <span class="single-question">{{ index }}. {{ question["question"] }}</span>
+          <span class="single-question">{{ index + 1 }}. {{ question["question"] }}</span>
           <br /> <br />
           <el-radio-group v-model="this.choices[index]">
             <el-radio label="1" size="large">没有</el-radio>
@@ -47,6 +47,7 @@
 
 <script>
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 export default {
   components: {
 
@@ -91,14 +92,56 @@ export default {
     submit() {
       // 提交量表
       console.log(this.choices);
-      for (var i = 0; i < this.questions.length; i++) {
-        var score = parseInt(this.choices[i]);
-        var factor = this.questions[i]["factor"];
+      for (let i = 0; i < this.questions.length; i++) {
+        let score = parseInt(this.choices[i]);
+        if (score == 0) {
+          ElMessage({
+            message: "您还有未完成的题目！",
+            type: "warning",
+            duration: 2000
+          })
+          return;
+        }
+        let factor = this.questions[i]["factor"];
         this.factors[factor] += score;
       }
       console.log(this.factors);
+      let factorKeys = Object.keys(this.factors);
+      let jsonFactors = []
+      for (let i = 0; i < factorKeys.length; i++) {
+        jsonFactors.push({
+          "factor": factorKeys[i],
+          "value": this.factors[factorKeys[i]],
+        })
+      }
       axios({
-
+        url: "api/scale/update",
+        method: "post",
+        data: {
+          clientId: this.$store.state.userInfo.user.id,
+          endTime: Date.now(),
+          isHidden: 0,
+          scaleId: this.scaleId + 1,
+          record: JSON.stringify(jsonFactors),
+        }
+      })
+      .then((res) => {
+        console.log(res);
+        let recordId = parseInt(res.data.id);
+        console.log(recordId);
+        this.$router.push({
+          path: "/scaleResult",
+          query: {
+            recordId: recordId
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        ElMessage({
+          message: "提交失败！",
+          type: "warning"
+        })
       })
     }
   }
