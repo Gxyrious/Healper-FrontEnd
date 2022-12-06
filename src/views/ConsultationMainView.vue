@@ -30,6 +30,7 @@
 
 <script>
 import ConsultationCard from "../../src/components/Consult/ConsultantCard.vue"
+import axios from "axios";
 export default {
   components:{
     ConsultationCard
@@ -87,10 +88,22 @@ export default {
     };
   },
   created(){
-    console.log(this.consultant_info);
-  },
-  methods: {
-  },
+    console.log("请求咨询师列表")
+    axios({
+        method: 'get',
+        url: '/user/consultants/client',
+        params:{
+            clientId:1,
+            page:1,
+            size:5,
+        },
+        data: {
+            label:""
+        },
+    }).then((res) => {
+        console.log("res", res);
+    })
+  }
 };
 
 </script>

@@ -6,7 +6,7 @@
     <el-aside width=200px v-if="userType == 'consultant'">
       <nav-bar-consultant @logout="logout"></nav-bar-consultant>
     </el-aside>
-    <router-view @login="login"></router-view>
+    <router-view @login="login" v-if="isRouterAlive"></router-view>
   </el-container>
 </template>
 
@@ -21,9 +21,15 @@ export default {
     NavBar,
     NavBarConsultant
   },
+  provide () {
+   return{
+     reload: this.reload
+   }
+  },
   data() {
     return{
       userType: "client",
+      isRouterAlive: true
     }
   },
   setup(){
@@ -51,7 +57,13 @@ export default {
     },
     login(){
       this.userType = JSON.parse(localStorage.getItem("userInfo")).userType;
-    }
+    },
+    reload(){
+     this.isRouterAlive = false
+     this.$nextTick(function(){
+       this.isRouterAlive = true
+     })
+   }
   },
   
 };

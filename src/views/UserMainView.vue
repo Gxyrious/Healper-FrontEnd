@@ -18,7 +18,7 @@
         <el-aside style="width:60%">
           <el-row class="head" justify="center">
             <el-col :span="3" >
-              <el-avatar shape="square" :size="60" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
+              <el-avatar shape="square" :size="60" :src="profile" />
             </el-col>
             <el-col :span="8">
                 <div class="brief">
@@ -86,7 +86,7 @@
           </div>
           <div style="padding:20px 30px;background:#fff;margin-top:30px;">
             <div style="font-weight:bolder;margin-bottom:20px;">推荐量表</div>
-            <scale-card></scale-card>
+            <scale-card :scaleId="scaleId" :scaleName="scaleName" :quesNum="quesNum"></scale-card>
           </div>
         </el-main>
         </el-container>
@@ -96,6 +96,7 @@
 
 <script>
 //import NavBar from "../../src/components/NavBar/NavBar";
+import axios from "axios"
 import ConsultationCard from "../../src/components/Consult/ConsultantCard.vue"
 import ScaleCard from "../components/Scale/ScaleCard"
 import {  
@@ -110,9 +111,14 @@ export default {
   },
   data() {
     return {
-      userName:"美女",
-      age:20,
-      sex:"女",
+      id: this.$store.state.userInfo.user.id,
+      userName:"",
+      age:0,
+      sex:"",
+      profile:"",
+      quesNum:0,
+      scaleName:"",
+      scaleId:0,
       consultant_info:[{
             name:"美女",
             sex:"女",
@@ -162,6 +168,42 @@ export default {
         },
         ]
     };
+  },
+  created(){
+    axios({
+      method: 'get',
+      url: 'api/user/info',
+      params:{
+        id: this.id,
+        userType: "client",
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.userName = res.data.nickname;
+      this.age = res.data.age;
+      if (res.data.sex == "f"){
+        this.sex = "女";
+      }
+      else{
+        this.sex = "男";
+      }
+      this.profile=res.data.profile;
+    });
+    axios({
+      url: "api/scale/names",
+      method: "get",
+      params: {
+        page: 1,
+        size: 1
+      }
+    })
+    .then((res) => {
+      console.log(res.data);
+      this.scaleName=res.data[0].name;
+      this.quesNum=res.data[0].quesNum;
+      this.scaleId=res.data[0].id;
+      console.log(this.scaleName);
+    })
   },
   methods: {
     goUserInfo(){
