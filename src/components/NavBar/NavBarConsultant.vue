@@ -16,9 +16,9 @@
     >
         <el-menu-item index="consultantMain">
             <el-icon><ChatDotRound /></el-icon>
-            <span>心理咨询</span>
+            <span>首页</span>
         </el-menu-item>
-            <el-menu-item index="consultantHistory">
+            <el-menu-item index="consultantOrder">
             <el-icon><Notebook /></el-icon>
             <span>咨询历史</span>
             </el-menu-item>

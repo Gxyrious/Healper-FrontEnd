@@ -2,23 +2,23 @@
     <el-card shadow="hover">
         <el-row>
             <el-col :span="14">
-                <el-avatar shape="square" :size=150 src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                <el-avatar shape="square" :size=140 :src="this.info?.profile" />
             </el-col>
             <el-col :span="10">
-                <div style="font-size:30px;font-weight:500;display:flex;justify-content: flex-end;padding-right:20px;padding-top:15px">
-                    {{this.info?.name}}
+                <div style="font-size:30px;font-weight:500;display:flex;justify-content: flex-end;padding-right:20px;padding-top:18px">
+                    {{this.info?.realname}}
                 </div>
                 <div style="font-size:13px;font-weight:300;display:flex;justify-content: flex-end;padding-right:25px;margin-top:2px">
-                    {{this.info?.sex}} | {{this.info?.age}}
+                    {{ this.info?.sex=='m'?'男':'女' }} | {{this.info?.age}}
                 </div>
-                <div style="display:flex;justify-content: flex-end;margin-top:50px;padding-right:20px">
-                    <el-tag v-for="i in this.info?.tagList" :key="i">{{i.tag}}</el-tag>
+                <div style="display:flex;justify-content: flex-end;margin-top:50px;padding-right:18px">
+                    <el-tag v-for="i in this.info?.label" :key="i">{{i}}</el-tag>
                 </div>
             </el-col>
         </el-row>
         <el-row style="margin-top:20px;margin-left:15px;font-size:17px;font-weight:400">
             <el-col :span="6">
-                {{this.info?.price}}￥
+                {{this.info?.expense}}￥
             </el-col>
             <el-col :span="18">
                 预计 {{this.info?.time}} 开始
@@ -34,7 +34,8 @@
                 </div>
             </el-col>
             <el-col :span="3">
-                <el-button type="text">预约</el-button>
+                <el-button type="text" v-if="this.status==false">预约</el-button>
+                <el-button type="text" v-if="this.status==true">进入咨询室</el-button>
             </el-col>
         </el-row>
     </el-card>
@@ -43,7 +44,7 @@
 <script>
 export default {
   name: 'ConsultantCard',
-  props:['info','curwidth'],
+  props:['info','status'],
   computed: {
   },
   created(){
