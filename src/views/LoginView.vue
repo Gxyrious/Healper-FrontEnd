@@ -124,6 +124,9 @@ export default {
           }
         })
         .catch((err) => {
+          //若登录失败
+          ElMessage.error("用户手机号或密码不正确！");
+          (this.userPhone = ""), (this.userPassword = "");
           console.log(err);
         });
     },
