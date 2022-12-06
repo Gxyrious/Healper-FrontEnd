@@ -18,7 +18,7 @@
             <el-col :span="23">
                 <el-tabs v-model="activeName">
                   <el-tab-pane label="统计分析" name="first">
-      <result-chart dt="111"></result-chart>
+                    <AnalysisChart v-for="item in analysis" :key="item.factor" :factor="item.factor" :detail="item.detail"></AnalysisChart>
     </el-tab-pane>
     <el-tab-pane label="历史记录" name="second">
   <el-table :data="scaleRecord"  style="width: 100%">
@@ -58,8 +58,8 @@
     import {  
 
     } from "@element-plus/icons-vue"
-    import ResultChart from '../components/Scale/ResultChart.vue'
     import { ElMessage } from "element-plus";
+    import AnalysisChart from "../components/Scale/AnalysisChart.vue";
     export default {
       created(){
         axios({
@@ -90,9 +90,20 @@
         }
       }
 
+      axios({
+      method: 'get',
+      url: 'api/scale/jsonRecords',
+      params:{
+        clientId: this.id,
+      }
+    }).then((res)=>{
+      console.log("res", res);
+      this.analysis = res.data;
+    })
     })
       },
       methods: {
+        
         goUserInfo() {
           router.push({ name: "userInfo" });
         },
@@ -155,7 +166,7 @@
     }
       },
       components:{
-        ResultChart,
+        AnalysisChart,
       },
       data() {
         return {
@@ -165,7 +176,11 @@
            id: this.$store.state.userInfo.user.id,
            scaleRecord: [
             
-        ],
+           ],
+           analysis:[
+            {detail:{time: null, value: null}, factor: null},
+           ],
+          
         };
       },
     };

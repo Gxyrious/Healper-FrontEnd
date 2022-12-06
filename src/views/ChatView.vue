@@ -105,7 +105,7 @@ export default {
       });
     },
     init() {
-      const clientSocketUrl =`ws://127.0.0.1:8081/websocket/` + this.$store.state.userInfo.user.userphone;
+      const clientSocketUrl =`ws://81.68.102.171:8081/websocket/` + this.$store.state.userInfo.user.userphone;
       clientSocket = new WebSocket(clientSocketUrl);
       console.log("socketUrl: " + clientSocketUrl);
       console.log("toPhone", this.toPhone);

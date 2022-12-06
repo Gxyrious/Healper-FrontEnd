@@ -167,15 +167,22 @@ export default {
       if (
         this.nickname === "" ||
         this.userPhone === "" ||
-        // this.idenCode === "" ||
+        this.idenCode === "" ||
         this.userPassword === "" ||
         this.tmpPassword === "" ||
         this.sex === ""
       ) {
-        ElMessage.error("以上四项均为必填项！");
+        ElMessage.error("以上均为必填项！");
         return;
       } else if (this.userPassword !== this.tmpPassword) {
         ElMessage.error("两次输入密码不相同！请再次确认密码");
+        return;
+      } else if (!this.validatePhone) {
+        ElMessage({
+          message: "请输入正确的手机号！",
+          grouping: true,
+          type: "error",
+        });
         return;
       } else {
         axios({
@@ -186,55 +193,39 @@ export default {
             userPhone: this.userPhone,
             password: this.userPassword,
             sex: this.sex,
+            code: this.idenCode,
           }
         })
           .then((res) => {
             console.log(res);
-            console.log(res.data);
-            console.log("res.status" + res.data.status);
-            if (res.data.status == true) {
-              //若成功注册
+            if (res.status == 200) {
+              this.userId = res.data;
               ElMessage({
-                message: "注册成功！",
+                message: "注册成功！您的id是" + this.userId,
                 type: "success",
               });
-              this.userId = res.data.data.userId;
-              console.log(this.userId);
               this.dialogVisible = true;
             } else {
-              //若注册失败
-              ElMessage.error("该手机号已有账号或验证码输入错误，注册失败！");
-              (this.userPhone = ""),
-                (this.userPassword = ""),
-                (this.idenCode = ""),
-                (this.tmpPassword = "");
+              ElMessage.error("注册失败！");
+              this.userPhone = "";
+              this.userPassword = "";
+              this.idenCode = "";
+              this.tmpPassword = "";
             }
           })
           .catch((err) => {
             console.log(err);
-            ElMessage.error("注册失败！");
-            (this.userPhone = ""),
-              (this.userPassword = ""),
-              (this.idenCode = ""),
-              (this.tmpPassword = "");
+            ElMessage.error(err.response.data);
+            this.userPhone = "";
+            this.userPassword = "";
+            this.idenCode = "";
+            this.tmpPassword = "";
           });
       }
     },
     validatePhone() {
-      if (this.userPhone === "") {
-        ElMessage.error("手机号不可为空！");
-      } else {
-        if (this.userPhone !== "") {
-          var reg = /^1[3456789]\d{9}$/;
-          if (!reg.test(this.userPhone)) {
-            ElMessage({
-              message: "请输入正确的手机号！",
-              grouping: true,
-              type: "error",
-            });
-          }
-        }
-      }
+      var reg = /^1[3456789]\d{9}$/;
+      return reg.test(this.userPhone);
     },
     validateCAPTCHA() {
       if (this.idenCode === "") {
@@ -278,7 +269,7 @@ export default {
       }
     },
     getIdeCode() {
-      console.log("send");
+      console.log("send" + this.userPhone);
       var reg = /^1[3456789]\d{9}$/;
       if (this.userPhone === "" || !reg.test(this.userPhone)) {
         ElMessage({
@@ -289,14 +280,16 @@ export default {
         this.userPhone = "";
         return;
       }
-      axios
-        .post("/api/register/verifycode", {
-          userPhone: this.userPhone,
-        })
+      axios({
+        url: "api/user/sendMsg",
+        method: "post",
+        data: {
+          userPhone: this.userPhone
+        }
+      })
         .then((res) => {
           console.log(res);
-          console.log(res.data);
-          if (res.data.status == true) {
+          if (res.status == 200) {
             console.log("验证码发送成功！");
             ElMessage({
               message: "验证码发送成功！",
@@ -315,7 +308,11 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err)
+          ElMessage({
+            message: "该手机号已被注册！",
+            grouping: true,
+            type: "error",
+          })
         })
     },
     handleClose() {
