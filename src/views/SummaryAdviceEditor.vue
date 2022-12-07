@@ -27,7 +27,7 @@
         </div>
         <my-editor ref="summary" @editorSubmit="getSummary"></my-editor>
         <button
-          @click="callEditor"
+          @click="bothSubmit"
           class="mine_button"
           v-loading.fullscreen.lock="fullscreenLoading"
           element-loading-text="正在提交..."
@@ -64,21 +64,52 @@ export default {
   },
   data() {
     return {
-      emitFlag: false,
       adviceContent: "",
       summaryContent: "",
     };
   },
-  method: {
-    callEditor() {
+  methods: {
+    bothSubmit() {
+      console.log("bothSubmit开始");
       this.$refs.advice.submit();
       this.$refs.summary.submit();
+      // console.log(this.adviceContent);
+      // console.log(this.summaryContent);
+      axios({
+        method: "post",
+        url: "api/history/archive",
+        params: {
+          id: this.$route.params.id,
+          adviceBase64: this.adviceContent,
+          summaryBase64: this.summaryContent,
+        },
+      })
+        .then((res) => {
+          if (res.data.staus)
+            ElMessage({
+              type: "success",
+              message: "提交成功！",
+              duration: 2000,
+              showClose: true,
+            });
+          else
+            ElMessage({
+              type: "false",
+              message: "提交失败！",
+              duration: 2000,
+              showClose: true,
+            });
+        })
+        .catch((errMsg) => {
+          console.log(errMsg);
+          console.log("提交失败-异常");
+        });
     },
-    getAdvice(args) {
-      this.adviceContent = args.base64_content;
+    getAdvice(content) {
+      this.adviceContent = content;
     },
-    getSummary(args) {
-      this.summaryContent = args.base64_content;
+    getSummary(content) {
+      this.summaryContent = content;
     },
   },
 };

@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       content: "",
-      api_key: "c5kwn7bqa8uitv0zrwqzphqlbtgm8cuic6g9d21sqgpd8dwv",
+      api_key: "c5kwn7bqa8uitv0zrwqzphqlbtgm8cuic6g9d21sqgpd8dwv", //mr0kk8fqz3vlsnczol9q2qxu5dj89xoay1svicqzybn0ve93
       init: {
         language: "zh_CN", //语言类型
         placeholder: "在这里输入...",
@@ -73,13 +73,14 @@ export default {
       return arr;
     },
     submit() {
-      var image_array = this.getImage();
-      var args = {
-        base64_content: this.content, //富文本内容
-        text_content: this.getContent(), //纯文本
-        image_array: image_array, //包含图片url数组
-      };
-      this.$emit("editorSubmit", args);
+      // var image_array = this.getImage();
+      // var args = {
+      //   base64_content: this.content, //富文本内容
+      //   text_content: this.getContent(), //纯文本
+      //   image_array: image_array, //包含图片url数组
+      // };
+      // this.$emit("editorSubmit", args);
+      this.$emit("editorSubmit", this.content);
     },
   },
 };

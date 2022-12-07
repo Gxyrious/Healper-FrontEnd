@@ -5,8 +5,10 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         target: 'http://81.68.102.171:8081/',
+        // target: 'http://localhost:8081/',
         changeOrigin: true
       },
     }
   }
 })
+
