@@ -35,6 +35,9 @@
                 <el-tag type="info" v-if="scope.row.status == 'c'">
                   已取消
                 </el-tag>
+                <el-tag type="warning" v-if="scope.row.status == 's'">
+                  已开始
+                </el-tag>
               </template>
             </el-table-column>
             <el-table-column prop="expense" label="费用" width="90" />
@@ -44,9 +47,9 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status == 'f' || scope.row.status == 'w'
+                    scope.row.status == 'f' || scope.row.status == 'w'|| scope.row.status=='s'
                   "
-                  @click="handleClick"
+                  @click="handleClick(scope.row.consultantId)"
                 >
                   进入咨询室
                 </el-link>
@@ -74,14 +77,14 @@
                 >
                   取消
                 </el-link>
-                <el-link
+                <!-- <el-link
                   type="primary"
                   :underline="false"
                   v-if="scope.row.status == '待付款'"
                   @click="goSAEditor"
                 >
                   编辑档案
-                </el-link>
+                </el-link> -->
               </template>
             </el-table-column>
           </el-table>
@@ -105,7 +108,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
-      toUserId: 0, //聊天对象的用户id
+      toUserId: 7, //聊天对象的用户id
       id:this.$store.state.userInfo.user.id,
       consultantPhone: "",
       userType: this.$store.state.userInfo.userType, //本人的用户类型
@@ -127,8 +130,8 @@ export default {
           method:'get',
           url:'api/history/orders',
           params:{
-            clientId:2,
-            page:1,
+            clientId:this.id,
+            page:this.page,
             size:10,
           }
         }).then((res)=>{
@@ -147,7 +150,7 @@ export default {
           method: 'get',
           url: 'api/history/order/sum',
           params:{
-            clientId: 2
+            clientId: this.id
           }
         }).then((res)=>{
           console.log("res.data",res.data);
@@ -162,27 +165,28 @@ export default {
           } 
         });
         this.getNewPage();
-      } else if (this.userType == "consultant") {
-        //咨询师获取记录
-        axios({
-          method: "get",
-          url: "api/history/consultant",
-          params: {
-            consultantId: this.$store.state.userInfo.user.id,
-            page: 1,
-            size: 1,
-          },
-        }).then((res) => {
-          console.log("res.data", res.data);
-          this.toUserId = res.data[0].clientId;
-          console.log("来访者id", this.toUserId);
-        });
       }
+      // else if (this.userType == "consultant") {
+      //   //咨询师获取记录
+      //   axios({
+      //     method: "get",
+      //     url: "api/history/consultant",
+      //     params: {
+      //       consultantId: this.$store.state.userInfo.user.id,
+      //       page: 1,
+      //       size: 1,
+      //     },
+      //   }).then((res) => {
+      //     console.log("res.data", res.data);
+      //     this.toUserId = res.data[0].clientId;
+      //     console.log("来访者id", this.toUserId);
+      //   });
+      // }
     },
-    handleClick() {
+    handleClick(id) {
       router.push({
         name: "chat",
-        query: { toUserId: this.toUserId }, //把聊天对象的id传给聊天室
+        query: { toUserId: id }, //把聊天对象的id传给聊天室
       });
     },
     changeStatus(orderId,curStatus){

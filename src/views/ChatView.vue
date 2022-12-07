@@ -13,7 +13,7 @@
           "
         >
           <div style="text-align: center; line-height: 50px">
-            Web聊天室({{ toName }})
+            咨询聊天室 ( {{toUserTypeCH}}: {{ toName }} )
           </div>
           <div
             style="height: 350px; overflow: auto; border-top: 1px solid #ccc"
@@ -63,12 +63,21 @@ export default {
       toProfile: "", //聊天对象的头像
       text: "", //输入的内容
       content: "", //对方发来的内容
+      toUserTypeCH:"",
     };
   },
   created() {
     this.setInfo();
     this.getInfo();
     this.init();
+    if(this.toUserType=="client")
+    {
+      this.toUserTypeCH="来访者";
+    }
+    else
+    {
+      this.toUserTypeCH="咨询师";
+    }
   },
   methods: {
     setInfo() {

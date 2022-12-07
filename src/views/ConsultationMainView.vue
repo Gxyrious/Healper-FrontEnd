@@ -18,8 +18,8 @@
                         >
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">推荐</el-row>
             <el-row>
-                <el-col :span="12" v-for="i in consultant_info" :key=i>
-                    <consultation-card :info="i">
+                <el-col :span="12" v-for="i in consultantInfo" :key=i>
+                    <consultation-card :info="i.info" :status="i.isAppointed">
                     </consultation-card>
                 </el-col>
             </el-row>
@@ -37,71 +37,30 @@ export default {
   },
   data() {
     return {
-        consultant_info:[{
-            name:"美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"}
-            ],
-            curNum:12,
-            maxNum:30,
-            time:"11/11 11:11",
-        },
-        {   name:"超级美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"}
-            ],
-            curNum:14,
-            maxNum:20,
-            time:"11/11 11:11",
-        },
-        {   name:"普通美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"},
-                {tag:"抑郁"}
-            ],
-            curNum:14,
-            maxNum:20,
-            time:"11/11 11:11",
-        },
-        {   name:"无敌美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"},
-                {tag:"抑郁"}
-            ],
-            curNum:14,
-            maxNum:20,
-            time:"11/11 11:11",
-        },
-        ]
+        consultantInfo:[],
     };
   },
   created(){
-    console.log("请求咨询师列表")
     axios({
+        url: 'api/user/consultants/client',
         method: 'get',
-        url: '/user/consultants/client',
         params:{
             clientId:1,
             page:1,
-            size:5,
-        },
-        data: {
-            label:""
+            size:10,
+            label: "",
         },
     }).then((res) => {
-        console.log("res", res);
+        console.log(res);
+        this.consultantInfo=res.data;
+        for(var i=0;i<this.consultantInfo.length;i++)
+        {
+            console.log(this.consultantInfo[i].info.label);
+            this.consultantInfo[i].info.label=JSON.parse(this.consultantInfo[i].info.label);
+        }
+        console.log(this.consultantInfo[0]);
+    }).catch((err) => {
+        console.log(err);
     })
   }
 };

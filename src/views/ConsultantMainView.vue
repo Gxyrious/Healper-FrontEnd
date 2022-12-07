@@ -2,7 +2,7 @@
     <el-container>
       <el-header>
         <el-breadcrumb>
-          <el-breadcrumb-item :to="{ path: '/main' }">心理咨询</el-breadcrumb-item>
+          <el-breadcrumb-item >首页</el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
       <el-main style="background: #f4f4f5;
@@ -155,7 +155,7 @@ export default {
             maxNum:20,
             time:"11/11 11:11",
         },
-        ]
+        ],
     };
   },
   methods: {
