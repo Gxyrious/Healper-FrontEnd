@@ -111,7 +111,7 @@
 
             <div class="inputCard">
               <el-row>
-                <el-col :span="3" style="padding-top: 4px">性别</el-col>
+                <el-col :span="3" style="padding-top: 4px">年龄</el-col>
                 <el-col :span="12">
                   <el-select v-model="this.age" clearable placeholder="Select">
                     <el-option v-for="age in age_list" :key="age" :label="age" :value="age" />

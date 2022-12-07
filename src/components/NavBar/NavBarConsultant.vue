@@ -14,13 +14,10 @@
         length=1000px
         @select="handleSelect"
     >
-        <el-menu-item index="consultantMain">
-            <el-icon><ChatDotRound /></el-icon>
-            <span>首页</span>
-        </el-menu-item>
+
             <el-menu-item index="consultantOrder">
             <el-icon><Notebook /></el-icon>
-            <span>咨询历史</span>
+            <span>咨询订单</span>
             </el-menu-item>
             <el-menu-item index="consultantInfo">
             <el-icon><User /></el-icon>
@@ -48,7 +45,6 @@ export default {
 //     ElMessage,
 //   },
   components:{
-    ChatDotRound,
     Notebook,
     User,
     Remove,

@@ -47,7 +47,7 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status=='s'||scope.row.status=='f'
+                    scope.row.status=='s'||scope.row.status=='f'||scope.row.status=='w'
                   "
                   @click="handleClick(scope.row.consultantId)"
                 >

@@ -21,9 +21,9 @@
           <el-table :data="orderInfo" style="width: 100%">
             <el-table-column prop="startTime" label="开始时间" width="155" />
             <el-table-column prop="endTime" label="结束时间" width="155" />
-            <el-table-column prop="userName" label="来访者" width="100" />
-            <el-table-column prop="userSex" label="性别" width="50" />
-            <el-table-column prop="userAge" label="年龄" width="50" />
+            <el-table-column prop="realname" label="来访者" width="80" />
+            <el-table-column prop="userSex" label="性别" width="60" />
+            <el-table-column prop="userAge" label="年龄" width="60" />
             <el-table-column prop="status" label="状态" width="110">
               <template #default="scope">
                 <el-tag type="success" v-if="scope.row.status == 'f'">
@@ -109,91 +109,83 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 export default {
   components: {},
-  inject: ["reload"],
+  inject: ['reload'],
   data() {
     return {
       toUserId: 0, //聊天对象的用户id
-      id: this.$store.state.userInfo.user.id,
+      id:this.$store.state.userInfo.user.id,
       consultantPhone: "",
       userType: this.$store.state.userInfo.userType, //本人的用户类型
       toUserType: "", //聊天对象的用户类型，比如本人是client，toUserType就是consultant
-      orderNum: 0,
-      orderInfo: [],
-      clientInfo: [],
+      orderNum:0,
+      orderInfo:[],
+      clientInfo:[],
       page: 1,
-      dialogVisible: false,
-      codeLink: "",
-      orderId: 0,
+      dialogVisible:false,
+      codeLink:"",
+      orderId:0,
     };
   },
   created() {
     this.getNum();
     this.getNewPage();
+    console.log("当前",this.orderInfo);
   },
   methods: {
-    getNewPage() {
-      axios({
-        method: "get",
-        url: "api/history/consultant",
-        params: {
-          consultantId: this.id,
-          page: this.page,
-          size: 10,
-        },
-      })
-        .then((res) => {
+    async getNewPage(){
+      await axios({
+          method:'get',
+          url:'api/history/consultant',
+          params:{
+            consultantId:this.id,
+            page:this.page,
+            size:10,
+          }
+        }).then((res)=>{
           console.log("现在开始请求");
-          console.log("订单信息", res.data);
-          this.orderInfo = res.data;
-          console.log("订单信息Info", this.orderInfo[1]);
+          console.log("订单信息",res.data);
+          this.orderInfo=res.data;
+          console.log("当前订单1",this.orderInfo);
           for (var i = 0; i < this.orderInfo.length; i++) {
-            this.orderInfo[i].startTime = this.getDate(
-              this.orderInfo[i].startTime
-            );
+            console.log("开始遍历");
+            this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
             this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
             axios({
-              method: "get",
-              url: "api/user/info",
-              params: {
-                id: this.orderInfo[i].clientId,
-                userType: "client",
-              },
-            }).then((res) => {
-              console.log("来访者信息", res.data);
-              Object.assign(this.orderInfo[i], {
-                clientName: res.data.nickname,
-              });
-              Object.assign(this.orderInfo[i], { clientSex: res.data.sex });
-              Object.assign(this.orderInfo[i], { clientAge: res.data.age });
-            });
+              method:'get',
+              url:'api/user/info',
+              params:{
+                id:this.orderInfo[i].clientId,
+                userType:"client"
+                }
+              }).then((res)=>{
+                console.log("当前订单3",this.orderInfo[i]);
+                this.orderInfo[i].userSex=res.data.sex=='f'?"女":"男";
+                this.orderInfo[i].userAge=res.data.age;
+              })
+            console.log("当前订单",this.orderInfo[i]);
           }
-          console.log(this.orderInfo);
-        })
-        .catch((err) => {
-          console.log(err);
         });
-    },
-    getNum() {
+        console.log("当前订单2",this.orderInfo);
+      },
+    getNum(){
       axios({
-        method: "get",
-        url: "api/history/consultant/sum",
-        params: {
-          consultantId: this.id,
-        },
+      method: 'get',
+      url: 'api/history/consultant/sum',
+      params:{
+        consultantId: this.id,
+      }
+      }).then((res)=>{
+        console.log("res.data",res.data);
+        this.orderNum=res.data;
+      }).catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
       })
-        .then((res) => {
-          console.log("res.data", res.data);
-          this.orderNum = res.data;
-        })
-        .catch(function (error) {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-          }
-        });
     },
     changeStatus(orderId, curStatus) {
       axios({
