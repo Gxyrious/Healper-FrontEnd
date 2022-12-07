@@ -274,9 +274,6 @@ export default {
       })
       this.dialogVisible=false;
     },
-    goSAEditor() {
-      router.push({ name: "SAEditor" });
-    },
   },
 };
 </script>
