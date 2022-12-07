@@ -4,6 +4,40 @@
 -->
 
 <template>
+   <el-dialog v-model="isCheckingQR" title="查看付款二维码">
+   
+    <img v-if="QR" :src="QR"  />
+    <el-icon v-else class="avatar-uploader-icon"><Close /></el-icon>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="isCheckingQR = false">关闭</el-button>
+        <el-button type="primary" @click="(isEditingQR = true, isCheckingQR =  false)">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <el-dialog v-model="isEditingQR" title="修改付款二维码">
+    <el-upload
+    class="avatar-uploader"
+    :on-change="onQRChange"
+    :auto-upload="false"
+    limit="1"
+    ref="uploadQRRef"
+  >
+    <img v-if="newQR" :src="newQR" class="avatar" />
+    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+  </el-upload>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="isEditingQR = false">取消</el-button>
+        <el-button type="primary" @click="editQR">
+          修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
   <el-dialog v-model="isEditingPassword" title="修改密码">
     <el-form :model="form" :rules="rules">
       <el-form-item label="原密码" :label-width="formLabelWidth" prop="oldPassword">
@@ -65,6 +99,7 @@
                 </el-col>
                 <el-col :span="11">
                     <div class="password">
+                      <el-button type="primary" class="pdbutton" @click="isCheckingQR = true"><el-icon class="el-icon--left"><Link></Link></el-icon>我的付款二维码</el-button>
                       <el-button type="primary" class="pdbutton" @click="isEditingPassword = true"><el-icon class="el-icon--left"><Edit></Edit></el-icon>修改密码</el-button>
                     </div>
                 </el-col>
@@ -136,6 +171,8 @@
         Edit,
         User,
         Plus,
+Link,
+Close,
     } from "@element-plus/icons-vue"
     import axios from "axios";
     
@@ -157,6 +194,7 @@
           this.squareUrl = res.data.profile + '?' + random;
           this.fee = res.data.expense;
           this.telephone = res.data.userphone;
+          this.QR = res.data.qrCodeLink;
           this.label = JSON.parse(res.data.label);
           if (res.data.sex == "f"){
             this.gender = "女";
@@ -229,6 +267,52 @@
       };
   return true
 },
+onQRChange(uploadFile){
+  if (uploadFile.raw.type !== 'image/jpeg' && uploadFile.raw.type !== 'image/png') {
+    ElMessage.error('请上传JPG/PNG格式文件')
+    return false
+  } else if (uploadFile.raw.size / 1024 / 1024 > 10) {
+    ElMessage.error('文件不能超过10MB!')
+    return false
+  }
+  console.log(uploadFile);
+  var reader = new FileReader();
+      reader.readAsDataURL(uploadFile.raw);
+      reader.onload = (e) => {
+        this.newQR = e.target.result;
+        console.log(this.newQR);
+      };
+  return true
+},
+editQR(){
+    axios({
+      method: 'post',
+      url: 'api/user/uploadQrCode',
+      data:{
+        id: this.id,
+        base64: this.newQR,
+      }
+  }).then((res)=>{
+      if (res.status == 200){
+        ElMessage({
+              message: "修改成功",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+      else{
+        ElMessage({
+              message: "修改失败",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+      }
+    });
+  this.isEditingQR = false;
+  this.QR = this.newQR;
+},
         editAvatar(){
     axios({
       method: 'post',
@@ -261,10 +345,12 @@
 },
       },
       components:{
-        Edit,
-        User,
-        Plus
-      },
+    Edit,
+    User,
+    Plus,
+    Link,
+    Close
+},
       data() {
         return {
             id: this.$store.state.userInfo.user.id,
@@ -280,6 +366,10 @@
             isEditingAvatar: false,
             newProfile: null,
             isEditingPassword: false,
+            isCheckingQR: false,
+            isEditingQR: false,
+            QR: null,
+            newQR: null,
             form: {oldPassword: "", newPassword: ""},
         rules: {
           oldPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
