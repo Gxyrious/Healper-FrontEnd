@@ -88,7 +88,7 @@
                   type="primary"
                   :underline="false"
                   v-if="scope.row.status == 'f'"
-                  @click="goSAEditor"
+                  @click="goSAEditor(scope.row.id)"
                 >
                   撰写档案
                 </el-link>
@@ -247,9 +247,19 @@
           });
         },
         getDate(n){
-          n=new Date(n)
+          n=new Date(1000*n)
           return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
         },
+        goSAEditor(id){
+          console.log("goSA");
+          console.log(this.orderId);
+          this.$router.push({
+            path:"/SAEditor",
+            query:{
+              archiveId: id,
+            }
+          })
+        }
       },
     };
     </script>

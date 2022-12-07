@@ -67,6 +67,7 @@ export default {
     return {
       adviceContent: "",
       summaryContent: "",
+      archiveId: "",
     };
   },
   methods: {
@@ -74,26 +75,31 @@ export default {
       console.log("bothSubmit开始");
       this.$refs.advice.submit();
       this.$refs.summary.submit();
-      // console.log(this.adviceContent);
-      // console.log(this.summaryContent);
-      axios({
-        method: "post",
-        url: "api/history/archive",
-        params: {
-          id: this.$route.params.id,
+      console.log(this.adviceContent);
+      console.log(this.summaryContent);
+      // console.log(this.$route.params.archiveId);
+      // console.log(this.$route.params.test);
+      // console.log(this.$route.query.test);
+      // console.log(typeof this.adviceContent);
+
+      this.axios
+        .post("api/history/archive", {
+          id: this.$route.query.archiveId,
           adviceBase64: this.adviceContent,
           summaryBase64: this.summaryContent,
-        },
-      })
+        })
         .then((res) => {
-          if (res.data.staus)
+          if (res.status) {
             ElMessage({
               type: "success",
               message: "提交成功！",
               duration: 2000,
               showClose: true,
             });
-          else
+            this.$router.push({
+              name: "consultantOrder",
+            });
+          } else
             ElMessage({
               type: "false",
               message: "提交失败！",
@@ -112,6 +118,10 @@ export default {
     getSummary(content) {
       this.summaryContent = content;
     },
+  },
+  created() {
+    this.archiveId = this.$route.query.archiveId;
+    console.log(this.archiveId);
   },
 };
 </script>

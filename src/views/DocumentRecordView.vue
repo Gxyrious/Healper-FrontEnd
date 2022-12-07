@@ -19,27 +19,27 @@
 
     <el-main style="margin: 20px 30px; background: #ffffff">
       <el-row
-          style="font-weight: bolder; margin-bottom: 30px; padding-left: 30px"
-      >咨询档案</el-row
+        style="font-weight: bolder; margin-bottom: 30px; padding-left: 30px"
+        >咨询档案</el-row
       >
       <el-row justify="center" class="tabs">
         <el-col :span="23">
           <el-table
-              :data="documentRecord"
-              style="width: 100%"
-              @row-click="goArchiveDetail"
+            :data="documentRecord"
+            style="width: 100%"
+            @row-click="goArchiveDetail"
           >
             <el-table-column prop="startTime" label="开始时间" width="300" />
             <el-table-column prop="endTime" label="结束时间" width="300" />
             <el-table-column
-                prop="consultantRealName"
-                label="咨询师"
-                width="200"
+              prop="consultantRealName"
+              label="咨询师"
+              width="200"
             />
             <el-table-column
-                prop="expense"
-                label="费用"
-                width="250"
+              prop="expense"
+              label="费用"
+              width="250"
             ></el-table-column>
             <!-- <el-table-column prop="advice" label="建议" width="500" /> -->
             <!-- <el-table-column label="">
@@ -55,53 +55,53 @@
       <el-row justify="center" style="margin-top: 30px">
         <el-col :span="7">
           <el-pagination
-              layout="prev, pager, next"
-              :total="documentSum"
-              v-model:current-page="page"
-              @current-change="getNewPage"
+            layout="prev, pager, next"
+            :total="documentSum"
+            v-model:current-page="page"
+            @current-change="getNewPage"
           />
         </el-col>
       </el-row>
     </el-main>
 
-<!--    <el-main style="margin: 20px 30px; background: #ffffff">-->
-<!--      <el-row-->
-<!--        style="font-weight: bolder; margin-bottom: 30px; padding-left: 30px"-->
-<!--        >咨询档案</el-row-->
-<!--      >-->
-<!--      <el-row justify="center" class="tabs">-->
-<!--        <el-col :span="23">-->
-<!--          <el-table :data="documentRecord" style="width: 100%">-->
-<!--            <el-table-column prop="endTime" label="时间" width="200" />-->
-<!--            <el-table-column-->
-<!--              prop="consultantRealName"-->
-<!--              label="咨询师"-->
-<!--              width="200"-->
-<!--            />-->
-<!--            <el-table-column prop="advice" label="建议" width="500" />-->
-<!--            &lt;!&ndash;-->
-<!--    <el-table-column  label="操作">-->
-<!--        <template #default>-->
-<!--        <el-button link  size="small" @click="handleClick">删除</el-button>-->
-<!--        <el-button link  size="small" @click="handleClick">隐藏</el-button>-->
-<!--        </template>-->
-<!--        -->
-<!--    </el-table-column>-->
-<!--  &ndash;&gt;-->
-<!--          </el-table>-->
-<!--        </el-col>-->
-<!--      </el-row>-->
-<!--      <el-row justify="center" style="margin-top: 30px">-->
-<!--        <el-col :span="7">-->
-<!--          <el-pagination-->
-<!--            layout="prev, pager, next"-->
-<!--            :total="documentSum"-->
-<!--            v-model:current-page="page"-->
-<!--            @current-change="getNewPage"-->
-<!--          />-->
-<!--        </el-col>-->
-<!--      </el-row>-->
-<!--    </el-main>-->
+    <!--    <el-main style="margin: 20px 30px; background: #ffffff">-->
+    <!--      <el-row-->
+    <!--        style="font-weight: bolder; margin-bottom: 30px; padding-left: 30px"-->
+    <!--        >咨询档案</el-row-->
+    <!--      >-->
+    <!--      <el-row justify="center" class="tabs">-->
+    <!--        <el-col :span="23">-->
+    <!--          <el-table :data="documentRecord" style="width: 100%">-->
+    <!--            <el-table-column prop="endTime" label="时间" width="200" />-->
+    <!--            <el-table-column-->
+    <!--              prop="consultantRealName"-->
+    <!--              label="咨询师"-->
+    <!--              width="200"-->
+    <!--            />-->
+    <!--            <el-table-column prop="advice" label="建议" width="500" />-->
+    <!--            &lt;!&ndash;-->
+    <!--    <el-table-column  label="操作">-->
+    <!--        <template #default>-->
+    <!--        <el-button link  size="small" @click="handleClick">删除</el-button>-->
+    <!--        <el-button link  size="small" @click="handleClick">隐藏</el-button>-->
+    <!--        </template>-->
+    <!--        -->
+    <!--    </el-table-column>-->
+    <!--  &ndash;&gt;-->
+    <!--          </el-table>-->
+    <!--        </el-col>-->
+    <!--      </el-row>-->
+    <!--      <el-row justify="center" style="margin-top: 30px">-->
+    <!--        <el-col :span="7">-->
+    <!--          <el-pagination-->
+    <!--            layout="prev, pager, next"-->
+    <!--            :total="documentSum"-->
+    <!--            v-model:current-page="page"-->
+    <!--            @current-change="getNewPage"-->
+    <!--          />-->
+    <!--        </el-col>-->
+    <!--      </el-row>-->
+    <!--    </el-main>-->
   </el-container>
 </template>
 
@@ -138,6 +138,9 @@ export default {
           this.documentRecord[i].endTime = this.getDate(
             this.documentRecord[i].endTime
           );
+          this.documentRecord[i].startTime = this.getDate(
+            this.documentRecord[i].startTime
+          );
         }
       }
     });
@@ -171,7 +174,7 @@ export default {
             this.documentRecord[i].endTime
           );
           this.documentRecord[i].startTime = this.getDate(
-              this.documentRecord[i].startTime
+            this.documentRecord[i].startTime
           );
         }
       });
