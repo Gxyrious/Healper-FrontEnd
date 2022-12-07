@@ -13,7 +13,7 @@
           "
         >
           <div style="text-align: center; line-height: 50px">
-            咨询聊天室 ( {{toUserTypeCH}}: {{ toName }} )
+            咨询聊天室 ( {{ toUserTypeCH }}: {{ toName }} )
           </div>
           <div
             style="height: 350px; overflow: auto; border-top: 1px solid #ccc"
@@ -63,21 +63,26 @@ export default {
       toProfile: "", //聊天对象的头像
       text: "", //输入的内容
       content: "", //对方发来的内容
-      toUserTypeCH:"",
+      toUserTypeCH: "",
+      clientId: 0, //用于调取聊天记录时传参
+      consultantId: 0,
+      chatRecord: [], //聊天记录
     };
   },
   created() {
     this.setInfo();
     this.getInfo();
     this.init();
-    if(this.toUserType=="client")
-    {
-      this.toUserTypeCH="来访者";
+    if (this.toUserType == "client") {
+      this.toUserTypeCH = "来访者";
+      this.clientId = this.toUserId;
+      this.consultantId = this.$store.state.userInfo.user.id;
+    } else {
+      this.toUserTypeCH = "咨询师";
+      this.clientId = this.$store.state.userInfo.user.id;
+      this.consultantId = this.toUserId;
     }
-    else
-    {
-      this.toUserTypeCH="咨询师";
-    }
+    this.getChatRecord();
   },
   methods: {
     setInfo() {
@@ -114,7 +119,9 @@ export default {
       });
     },
     init() {
-      const clientSocketUrl =`ws://81.68.102.171:8081/websocket/` + this.$store.state.userInfo.user.userphone;
+      const clientSocketUrl =
+        `ws://81.68.102.171:8081/websocket/` +
+        this.$store.state.userInfo.user.userphone;
       clientSocket = new WebSocket(clientSocketUrl);
       console.log("socketUrl: " + clientSocketUrl);
       console.log("toPhone", this.toPhone);
@@ -184,8 +191,38 @@ export default {
           "  </div>\n" +
           "</div>";
       }
-      console.log(html);
       this.content += html;
+    },
+    //获取聊天记录
+    getChatRecord() {
+      axios({
+        method: "get",
+        url: "api/chat/records",
+        params: {
+          clientId: this.clientId,
+          consultantId: this.consultantId,
+          page: 1,
+          size: 300,
+        },
+      }).then((res) => {
+        console.log("res", res);
+        this.chatRecord = res.data;
+        for (var i = 0; i < this.chatRecord.length; i++) {
+          if (this.chatRecord[i].sender == "0") {//如果消息是来访者发的
+            if (this.userType == "client") {//如果本人身份是来访者
+              this.createContent(null,this.userPhone,this.chatRecord[i].content);
+            } else {
+              this.createContent(this.toPhone,null,this.chatRecord[i].content);
+            }
+          }else{//如果消息是咨询师发的
+            if (this.userType == "client") {//如果本人身份是来访者
+              this.createContent(this.userPhone,null,this.chatRecord[i].content);
+            } else {
+              this.createContent(null,this.toPhone,this.chatRecord[i].content);
+            }
+          }
+        }
+      });
     },
   },
 };

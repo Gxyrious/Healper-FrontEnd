@@ -4,13 +4,27 @@
 -->
 
 <template>
-  <el-dialog v-model="isEditingLabel" title="修改标签">
+  <el-dialog v-model="isEditingLabel" title="修改标签" :show-close="false">
 
     <el-tag v-for="item in label" style="margin: 5px" :key="item" closable
       @close="deleteLabel(item)">{{ item }}</el-tag>
+
+      <el-input
+    v-if="inputVisible"
+    ref="InputRef"
+    v-model="inputValue"
+    class="ml-1 w-20"
+    size="small"
+    @keyup.enter="handleInputConfirm"
+    @blur="handleInputConfirm"
+  />
+  <el-button v-else class="button-new-tag ml-1" size="small" @click="showInput">
+    + New Tag
+  </el-button>
+
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="(isEditingLabel = false)">关闭</el-button>
+        <el-button type="primary" @click="saveLabel()">保存</el-button>
       </span>
     </template>
   </el-dialog>
@@ -232,7 +246,7 @@
 </template>
     
 <script>
-import { ElMessage } from "element-plus";
+import { ElMessage, InputInstance} from "element-plus";
 import {
   Edit,
   User,
@@ -242,6 +256,8 @@ import {
   Check
 } from "@element-plus/icons-vue"
 import axios from "axios";
+import { ref } from "vue";
+
 
 
 export default {
@@ -272,6 +288,30 @@ export default {
     })
   },
   methods: {
+    handleInputConfirm(){
+      if (this.inputValue){
+        this.label.push(this.inputValue);
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
+    },
+    showInput(){
+      this.inputVisible = true;
+     // nextTick(()=>{
+       // this.InputRef.input.focus();
+    //  })
+    },
+    saveLabel(){
+      this.isEditingLabel = false;
+      axios({
+        method: 'put',
+        url: 'api/user/consultant/info',
+        data: {
+          id: this.id,
+          label: JSON.stringify(this.label),
+        }
+      })
+    },
     deleteLabel(item){
       this.label.splice(this.label.indexOf(item), 1);
     },
@@ -493,7 +533,7 @@ export default {
       telephone: "",
       fee: 0,
       label: [
-        "标签1", "标签2"
+       
       ],
       isEditingAvatar: false,
       newProfile: null,
@@ -508,6 +548,9 @@ export default {
       isEditingName: false,
       isEditingFee: false,
       isEditingLabel: false,
+      inputVisible: false,
+      inputValue: '',
+      InputRef: ref<InputInstance>(null),
       genders: [
         "男", "女",
       ],
