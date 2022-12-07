@@ -161,9 +161,7 @@
                 </div>
               </template>
               {{ telephone }}
-              <el-button type="primary" class="ebutton"><el-icon class="el-icon--left">
-                  <Edit></Edit>
-                </el-icon>修改绑定手机号</el-button>
+           
             </el-descriptions-item>
           </el-descriptions>
         </el-column>

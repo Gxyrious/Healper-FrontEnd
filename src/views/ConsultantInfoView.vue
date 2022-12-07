@@ -118,8 +118,22 @@
                   姓名
                   </div>
                   </template>
-                  {{userName}}
-                  <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+                  <div v-if="!isEditingName">
+                {{ userName }}
+                <el-button class="ebutton" @click="editName" circle><el-icon :style="iconStyle">
+                    <Edit />
+                  </el-icon></el-button>
+              </div>
+              <div v-else>
+                <el-input v-model="userName">
+                  <template #append>
+                    <el-button class="ebutton" @click="saveName"><el-icon :style="iconStyle">
+                        <Check />
+                      </el-icon></el-button>
+                  </template>
+                </el-input>
+
+              </div>
                 </el-descriptions-item>
                  
         <el-descriptions-item width="150px">
@@ -128,8 +142,26 @@
               性别
             </div>
           </template>
-         {{gender}}
-         <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+          <div v-if="!isEditingGender">
+                {{ gender }}
+                <el-button class="ebutton" circle @click="editGender"><el-icon :style="iconStyle">
+                    <Edit />
+                  </el-icon></el-button>
+              </div>
+              <div v-else>
+                <el-row>
+                  <el-col :span="12">
+                    <el-select v-model="gender">
+                      <el-option v-for="item in genders" :key="item" :value="item" />
+                    </el-select>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-button class="ebutton" @click="saveGender"><el-icon :style="iconStyle">
+                        <Check />
+                      </el-icon></el-button>
+                  </el-col>
+                </el-row>
+              </div>
         </el-descriptions-item>
         <el-descriptions-item width="150px">
           <template #label>
@@ -137,8 +169,21 @@
               年龄
             </div>
           </template>
-          {{age}}
-          <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+          <div v-if="!isEditingAge">
+                {{ age }}
+                <el-button class="ebutton" circle @click="editAge"><el-icon :style="iconStyle">
+                    <Edit />
+                  </el-icon></el-button>
+              </div>
+              <div v-else>
+
+                <el-input-number v-model="age" :min="0" :max="120" controls-position="right" />
+
+
+                <el-button class="ebutton" @click="saveAge"><el-icon :style="iconStyle">
+                    <Check />
+                  </el-icon></el-button>
+              </div>
         </el-descriptions-item>
         <el-descriptions-item width="150px">
           <template #label>
@@ -146,8 +191,21 @@
               咨询费用
             </div>
           </template>
-          {{fee}}
-          <el-button class="ebutton" circle ><el-icon :style="iconStyle"><Edit /></el-icon></el-button>
+          <div v-if="!isEditingFee">
+                {{ fee }}
+                <el-button class="ebutton" circle @click="editFee"><el-icon :style="iconStyle">
+                    <Edit />
+                  </el-icon></el-button>
+              </div>
+              <div v-else>
+
+                <el-input-number v-model="fee" :min="0" :max="99999" :controls="false" />
+
+
+                <el-button class="ebutton" @click="saveFee"><el-icon :style="iconStyle">
+                    <Check />
+                  </el-icon></el-button>
+              </div>
         </el-descriptions-item>
         <el-descriptions-item width="150px">
           <template #label>
@@ -173,6 +231,7 @@
         Plus,
 Link,
 Close,
+Check
     } from "@element-plus/icons-vue"
     import axios from "axios";
     
@@ -205,6 +264,67 @@ Close,
         })
       },
       methods: {
+        editName() {
+      this.isEditingName = true;
+    },
+    saveName() {
+      this.isEditingName = false;
+      axios({
+        method: 'put',
+        url: 'api/user/consultant/info',
+        data: {
+          id: this.id,
+          realname: this.userName,
+        }
+      })
+    },
+    editFee() {
+      this.isEditingFee = true;
+    },
+    saveFee() {
+      this.isEditingFee = false;
+      axios({
+        method: 'put',
+        url: 'api/user/consultant/info',
+        data: {
+          id: this.id,
+          expense: this.fee,
+        }
+      })
+    },
+    editGender() {
+      this.isEditingGender = true;
+    },
+    saveGender() {
+      this.isEditingGender = false;
+      var sex = "";
+      if (this.gender == "男")
+        sex = "m";
+      else
+        sex = "f";
+      axios({
+        method: 'put',
+        url: 'api/user/consultant/info',
+        data: {
+          id: this.id,
+          sex: sex,
+        }
+      })
+    },
+    editAge() {
+      this.isEditingAge = true;
+    },
+    saveAge() {
+      this.isEditingAge = false;
+      axios({
+        method: 'put',
+        url: 'api/user/consultant/info',
+        data: {
+          id: this.id,
+          age: this.age,
+        }
+      })
+    },
         savePassword(){
       this.isEditingPassword = false;
       axios({
@@ -349,7 +469,8 @@ editQR(){
     User,
     Plus,
     Link,
-    Close
+    Close,
+    Check
 },
       data() {
         return {
@@ -371,6 +492,14 @@ editQR(){
             QR: null,
             newQR: null,
             form: {oldPassword: "", newPassword: ""},
+            isEditingAge: false,
+            isEditingGender: false,
+            isEditingName: false,
+            isEditingFee: false,
+            isEditingLabel: false,
+            genders: [
+        "男", "女",
+      ],
         rules: {
           oldPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
           newPassword:[{ required: true, message: '不能为空', trigger: 'blur' },],
