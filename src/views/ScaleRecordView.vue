@@ -99,6 +99,13 @@
     }).then((res)=>{
       console.log("res", res);
       this.analysis = res.data;
+      for (var i = 0; i < this.analysis.length; i++){
+
+        for (var j = 0; j < this.analysis[i].detail.length; j++){
+          this.analysis[i].detail[j].time *= 1000;
+          console.log(this.analysis[i].detail[j].time)
+        }
+      }
     })
     })
       },
@@ -108,7 +115,7 @@
           router.push({ name: "userInfo" });
         },
         getDate(n){
-      n=new Date(n)
+      n=new Date(1000*n)
       return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
     },
     getNewPage(){
