@@ -86,9 +86,9 @@
           router.push({ name: "userInfo" });
         },
         getDate(n){
-      n=new Date(n)
-      return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
-    },
+          n=new Date(1000*n)
+          return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
+        },
     getNewPage(){
       axios({
       method: 'get',

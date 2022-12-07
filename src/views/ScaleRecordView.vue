@@ -53,41 +53,40 @@
 </template>
 
 <script>
-    import router from "@/router"
-    import axios from "axios";
-    import {  
-
-    } from "@element-plus/icons-vue"
-    import { ElMessage } from "element-plus";
-    import AnalysisChart from "../components/Scale/AnalysisChart.vue";
-    export default {
-      created(){
-        this.loading=true;
-        axios({
+import router from "@/router"
+import axios from "axios";
+import {
+} from "@element-plus/icons-vue"
+import { ElMessage } from "element-plus";
+import AnalysisChart from "../components/Scale/AnalysisChart.vue";
+export default {
+  created() {
+    this.loading=true;
+    axios({
       method: 'get',
       url: 'api/scale/sum',
-      params:{
+      params: {
         clientId: this.id,
 
       }
-    }).then((res)=>{
+    }).then((res) => {
       console.log("res", res);
       this.scaleSum = res.data;
     });
     axios({
       method: 'get',
       url: 'api/scale/records',
-      params:{
+      params: {
         clientId: this.id,
         page: 1,
         size: 10,
       }
-    }).then((res)=>{
-      if (res.status == 200){
-      console.log("res", res);
-      this.scaleRecord = res.data;
-      for (var i = 0; i < this.scaleRecord.length; i++){
-        this.scaleRecord[i].endTime = this.getDate(this.scaleRecord[i].endTime);
+    }).then((res) => {
+      if (res.status == 200) {
+        console.log("res", res);
+        this.scaleRecord = res.data;
+        for (var i = 0; i < this.scaleRecord.length; i++) {
+          this.scaleRecord[i].endTime = this.getDate(this.scaleRecord[i].endTime);
         }
       }
 
@@ -101,6 +100,7 @@
       console.log("res", res);
       this.analysis = res.data;
     })
+      this.loading=false;
     })
       },
       methods: {
@@ -112,24 +112,24 @@
       n=new Date(n)
       return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
     },
-    getNewPage(){
+    getNewPage() {
       axios({
-      method: 'get',
-      url: 'api/scale/records',
-      params:{
-        clientId: this.id,
-        page: this.page,
-        size: 10,
-      }
-    }).then((res)=>{
-      console.log("res", res);
-      this.scaleRecord = res.data;
-      for (var i = 0; i < this.scaleRecord.length; i++){
-        this.scaleRecord[i].endTime = this.getDate(this.scaleRecord[i].endTime);
-      }
-    })
+        method: 'get',
+        url: 'api/scale/records',
+        params: {
+          clientId: this.id,
+          page: this.page,
+          size: 10,
+        }
+      }).then((res) => {
+        console.log("res", res);
+        this.scaleRecord = res.data;
+        for (var i = 0; i < this.scaleRecord.length; i++) {
+          this.scaleRecord[i].endTime = this.getDate(this.scaleRecord[i].endTime);
+        }
+      })
     },
-    viewResult(scaleRecordId){
+    viewResult(scaleRecordId) {
       this.$router.push({
         path: '/scaleResult',
         query: {
@@ -137,74 +137,72 @@
         }
       })
     },
-    deleteRecord(scaleRecordId){
+    deleteRecord(scaleRecordId) {
       axios({
-      method: 'delete',
-      url: 'api/scale/delete',
-      params:{
-       id: scaleRecordId,
-      }
-  }).then((res)=>{
-      if (res.status == 200){
-        ElMessage({
-              message: "删除成功",
-              type: "success",
-              showClose: true,
-              duration: 2000,
-            });
-      }
-      else{
-        ElMessage({
-              message: "删除失败",
-              type: "error",
-              showClose: true,
-              duration: 2000,
-            });
-      }
-    });
-    setTimeout(()=>{this.getNewPage();}, 1000)
-    
+        method: 'delete',
+        url: 'api/scale/delete',
+        params: {
+          id: scaleRecordId,
+        }
+      }).then((res) => {
+        if (res.status == 200) {
+          ElMessage({
+            message: "删除成功",
+            type: "success",
+            showClose: true,
+            duration: 2000,
+          });
+        }
+        else {
+          ElMessage({
+            message: "删除失败",
+            type: "error",
+            showClose: true,
+            duration: 2000,
+          });
+        }
+      });
+      setTimeout(() => { this.getNewPage(); }, 1000)
+
     }
-      },
-      components:{
-        AnalysisChart,
-      },
-      data() {
-        return {
-           activeName: "first",
-           scaleSum: 0,
-           page: 1,
-           id: this.$store.state.userInfo.user.id,
-           scaleRecord: [
-            
-           ],
-           analysis:[
-            {detail:{time: null, value: null}, factor: null},
-           ],
-           loading:false,
-        };
-      },
+  },
+  components: {
+    AnalysisChart,
+  },
+  data() {
+    return {
+      activeName: "first",
+      scaleSum: 0,
+      page: 1,
+      id: this.$store.state.userInfo.user.id,
+      scaleRecord: [
+
+      ],
+      analysis: [
+        { detail: { time: null, value: null }, factor: null },
+      ],
+      loading:false,
     };
+  },
+};
 </script>
     
 <style scoped>
-    
-    .tabs{
-        background:#ffffff
-    }
-    .el-container{
-        background: #f4f4f5;
-        
-    }
-    .el-header{
-    margin-left:5px;
-    border-bottom: 0.6px solid rgb(174, 174, 174);
-    padding-top:20px;
-    padding-bottom:20px;
-    background: #ffffff;
+.tabs {
+  background: #ffffff
 }
-    
-    
-    
+
+.el-container {
+  background: #f4f4f5;
+
+}
+
+.el-header {
+  margin-left: 5px;
+  border-bottom: 0.6px solid rgb(174, 174, 174);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background: #ffffff;
+}
 </style>
     

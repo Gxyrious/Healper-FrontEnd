@@ -14,6 +14,7 @@ import ConsultantInfoView from '../views/ConsultantInfoView.vue'
 import SummaryAdviceEditor from '../views/SummaryAdviceEditor.vue'
 import ChatView from '../views/ChatView.vue'
 import ScaleResultView from '../views/ScaleResultView.vue'
+import ArchiveDetail from '../views/ArchiveDetail.vue'
 import ConsultantOrderView from '../views/ConsultantOrderView.vue'
 
 const routes = [
@@ -91,6 +92,11 @@ const routes = [
     path: '/scaleResult',
     name: 'scaleResult',
     component: ScaleResultView,
+  },
+  {
+    path: '/archiveDetail',
+    name: 'archiveDetail',
+    component: ArchiveDetail,
   },
   {
     path: '/consultantOrder',

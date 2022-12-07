@@ -1,5 +1,5 @@
 <template>
-    <div style="width: auto;height: 400px" :id="factor">
+    <div style="width: auto;height: 400px" id="chart">
       </div>
     </template>
     <script>
@@ -7,14 +7,63 @@
     import { onMounted } from 'vue';
     export default {
         setup(props){
+          
             onMounted(()=>{
-              setTimeout(()=>{ let chart = echarts.init(document.getElementById(props.factor));
+              setTimeout(()=>{ let chart = echarts.init(document.getElementById("chart"));
               chart.setOption({
-                dataset:{
+                legend: {
+    // Try 'horizontal'
+    orient: 'horizontal',
+    //right: 10,
+    top: 'bottom'
+  },
+                //legend:[props.analysis[0].factor, props.analysis[1].factor, props.analysis[2].factor, props.analysis[3].factor, props.analysis[4].factor, props.analysis[5].factor, props.analysis[6].factor, props.analysis[7].factor, props.analysis[8].factor,],
+                dataset:[{
                     dimensions: ['time', 'value'],
-                    source: props.detail,
-                    //source: [ { "time": 1679046661, "value": "2.0" }, { "time": 1670046661, "value": "2.0" }, { "time": 1669146661, "value": "2.0" }, { "time": 1669046661, "value": "2.0" }, { "time": 1668946661, "value": "2.0" }, { "time": 1668046661, "value": "2.0" }, { "time": 1667846661, "value": "2.0" }, { "time": 1667346661, "value": "2.0" }, { "time": 1667146661, "value": "2.0" }, { "time": 1666846661, "value": "2.0" } ],
+                    source: props.analysis[0].detail
+                   
                 },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[1].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[2].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[3].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[4].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[5].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[6].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[7].detail
+                   
+                },
+                {
+                    dimensions: ['time', 'value'],
+                    source: props.analysis[8].detail
+                   
+                },
+              ],
                 title:{
                     text: props.factor
                 },
@@ -31,19 +80,95 @@
       },
       series: [
         {
-          
-          //data: [1,2,3],
-          type: 'line'
-        }
-      ]})}, 3000);
+          name: props.analysis[0].factor,
+          type: 'line',
+          datasetIndex: 0,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[1].factor,
+          type: 'line',
+          datasetIndex: 1,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[2].factor,
+          type: 'line',
+          datasetIndex: 2,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[3].factor,
+          type: 'line',
+          datasetIndex: 3,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[4].factor,
+          type: 'line',
+          datasetIndex: 4,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[5].factor,
+          type: 'line',
+          datasetIndex: 5,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[6].factor,
+          type: 'line',
+          datasetIndex: 6,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[7].factor,
+          type: 'line',
+          datasetIndex: 7,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+        {
+          name: props.analysis[8].factor,
+          type: 'line',
+          datasetIndex: 8,
+          encode:{
+            x: 'time',
+            y: 'value',
+          }
+        },
+       
+      ]})}, 1000);
               //echarts.init(document.getElementById("chart")).dispose();
              
               
-          }
+         }
             )},
         props: [
-        'detail',
-        'factor'
+        'analysis'
         ],
         data() {
         return {

@@ -18,7 +18,13 @@
         <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">选择问卷</el-row>
         <el-row gutter="20" justify="center" style="flex-wrap: wrap">
           <el-col :lg="{ span: 8 }" v-for="(info, index) in scaleInfo" :key="index">
-            <scale-card :scaleId="index" :scaleName=info.name :quesNum=info.num></scale-card>
+            <scale-card 
+            :scaleId="index" 
+            :scaleName=info.name 
+            :quesNum=info.num 
+            :summary=info.summary 
+            :image_url=info.image_url
+            ></scale-card>
           </el-col>
         </el-row>
       </el-main>
@@ -61,15 +67,18 @@ export default {
         var resData = res.data;
         console.log(resData);
         for (var i = 0; i < resData.length; i++) {
-          var scaleName = resData[i].name;
-          var quesNum = resData[i].quesNum;
-          this.scaleInfo.push({"name": scaleName, "num": quesNum});
+          this.scaleInfo.push({
+            "name": resData[i].name,
+            "num": resData[i].quesNum,
+            "summary": resData[i].summary,
+            "image_url": resData[i].image,
+            });
         }
         console.log(this.scaleInfo);
       }
     })
-    .catch((res) => {
-      console.log(res);
+    .catch((err) => {
+      console.log(err);
     })
   }
 };
