@@ -1,28 +1,39 @@
 <template>
     <el-card shadow="hover">
         <el-row>
-            <el-col :span="14">
-                <el-avatar shape="square" :size=140 :src="this.info?.profile" />
+            <el-col :span="16">
+                <el-avatar shape="square" :size="this.avatarSize" :src="this.info?.profile" />
             </el-col>
-            <el-col :span="10">
+            <el-col :span="8">
                 <div style="font-size:30px;font-weight:500;display:flex;justify-content: flex-end;padding-right:20px;padding-top:18px">
                     {{this.info?.realname}}
                 </div>
                 <div style="font-size:13px;font-weight:300;display:flex;justify-content: flex-end;padding-right:25px;margin-top:2px">
                     {{ this.info?.sex=='m'?'男':'女' }} | {{this.info?.age}}
                 </div>
-                <div style="display:flex;justify-content: flex-end;margin-top:50px;padding-right:18px">
+                <div style="display:flex;justify-content: flex-end;margin-top:60px;padding-right:8px">
                     <el-tag v-for="i in this.info?.label" :key="i">{{i}}</el-tag>
                 </div>
             </el-col>
         </el-row>
-        <el-row style="margin-top:10px;margin-left:15px;font-size:25px;font-weight:400">
-            <el-col :span="8">
+        <el-row style="margin-top:20px;margin-left:15px;font-size:25px;font-weight:400">
+            <el-col :span="8" style="padding-top:5px;padding-left:5px">
                 {{this.info?.expense}}￥
             </el-col>
+            <el-col :span="5">
+            </el-col>
+            <el-col :span="6">
+                <el-button type="text" size="large" v-if="this.status=='0'" 
+                @click="appoint()" style="margin-left:18%"
+                >预约</el-button>
+                <el-button type="text" size="large" v-if="this.status=='1'" 
+                @click="changeStatus(this.historyId,'c')" style="margin-left:5%"
+                >取消预约</el-button>
+                <el-button type="text" v-if="this.status=='2'" @click="goChat()">进入咨询室</el-button>
+            </el-col>
         </el-row>
-        <el-row style="margin-top:15px;font-size:13px;font-weight:300;margin-left:15px">
-            <el-col :span="18">
+        <!-- <el-row style="margin-top:15px;font-size:13px;font-weight:300;margin-left:15px">
+            <el-col :span="17">
                 <div>
                     正在排队人数{{this.info?.curNum}}
                 </div>
@@ -31,15 +42,15 @@
                 </div>
             </el-col>
             <el-col :span="6">
-                <el-button type="text" v-if="this.status=='0'" 
-                @click="appoint()" style="margin-left:40%"
+                <el-button type="text" size="large" v-if="this.status=='0'" 
+                @click="appoint()" style="margin-left:18%"
                 >预约</el-button>
-                <el-button type="text" v-if="this.status=='1'" 
-                @click="changeStatus(this.historyId,'c')" style="margin-left:22%"
+                <el-button type="text" size="large" v-if="this.status=='1'" 
+                @click="changeStatus(this.historyId,'c')" style="margin-left:5%"
                 >取消预约</el-button>
                 <el-button type="text" v-if="this.status=='2'" @click="goChat()">进入咨询室</el-button>
             </el-col>
-        </el-row>
+        </el-row> -->
     </el-card>
 </template>
 
@@ -49,10 +60,11 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 export default {
   name: 'ConsultantCard',
-  props:['info','status','clientID','historyId'],
+  props:['info','status','clientID','historyId','avatarSize'],
   inject: ['reload'],
   data() {
         return {
+          isAppointed:false,
         };
     },
   computed: {
@@ -61,9 +73,38 @@ export default {
     console.log(this.clientID);
     console.log(this.info?.id);
     console.log(this.info?.expense);
+    this.checkAppoint();
   },
   methods:{
+    checkAppoint(){
+      axios({
+        url: 'api/history/order/waiting',
+        method: 'get',
+        params:{
+            clientId:this.clientID,
+        },
+      }).then((res) => {
+        console.log("预约订单",res);
+        if(res.data!="")
+        {
+          this.isAppointed=true;
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    },
     appoint(){
+      console.log("当前预约状态",this.isAppointed);
+      if(this.isAppointed)
+      {
+        ElMessage({
+          message: "您已有预约，无法再进行预约！",
+          type: "warning",
+          showClose: true,
+          duration: 2000,
+        });
+      }
+      else{
         axios({
           method:'post',
           url:'api/history/add',
@@ -87,6 +128,7 @@ export default {
                 showClose: true,
                 duration: 2000,
             });
+            router.push({name:"order"});
           }
           else{
           ElMessage({
@@ -99,11 +141,12 @@ export default {
         }).catch((err) =>{
           console.log(err);
         });
+      }
     },
     goChat(){
       router.push({
         name: "chat",
-        query: { toUserId: this.info?.id }, //把聊天对象的id传给聊天室
+        query: { toUserId: this.info?.id,orderId: this.historyId, orderStatus:"s" }, //把聊天对象的id传给聊天室
       });
     },
     changeStatus(orderId,curStatus){
@@ -145,7 +188,7 @@ export default {
 
 <style scoped>
 .el-card{
-    height:300px;
+    height:250px;
     margin-left:30px;
     margin-right:40px;
     margin-bottom:40px;

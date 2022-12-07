@@ -18,8 +18,8 @@
                         >
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">推荐</el-row>
             <el-row>
-                <el-col :span="12" v-for="i in consultantInfo" :key=i>
-                    <consultation-card :info="i.info" :status="i.status" :clientID="this.id" :historyId="i.historyId">
+                <el-col :span="8" v-for="i in consultantInfo" :key=i>
+                    <consultation-card :info="i.info" :status="i.status" :clientID="this.id" :historyId="i.historyId" :avatarSize="this.size">
                     </consultation-card>
                 </el-col>
             </el-row>
@@ -39,6 +39,7 @@ export default {
     return {
         id:this.$store.state.userInfo.user.id,
         consultantInfo:[],
+        size:120,
     };
   },
   created(){
@@ -46,7 +47,7 @@ export default {
         url: 'api/user/consultants/client',
         method: 'get',
         params:{
-            clientId:1,
+            clientId:this.id,
             page:1,
             size:10,
             label: "",

@@ -22,8 +22,8 @@
             <el-table-column prop="startTime" label="开始时间" width="155" />
             <el-table-column prop="endTime" label="结束时间" width="155" />
             <el-table-column prop="realname" label="来访者" width="80" />
-            <el-table-column prop="userSex" label="性别" width="60" />
-            <el-table-column prop="userAge" label="年龄" width="60" />
+            <el-table-column prop="clientSex" label="性别" width="60" />
+            <el-table-column prop="clientAge" label="年龄" width="60" />
             <el-table-column prop="status" label="状态" width="110">
               <template #default="scope">
                 <el-tag type="success" v-if="scope.row.status == 'f'">
@@ -47,8 +47,8 @@
                 <el-link
                   type="primary"
                   :underline="false"
-                  v-if="scope.row.status == 's'"
-                  @click="goChat(scope.row.clientId)"
+                  v-if="scope.row.status == 's'||scope.row.status == 'f'||scope.row.status == 'w'"
+                  @click="goChat(scope.row.clientId,scope.row.id,scope.row.status)"
                 >
                   进入咨询室
                 </el-link>
@@ -150,22 +150,9 @@ export default {
             console.log("开始遍历");
             this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
             this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
-            axios({
-              method:'get',
-              url:'api/user/info',
-              params:{
-                id:this.orderInfo[i].clientId,
-                userType:"client"
-                }
-              }).then((res)=>{
-                console.log("当前订单3",this.orderInfo[i]);
-                this.orderInfo[i].userSex=res.data.sex=='f'?"女":"男";
-                this.orderInfo[i].userAge=res.data.age;
-              })
-            console.log("当前订单",this.orderInfo[i]);
+            this.orderInfo[i].clientSex = this.orderInfo[i].clientSex=="f"?"女":"男";
           }
         });
-        console.log("当前订单2",this.orderInfo);
       },
     getNum(){
       axios({
@@ -248,10 +235,10 @@ export default {
         }
       });
     },
-    goChat(id) {
+    goChat(id,orderID,status) {
       router.push({
         name: "chat",
-        query: { toUserId: this.id }, //把聊天对象的id传给聊天室
+        query: { toUserId: this.id, orderId:orderID, orderStatus:status }, //把聊天对象的id传给聊天室
       });
     },
     getDate(n) {

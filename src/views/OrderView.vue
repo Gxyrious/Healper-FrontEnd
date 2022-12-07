@@ -49,7 +49,7 @@
                   v-if="
                     scope.row.status=='s'||scope.row.status=='f'||scope.row.status=='w'
                   "
-                  @click="handleClick(scope.row.consultantId)"
+                  @click="handleClick(scope.row.consultantId,scope.row.id,scope.row.status)"
                 >
                   进入咨询室
                 </el-link>
@@ -187,10 +187,10 @@ export default {
       //   });
       // }
     },
-    handleClick(id) {
+    handleClick(id,orderID,status) {
       router.push({
         name: "chat",
-        query: { toUserId: id }, //把聊天对象的id传给聊天室
+        query: { toUserId: id, orderId:orderID, orderStatus:status }, //把聊天对象的id传给聊天室
       });
     },
     changeStatus(orderId,curStatus){

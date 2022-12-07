@@ -15,8 +15,9 @@
           <div style="text-align: center; line-height: 40px">
             咨询聊天室 ( {{ toUserTypeCH }}: {{ toName }} )
           </div>
-          <div style="text-align: center; margin-bottom: 10px;"
-               v-html="button" >
+          <div style="text-align: center; margin-bottom: 10px;">
+            <el-button v-if="userType=='consultant'" type="primary" @click="changeStatus(orderId,'s')">开始咨询</el-button>
+            <el-button type="primary" @click="changeStatus(orderId,'f')">结束咨询</el-button>
           </div>
           <div
             style="height: 350px; overflow: auto; border-top: 1px solid #ccc"
@@ -51,9 +52,11 @@
 
 <script>
 import axios from "axios";
+import { ElMessage } from "element-plus";
 let clientSocket = null;
 
 export default {
+  inject: ['reload'],
   data() {
     return {
       toUserId: this.$route.query.toUserId, //聊天对象的id
@@ -70,7 +73,8 @@ export default {
       clientId: 0, //用于调取聊天记录时传参
       consultantId: 0,
       chatRecord: [], //聊天记录
-      button:""
+      orderId: this.$route.query.orderId,
+      orderStatus: this.$route.query.orderStatus,
     };
   },
   created() {
@@ -232,14 +236,121 @@ export default {
     //设置“结束咨询”按钮的html，只有咨询师端有此按钮
     setButton(){
       let html;
+      html='<button type="primary" size="mini" @click="finish">开始咨询</button>'
+      this.button +=html;
       if(this.userType=="consultant"){
         html='<button type="primary" size="mini" @click="finish">结束咨询</button>'
         this.button +=html;
       }
     },
-    //结束咨询
-    finish(){
-
+    changeStatus(orderId, curStatus) {
+      console.log(curStatus);
+      console.log(this.orderStatus);
+      if(curStatus=="s")
+      {
+        if(this.orderStatus=="w")
+        {
+          axios({
+          method: "put",
+          url: "api/history/status",
+          data: {
+            historyId: orderId,
+            status: curStatus,
+          },
+          }).then((res) => {
+          console.log("res.status", res.status);
+            if (res.status == 200) {
+              ElMessage({
+                message: "咨询开始！",
+                type: "success",
+                showClose: true,
+                duration: 2000,
+              });
+              this.orderStatus="s";
+            }
+            else
+            {
+                ElMessage({
+                message: "咨询开始失败，请重试！",
+                type: "error",
+                showClose: true,
+                duration: 2000,
+              });
+            }
+          })
+        }
+        else if(this.orderStatus=="s")
+        {
+          ElMessage({
+            message: "当前订单已开始！",
+            type: "warning",
+            showClose: true,
+            duration: 2000,
+          });
+        }
+        else if(this.orderStatus=="f")
+        {
+          ElMessage({
+            message: "当前订单已结束！",
+            type: "error",
+            showClose: true,
+            duration: 2000,
+          });
+        }
+      }
+      else if(curStatus=="f")
+      {
+        if(this.orderStatus=="s")
+        {
+          axios({
+          method: "put",
+          url: "api/history/status",
+          data: {
+            historyId: orderId,
+            status: curStatus,
+          },
+          }).then((res) => {
+          console.log("res.status", res.status);
+            if (res.status == 200) {
+              ElMessage({
+                message: "咨询结束，请去订单页面撰写档案！",
+                type: "success",
+                showClose: true,
+                duration: 2000,
+              });
+              this.orderStatus="f";
+              this.$router.replace("/consultantOrder");
+            }
+            else
+            {
+                ElMessage({
+                message: "咨询结束失败，请重试！",
+                type: "error",
+                showClose: true,
+                duration: 2000,
+              });
+            }
+          })
+        }
+        else if(this.orderStatus=="w")
+        {
+          ElMessage({
+            message: "当前订单还未开始！",
+            type: "warning",
+            showClose: true,
+            duration: 2000,
+          });
+        }
+        else if(this.orderStatus=="f")
+        {
+          ElMessage({
+            message: "当前订单已结束！",
+            type: "error",
+            showClose: true,
+            duration: 2000,
+          });
+        }
+      }
     },
   },
 };

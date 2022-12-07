@@ -15,7 +15,7 @@
                       padding-right:0px;
                       padding-top:20px;">
         <el-container>
-        <el-aside style="width:60%">
+        <el-aside style="width:65%">
           <el-row class="head" justify="center">
             <el-col :span="3" >
               <el-avatar shape="square" :size="60" :src="profile" />
@@ -73,7 +73,8 @@
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px;padding-top:20px;">推荐咨询师</el-row>
             <el-row>
                 <el-col :span="12" v-for="i in consultantInfo" :key=i>
-                  <consultation-card :info="i.info" :status="i.status" :clientID="this.id" :historyId="i.historyId">
+                  <consultation-card :info="i.info" :status="i.status" 
+                  :clientID="this.id" :historyId="i.historyId" :avatarSize="this.size1">
                   </consultation-card>
                 </el-col>
             </el-row>
@@ -82,7 +83,8 @@
         <el-main style="padding-top:0px;padding-left:30px;">
           <div style="background:#fff;padding-top:20px;padding-bottom:5px;">
             <div style="font-weight:bolder;margin-left:30px;margin-bottom:20px;">待开始的咨询</div>
-              <consultation-card :info="appointedInfo" :status="appointedInfo.status=='p'?1:2" v-if="isAppointed">
+              <consultation-card :info="appointedInfo" :historyId="appointedInfo.id" :clientID="appointedInfo.clientId"
+              :status="appointedInfo.status=='p'?1:2" v-if="isAppointed" :avatarSize="this.size2">
               </consultation-card>
               <div style="height:120px;text-align:center;padding-top:30px" v-if="!isAppointed">
                 <div style="font-size:23px;color:#878787;margin-bottom:10px">暂无待开始的咨询</div>
@@ -134,6 +136,8 @@ export default {
       consultantInfo:[],
       appointedInfo:{},
       isAppointed:false,
+      size1:120,
+      size2:110,
     };
   },
   created(){
