@@ -18,7 +18,7 @@
             <el-col :span="23">
                 <el-tabs v-model="activeName">
                   <el-tab-pane label="统计分析" name="first">
-                    <AnalysisChart v-for="item in analysis" :key="item.factor" :factor="item.factor" :detail="item.detail"></AnalysisChart>
+                    <AnalysisChart :analysis="analysis"></AnalysisChart>
     </el-tab-pane>
     <el-tab-pane label="历史记录" name="second">
   <el-table :data="scaleRecord"  style="width: 100%">
