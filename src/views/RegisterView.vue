@@ -109,6 +109,17 @@
               </el-row>
             </div>
 
+            <div class="inputCard">
+              <el-row>
+                <el-col :span="3" style="padding-top: 4px">性别</el-col>
+                <el-col :span="12">
+                  <el-select v-model="this.age" clearable placeholder="Select">
+                    <el-option v-for="age in age_list" :key="age" :label="age" :value="age" />
+                  </el-select>
+                </el-col>
+              </el-row>
+            </div>
+
             <div class="buttonCard">
               <el-button type="primary" @click="register">注册</el-button>
             </div>
@@ -144,6 +155,11 @@ import axios from "axios";
 // import { tryOnBeforeMount } from "@vueuse/core";
 export default {
   //   components: { ElMessage },
+  created() {
+    for (var i = 1; i <= 100; i++) {
+      this.age_list.push(i);
+    }
+  },
   data() {
     return {
       idenCode: "",
@@ -151,12 +167,14 @@ export default {
       userPhone: "",
       userPassword: "",
       sex: "",
+      age: "",
       userId: "",
       tmpPassword: "",
       time: 60,
       isDisposed: false,
       check: false,
       dialogVisible: false,
+      age_list: [],
     };
   },
   methods: {
@@ -170,7 +188,8 @@ export default {
         this.idenCode === "" ||
         this.userPassword === "" ||
         this.tmpPassword === "" ||
-        this.sex === ""
+        this.sex === "" ||
+        this.age === ""
       ) {
         ElMessage.error("以上均为必填项！");
         return;
@@ -193,6 +212,7 @@ export default {
             userPhone: this.userPhone,
             password: this.userPassword,
             sex: this.sex,
+            age: this.age,
             code: this.idenCode,
           }
         })
@@ -270,6 +290,7 @@ export default {
     },
     getIdeCode() {
       console.log("send" + this.userPhone);
+      console.log("age = " + this.age);
       var reg = /^1[3456789]\d{9}$/;
       if (this.userPhone === "" || !reg.test(this.userPhone)) {
         ElMessage({
