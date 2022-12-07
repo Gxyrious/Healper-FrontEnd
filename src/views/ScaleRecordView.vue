@@ -17,9 +17,9 @@
           <el-row justify="center" class="tabs">
             <el-col :span="23">
                 <el-tabs v-model="activeName">
-                  <el-tab-pane label="统计分析" name="first">
+                  <el-tab-pane label="统计分析" name="first" v-loading="loading">
                     <AnalysisChart v-for="item in analysis" :key="item.factor" :factor="item.factor" :detail="item.detail"></AnalysisChart>
-    </el-tab-pane>
+                  </el-tab-pane>
     <el-tab-pane label="历史记录" name="second">
   <el-table :data="scaleRecord"  style="width: 100%">
     <el-table-column prop="endTime" label="时间" width="400" />
@@ -62,6 +62,7 @@
     import AnalysisChart from "../components/Scale/AnalysisChart.vue";
     export default {
       created(){
+        this.loading=true;
         axios({
       method: 'get',
       url: 'api/scale/sum',
@@ -180,7 +181,7 @@
            analysis:[
             {detail:{time: null, value: null}, factor: null},
            ],
-          
+           loading:false,
         };
       },
     };

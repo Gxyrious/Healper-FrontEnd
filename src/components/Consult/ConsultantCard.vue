@@ -16,16 +16,13 @@
                 </div>
             </el-col>
         </el-row>
-        <el-row style="margin-top:20px;margin-left:15px;font-size:17px;font-weight:400">
-            <el-col :span="6">
+        <el-row style="margin-top:10px;margin-left:15px;font-size:25px;font-weight:400">
+            <el-col :span="8">
                 {{this.info?.expense}}￥
-            </el-col>
-            <el-col :span="18">
-                预计 {{this.info?.time}} 开始
             </el-col>
         </el-row>
         <el-row style="margin-top:15px;font-size:13px;font-weight:300;margin-left:15px">
-            <el-col :span="20">
+            <el-col :span="18">
                 <div>
                     正在排队人数{{this.info?.curNum}}
                 </div>
@@ -33,23 +30,60 @@
                     最大排队人数{{this.info?.maxNum}}
                 </div>
             </el-col>
-            <el-col :span="3">
-                <el-button type="text" v-if="this.status==false">预约</el-button>
-                <el-button type="text" v-if="this.status==true">进入咨询室</el-button>
+            <el-col :span="6">
+                <el-button type="text" v-if="this.status==false" 
+                @click="appoint()" style="margin-left:40%"
+                >预约</el-button>
+                <el-button type="text" v-if="this.status==true" @click="goChat()">进入咨询室</el-button>
             </el-col>
         </el-row>
     </el-card>
 </template>
 
 <script>
+import router from "@/router";
+import axios from "axios";
+import { ElMessage } from "element-plus";
 export default {
   name: 'ConsultantCard',
-  props:['info','status'],
+  props:['info','status','clientID'],
+  inject: ['reload'],
   computed: {
   },
   created(){
+    console.log(this.clientID);
+    console.log(this.info?.id);
+    console.log(this.info?.expense);
   },
   methods:{
+    appoint(){
+        axios({
+          method:'post',
+          url:'api/history/add',
+          data:{
+            clientId: this.clientID,
+            consultantId: this.info?.id,
+            expense:this.info?.expense
+          }
+        }).then((res)=>{
+          console.log("现在开始请求");
+          console.log("res",res.data);
+          console.log(this.status);
+          if(res.status==200)
+          {
+            console.log("预约成功");
+            this.reload();
+          }
+        }).catch((err) =>{
+          console.log(err);
+        });
+    },
+    goChat(){
+      router.push({
+        name: "chat",
+        query: { toUserId: this.info?.id }, //把聊天对象的id传给聊天室
+      });
+    }
   }
 }
 </script>
