@@ -10,7 +10,7 @@
       @close="deleteLabel(item)">{{ item }}</el-tag>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="(isEditingLabel = false)">关闭</el-button>
+        <el-button type="primary" @click="saveLabel()">保存</el-button>
       </span>
     </template>
   </el-dialog>
@@ -273,6 +273,9 @@ export default {
     })
   },
   methods: {
+    saveLabel(){
+
+    },
     deleteLabel(item){
       this.label.splice(this.label.indexOf(item), 1);
     },
