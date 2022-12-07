@@ -119,7 +119,7 @@ export default {
         method: "post",
         data: {
           clientId: this.$store.state.userInfo.user.id,
-          endTime: Date.now(),
+          endTime: Date.now() / 1000,
           isHidden: 0,
           scaleId: this.scaleId + 1,
           record: JSON.stringify(jsonFactors),

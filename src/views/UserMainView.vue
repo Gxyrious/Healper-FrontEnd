@@ -1,6 +1,6 @@
 <!--
   描述：用户首页
-  作者：王若晗，张泰圣
+  作者：王若晗
 -->
 
 <template>
@@ -73,8 +73,8 @@
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px;padding-top:20px;">推荐咨询师</el-row>
             <el-row>
                 <el-col :span="12" v-for="i in consultantInfo" :key=i>
-                    <consultation-card :info="i.info" :status="i.isAppointed">
-                    </consultation-card>
+                  <consultation-card :info="i.info" :status="i.status" :clientID="this.id" :historyId="i.historyId">
+                  </consultation-card>
                 </el-col>
             </el-row>
           </div>
@@ -82,9 +82,9 @@
         <el-main style="padding-top:0px;padding-left:30px;">
           <div style="background:#fff;padding-top:20px;padding-bottom:5px;">
             <div style="font-weight:bolder;margin-left:30px;margin-bottom:20px;">待开始的咨询</div>
-              <!-- <consultation-card>
-              </consultation-card> -->
-              <div style="height:120px;text-align:center;padding-top:30px">
+              <consultation-card :info="appointedInfo" :status="appointedInfo.status=='p'?1:2" v-if="isAppointed">
+              </consultation-card>
+              <div style="height:120px;text-align:center;padding-top:30px" v-if="!isAppointed">
                 <div style="font-size:23px;color:#878787;margin-bottom:10px">暂无待开始的咨询</div>
                 <el-link type="primary"
                   :underline="false" @click="goConsult">快去预约吧</el-link>
@@ -132,6 +132,8 @@ export default {
       scaleName:"",
       scaleId:0,
       consultantInfo:[],
+      appointedInfo:{},
+      isAppointed:false,
     };
   },
   created(){
@@ -175,7 +177,7 @@ export default {
         url: 'api/user/consultants/client',
         method: 'get',
         params:{
-            clientId:1,
+            clientId:this.id,
             page:1,
             size:4,
             label: "",
@@ -191,6 +193,22 @@ export default {
             }
         }
         console.log("ok");
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios({
+        url: 'api/history/order/waiting',
+        method: 'get',
+        params:{
+            clientId:this.id,
+        },
+    }).then((res) => {
+        console.log("预约订单",res);
+        if(res.data!="")
+        {
+          this.isAppointed=true;
+          this.appointedInfo=res.data;
+        }
     }).catch((err) => {
         console.log(err);
     });

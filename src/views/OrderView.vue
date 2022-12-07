@@ -47,7 +47,7 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status=='s'
+                    scope.row.status=='s'||scope.row.status=='f'
                   "
                   @click="handleClick(scope.row.consultantId)"
                 >
@@ -281,9 +281,13 @@ export default {
     goSAEditor() {
       router.push({ name: "SAEditor" });
     },
-    getDate(n){
-      n=new Date(n)
-      return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
+    getDate(n) {
+      n = new Date(1000 * n);
+      return (
+        n.toLocaleDateString().replace(/\//g, "-") +
+        " " +
+        n.toTimeString().substr(0, 8)
+      );
     },
   },
 };

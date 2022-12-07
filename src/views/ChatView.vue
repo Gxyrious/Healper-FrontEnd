@@ -12,8 +12,11 @@
             box-shadow: 0 0 10px #ccc;
           "
         >
-          <div style="text-align: center; line-height: 50px">
+          <div style="text-align: center; line-height: 40px">
             咨询聊天室 ( {{ toUserTypeCH }}: {{ toName }} )
+          </div>
+          <div style="text-align: center; margin-bottom: 10px;"
+               v-html="button" >
           </div>
           <div
             style="height: 350px; overflow: auto; border-top: 1px solid #ccc"
@@ -67,6 +70,7 @@ export default {
       clientId: 0, //用于调取聊天记录时传参
       consultantId: 0,
       chatRecord: [], //聊天记录
+      button:""
     };
   },
   created() {
@@ -82,6 +86,7 @@ export default {
       this.clientId = this.$store.state.userInfo.user.id;
       this.consultantId = this.toUserId;
     }
+    this.setButton();
     this.getChatRecord();
   },
   methods: {
@@ -224,6 +229,18 @@ export default {
         }
       });
     },
+    //设置“结束咨询”按钮的html，只有咨询师端有此按钮
+    setButton(){
+      let html;
+      if(this.userType=="consultant"){
+        html='<button type="primary" size="mini" @click="finish">结束咨询</button>'
+        this.button +=html;
+      }
+    },
+    //结束咨询
+    finish(){
+
+    },
   },
 };
 </script>
@@ -246,5 +263,21 @@ export default {
 .left {
   background-color: forestgreen;
 }
+button{
+  width: 100px;/*设置按钮宽度*/
+			height: 30px;/*设置按钮高度*/
+			color:white;/*字体颜色*/
+			background-color:rgb(64,158,255);/*按钮背景颜色*/
+			border-radius: 3px;/*让按钮变得圆滑一点*/
+			border-width: 0;/*消去按钮的边框*/
+			margin: 0;
+			outline: none;/*取消轮廓*/
+			font-size: 14px;/*设置字体大小*/
+			text-align: center;/*字体居中*/
+			cursor: pointer;/*设置鼠标箭头手势*/
+}
+button:hover{/*鼠标移动时的颜色变化*/
+			background-color: rgb(121,187,255);
+		}
 </style>
   

@@ -47,9 +47,7 @@
                 <el-link
                   type="primary"
                   :underline="false"
-                  v-if="
-                    scope.row.status == 's'
-                  "
+                  v-if="scope.row.status == 's'"
                   @click="goChat(scope.row.clientId)"
                 >
                   进入咨询室
@@ -57,30 +55,24 @@
                 <el-link
                   type="primary"
                   :underline="false"
-                  v-if="
-                    scope.row.status == 'p'
-                  "
-                  @click="changeStatus(scope.row.id,'c')"
+                  v-if="scope.row.status == 'p'"
+                  @click="changeStatus(scope.row.id, 'c')"
                 >
                   取消
                 </el-link>
                 <el-link
                   type="primary"
                   :underline="false"
-                  v-if="
-                    scope.row.status == 'w'
-                  "
-                  @click="changeStatus(scope.row.id,'s')"
+                  v-if="scope.row.status == 'w'"
+                  @click="changeStatus(scope.row.id, 's')"
                 >
                   开始咨询
                 </el-link>
                 <el-link
                   type="primary"
                   :underline="false"
-                  v-if="
-                    scope.row.status == 's'
-                  "
-                  @click="changeStatus(scope.row.id,'f')"
+                  v-if="scope.row.status == 's'"
+                  @click="changeStatus(scope.row.id, 'f')"
                 >
                   结束咨询
                 </el-link>
@@ -98,7 +90,12 @@
         </el-row>
         <el-row justify="center" style="margin-top: 30px">
           <el-col :span="7">
-            <el-pagination layout="prev, pager, next" :total="orderNum" v-model:current-page="this.page" @current-change="getNewPage"/>
+            <el-pagination
+              layout="prev, pager, next"
+              :total="orderNum"
+              v-model:current-page="this.page"
+              @current-change="getNewPage"
+            />
           </el-col>
         </el-row>
       </el-main>
@@ -107,170 +104,193 @@
 </template>
 
 <script>
-    import router from "@/router";
-    import axios from "axios";
-    import { ElMessage } from "element-plus";
-    export default {
-      components: {},
-      inject: ['reload'],
-      data() {
-        return {
-          toUserId: 0, //聊天对象的用户id
-          id:this.$store.state.userInfo.user.id,
-          consultantPhone: "",
-          userType: this.$store.state.userInfo.userType, //本人的用户类型
-          toUserType: "", //聊天对象的用户类型，比如本人是client，toUserType就是consultant
-          orderNum:0,
-          orderInfo:[],
-          page: 1,
-          dialogVisible:false,
-          codeLink:"",
-          orderId:0,
-        };
-      },
-      created() {
-        this.getNum();
-        this.getNewPage();
-      },
-      methods: {
-        getNewPage(){
-          axios({
-              method:'get',
-              url:'api/history/consultant',
-              params:{
-                consultantId:this.id,
-                page:this.page,
-                size:10,
-              }
-            }).then((res)=>{
-              console.log("现在开始请求");
-              console.log("订单信息",res.data);
-              this.orderInfo=res.data;
-              console.log("订单信息Info",this.orderInfo[1]);
-              for (var i = 0; i < this.orderInfo.length; i++) {
-                this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
-                this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
-              }
-            }).catch((err) =>{
-              console.log(err);
-            });
-          },
-          getNum(){
-            axios({
-            method: 'get',
-            url: 'api/history/consultant/sum',
-            params:{
-              consultantId: this.id,
-            }
-            }).then((res)=>{
-              console.log("res.data",res.data);
-              this.orderNum=res.data;
-            }).catch(function (error) {
-              if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-              } 
-          });
-        },
-        changeStatus(orderId,curStatus){
-          axios({
-            method: "put",
-            url: "api/history/status",
-            data: {
-              historyId: orderId,
-              status: curStatus
-            },
-          }).then((res) => {
-              console.log("res", res);
-              if (res.status == 200){
-                if(curStatus=='c'){
-                  ElMessage({
-                      message: "订单取消成功！",
-                      type: "success",
-                      showClose: true,
-                      duration: 2000,
-                    });
-                }
-                if(curStatus=='s'){
-                  ElMessage({
-                      message: "已开始咨询，请进入咨询室！",
-                      type: "success",
-                      showClose: true,
-                      duration: 2000,
-                    });
-                }
-                if(curStatus=='s'){
-                  ElMessage({
-                      message: "已成功结束咨询，请去订单页撰写档案！",
-                      type: "success",
-                      showClose: true,
-                      duration: 2000,
-                    });
-                }
-                this.reload();
-              }
-          else{
-            if(curStatus=='c'){
-              ElMessage({
-                    message: "订单取消失败，请重试！",
-                    type: "error",
-                    showClose: true,
-                    duration: 2000,
-                });
-              }
-            }
-            if(curStatus=='s'){
-              ElMessage({
-                  message: "开始咨询失败，请重试！",
-                  type: "error",
-                  showClose: true,
-                  duration: 2000,
-                });
-            }
-            if(curStatus=='s'){
-              ElMessage({
-                  message: "结束咨询失败，请重试！",
-                  type: "error",
-                  showClose: true,
-                  duration: 2000,
-                });
-            }
-          }) 
-        },
-        goChat(id) {
-          router.push({
-            name: "chat",
-            query: { toUserId: this.id }, //把聊天对象的id传给聊天室
-          });
-        },
-        getDate(n){
-          n=new Date(1000*n)
-          return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
-        },
-        goSAEditor(id){
-          console.log("goSA");
-          console.log(this.orderId);
-          this.$router.push({
-            path:"/SAEditor",
-            query:{
-              archiveId: id,
-            }
-          })
-        }
-      },
+import router from "@/router";
+import axios from "axios";
+import { ElMessage } from "element-plus";
+export default {
+  components: {},
+  inject: ["reload"],
+  data() {
+    return {
+      toUserId: 0, //聊天对象的用户id
+      id: this.$store.state.userInfo.user.id,
+      consultantPhone: "",
+      userType: this.$store.state.userInfo.userType, //本人的用户类型
+      toUserType: "", //聊天对象的用户类型，比如本人是client，toUserType就是consultant
+      orderNum: 0,
+      orderInfo: [],
+      clientInfo: [],
+      page: 1,
+      dialogVisible: false,
+      codeLink: "",
+      orderId: 0,
     };
-    </script>
+  },
+  created() {
+    this.getNum();
+    this.getNewPage();
+  },
+  methods: {
+    getNewPage() {
+      axios({
+        method: "get",
+        url: "api/history/consultant",
+        params: {
+          consultantId: this.id,
+          page: this.page,
+          size: 10,
+        },
+      })
+        .then((res) => {
+          console.log("现在开始请求");
+          console.log("订单信息", res.data);
+          this.orderInfo = res.data;
+          console.log("订单信息Info", this.orderInfo[1]);
+          for (var i = 0; i < this.orderInfo.length; i++) {
+            this.orderInfo[i].startTime = this.getDate(
+              this.orderInfo[i].startTime
+            );
+            this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+            axios({
+              method: "get",
+              url: "api/user/info",
+              params: {
+                id: this.orderInfo[i].clientId,
+                userType: "client",
+              },
+            }).then((res) => {
+              console.log("来访者信息", res.data);
+              Object.assign(this.orderInfo[i], {
+                clientName: res.data.nickname,
+              });
+              Object.assign(this.orderInfo[i], { clientSex: res.data.sex });
+              Object.assign(this.orderInfo[i], { clientAge: res.data.age });
+            });
+          }
+          console.log(this.orderInfo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getNum() {
+      axios({
+        method: "get",
+        url: "api/history/consultant/sum",
+        params: {
+          consultantId: this.id,
+        },
+      })
+        .then((res) => {
+          console.log("res.data", res.data);
+          this.orderNum = res.data;
+        })
+        .catch(function (error) {
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          }
+        });
+    },
+    changeStatus(orderId, curStatus) {
+      axios({
+        method: "put",
+        url: "api/history/status",
+        data: {
+          historyId: orderId,
+          status: curStatus,
+        },
+      }).then((res) => {
+        console.log("res.status", res.status);
+        if (res.status == 200) {
+          if (curStatus == "c") {
+            ElMessage({
+              message: "订单取消成功！",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+          } else if (curStatus == "s") {
+            ElMessage({
+              message: "已开始咨询，请进入咨询室！",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+          } else if (curStatus == "f") {
+            ElMessage({
+              message: "已成功结束咨询，请去订单页撰写档案！",
+              type: "success",
+              showClose: true,
+              duration: 2000,
+            });
+          }
+          this.reload();
+        } else {
+          if (curStatus == "c") {
+            ElMessage({
+              message: "订单取消失败，请重试！",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+          } else if (curStatus == "s") {
+            ElMessage({
+              message: "开始咨询失败，请重试！",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+          }
+          if (curStatus == "f") {
+            ElMessage({
+              message: "结束咨询失败，请重试！",
+              type: "error",
+              showClose: true,
+              duration: 2000,
+            });
+          }
+        }
+      });
+    },
+    goChat(id) {
+      router.push({
+        name: "chat",
+        query: { toUserId: this.id }, //把聊天对象的id传给聊天室
+      });
+    },
+    getDate(n) {
+      n = new Date(1000 * n);
+      return (
+        n.toLocaleDateString().replace(/\//g, "-") +
+        " " +
+        n.toTimeString().substr(0, 8)
+      );
+    },
+    goSAEditor(id) {
+      console.log("goSA");
+      console.log(this.orderId);
+      this.$router.push({
+        path: "/SAEditor",
+        query: {
+          archiveId: id,
+        },
+      });
+    },
+  },
+};
+</script>
 
   <style scoped>
-    .el-header {
-      margin-left: 5px;
-      border-bottom: 0.6px solid rgb(174, 174, 174);
-    }
+.el-header {
+  margin-left: 5px;
+  border-bottom: 0.6px solid rgb(174, 174, 174);
+}
 
-    .el-link {
-      margin-right: 10px;
-    }
+.el-link {
+  margin-right: 10px;
+}
 </style>
