@@ -4,15 +4,14 @@
 -->
 <template>
   <el-card :body-style="{ padding: '0px' }">
-    <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-      class="image" />
+    <el-image :src="image_url" class="image"></el-image>
     <div style="padding: 14px">
       <div>
-        <span>{{scaleName}}</span>
+        <span>{{summary}}</span>
         <span style="margin-left: 60%;">共{{quesNum}}题目</span>
       </div>
       <div class="bottom">
-        <p class="description">我是一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个一个问卷</p>
+        <p class="summary">{{}}</p>
         <el-button text class="button" @click="goScaleDetail">开始</el-button>
       </div>
     </div>
@@ -24,6 +23,8 @@ export default {
     'scaleId',
     'scaleName',
     'quesNum',
+    'summary',
+    'image_url'
   ],
   data() {
     return {
@@ -44,7 +45,7 @@ export default {
 </script>
 
 <style>
-.description {
+.summary {
   margin-right: 5px;
   font-size: 12px;
   color: #999;
@@ -65,6 +66,7 @@ export default {
 
 .image {
   width: 100%;
+  height: 300px;
   display: block;
 }
 

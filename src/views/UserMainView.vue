@@ -10,7 +10,7 @@
           <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
-      <el-main style="background: #f4f4f5;
+      <el-main style="background:#f4f4f5;
                       padding-left:0px;
                       padding-right:0px;
                       padding-top:20px;">
@@ -86,7 +86,12 @@
           </div>
           <div style="padding:20px 30px;background:#fff;margin-top:30px;">
             <div style="font-weight:bolder;margin-bottom:20px;">推荐量表</div>
-            <scale-card :scaleId="scaleId" :scaleName="scaleName" :quesNum="quesNum"></scale-card>
+            <scale-card 
+            :scaleId="scaleId" 
+            :scaleName="scaleName" 
+            :quesNum="quesNum"
+            :summary="scaleSummary"
+            :image_url="scaleImage"></scale-card>
           </div>
         </el-main>
         </el-container>
@@ -102,6 +107,7 @@ import ScaleCard from "../components/Scale/ScaleCard"
 import {  
     Search
 } from "@element-plus/icons-vue"
+import { random } from "lodash";
 export default {
   components:{
     Search,
@@ -118,7 +124,9 @@ export default {
       profile:"",
       quesNum:0,
       scaleName:"",
-      scaleId:0,
+      scaleId:1,
+      scaleSummary:"",
+      scaleImage:"",
       consultant_info:[{
             name:"美女",
             sex:"女",
@@ -193,7 +201,7 @@ export default {
       url: "api/scale/names",
       method: "get",
       params: {
-        page: 1,
+        page: Math.floor(Math.random() * 5) + 1,
         size: 1
       }
     })
@@ -202,6 +210,8 @@ export default {
       this.scaleName=res.data[0].name;
       this.quesNum=res.data[0].quesNum;
       this.scaleId=res.data[0].id;
+      this.scaleSummary=res.data[0].summary;
+      this.scaleImage=res.data[0].image;
       console.log(this.scaleName);
     })
   },
