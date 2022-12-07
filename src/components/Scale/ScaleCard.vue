@@ -7,11 +7,11 @@
     <el-image :src="image_url" class="image"></el-image>
     <div style="padding: 14px">
       <div>
-        <span>{{summary}}</span>
-        <span style="margin-left: 60%;">共{{quesNum}}题目</span>
+        <span>{{scaleName}}</span>
+        <span class="summary" style="float: right;">共{{quesNum}}题目</span>
       </div>
       <div class="bottom">
-        <p class="summary">{{}}</p>
+        <p class="summary">{{summary}}</p>
         <el-button text class="button" @click="goScaleDetail">开始</el-button>
       </div>
     </div>
