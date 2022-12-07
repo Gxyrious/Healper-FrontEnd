@@ -47,7 +47,7 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status == 'f' || scope.row.status == 'w'|| scope.row.status=='s'
+                    scope.row.status=='s'
                   "
                   @click="handleClick(scope.row.consultantId)"
                 >
@@ -71,7 +71,7 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status == 'p' || scope.row.status == 'w'
+                    scope.row.status == 'p'
                   "
                   @click="changeStatus(scope.row.id,'c')"
                 >
@@ -138,6 +138,10 @@ export default {
           console.log("现在开始请求");
           console.log("订单信息",res.data);
           this.orderInfo=res.data;
+          for (var i = 0; i < this.orderInfo.length; i++) {
+            this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
+            this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+          }
         }).catch((err) =>{
           console.log(err);
         });
@@ -202,7 +206,7 @@ export default {
           if (res.status == 200){
             if(curStatus=='c'){
               ElMessage({
-                  message: "取消成功",
+                  message: "取消成功！",
                   type: "success",
                   showClose: true,
                   duration: 2000,
@@ -213,7 +217,7 @@ export default {
       else{
         if(curStatus=='c'){
           ElMessage({
-                message: "取消失败",
+                message: "取消失败，请重试！",
                 type: "error",
                 showClose: true,
                 duration: 2000,
@@ -256,7 +260,7 @@ export default {
           console.log("res", res);
           if (res.status == 200){
               ElMessage({
-                  message: "支付成功，等待咨询",
+                  message: "支付成功，等待咨询师开始咨询！",
                   type: "success",
                   showClose: true,
                   duration: 2000,
@@ -265,7 +269,7 @@ export default {
           }
           else{   
           ElMessage({
-                message: "支付失败，请重试",
+                message: "支付失败，请重试！",
                 type: "error",
                 showClose: true,
                 duration: 2000,
@@ -276,6 +280,10 @@ export default {
     },
     goSAEditor() {
       router.push({ name: "SAEditor" });
+    },
+    getDate(n){
+      n=new Date(n)
+      return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
     },
   },
 };

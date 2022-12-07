@@ -19,7 +19,7 @@
             <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">推荐</el-row>
             <el-row>
                 <el-col :span="12" v-for="i in consultantInfo" :key=i>
-                    <consultation-card :info="i.info" :status="i.isAppointed" :clientID="this.id">
+                    <consultation-card :info="i.info" :status="i.status" :clientID="this.id" :historyId="i.historyId">
                     </consultation-card>
                 </el-col>
             </el-row>

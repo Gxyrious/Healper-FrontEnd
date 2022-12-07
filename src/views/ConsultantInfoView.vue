@@ -14,9 +14,8 @@
       </span>
     </template>
   </el-dialog>
-  <el-dialog v-model="isCheckingQR" title="查看付款二维码">
-
-    <img v-if="QR" :src="QR" />
+  <el-dialog v-model="isCheckingQR" title="查看付款二维码" style="text-align:center">
+    <img v-if="QR" :src="QR" width="200"/>
     <el-icon v-else class="avatar-uploader-icon">
       <Close />
     </el-icon>
