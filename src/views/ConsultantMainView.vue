@@ -7,10 +7,8 @@
       </el-header>
       <el-main style="background: #f4f4f5;
                       padding-left:0px;
-                      padding-right:0px;
+                      padding-right:30px;
                       padding-top:20px;">
-        <el-container>
-        <el-aside style="width:60%">
           <el-row class="head" justify="center">
             <el-col :span="3" >
               <el-avatar shape="square" :size="60" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
@@ -64,43 +62,18 @@
               </el-col>
             </el-row>
           </div>
-          <div style="background:#fff;margin-left:30px;margin-top:30px;">
-            <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px;padding-top:20px;">推荐咨询师</el-row>
-            <el-row>
-              <el-col :span="12" v-for="i in consultant_info" :key=i>
-              <consultation-card :info="i">
-             </consultation-card>
-              </el-col>
-            </el-row>
-          </div>
-        </el-aside>
-        <el-main style="padding-top:0px;padding-left:30px;">
-          <div style="background:#fff;padding-top:20px;padding-bottom:5px;">
-            <div style="font-weight:bolder;margin-left:30px;margin-bottom:20px;">待开始的咨询</div>
-            <consultation-card :info=consultant_info[2]></consultation-card>
-          </div>
-          <div style="padding:20px 30px;background:#fff;margin-top:30px;">
-            <div style="font-weight:bolder;margin-bottom:20px;">推荐量表</div>
-            <scale-card></scale-card>
-          </div>
-        </el-main>
-        </el-container>
       </el-main>
     </el-container>
 </template>
 
 <script>
 //import NavBar from "../../src/components/NavBar/NavBar";
-import ConsultationCard from "../components/Consult/ConsultantCard.vue"
-import ScaleCard from "../components/Scale/ScaleCard"
 import {  
     Search
 } from "@element-plus/icons-vue"
 export default {
   components:{
     Search,
-    ConsultationCard,
-    ScaleCard,
     //NavBar
   },
   data() {
@@ -108,59 +81,11 @@ export default {
       userName:"美女",
       age:20,
       sex:"女",
-      consultant_info:[{
-            name:"美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"}
-            ],
-            curNum:12,
-            maxNum:30,
-            time:"11/11 11:11",
-        },
-        {   name:"超级美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"}
-            ],
-            curNum:14,
-            maxNum:20,
-            time:"11/11 11:11",
-        },
-        {   name:"普通美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"},
-                {tag:"抑郁"}
-            ],
-            curNum:14,
-            maxNum:20,
-            time:"11/11 11:11",
-        },
-        {   name:"无敌美女",
-            sex:"女",
-            age:20,
-            price:648,
-            tagList:[
-                {tag:"焦虑"},
-                {tag:"抑郁"}
-            ],
-            curNum:14,
-            maxNum:20,
-            time:"11/11 11:11",
-        },
-        ],
     };
   },
   methods: {
     goUserInfo(){
-      this.$router.replace("/userInfo");
+      this.$router.replace("/consultantInfo");
     },
     goTest(){
       this.$router.replace("/test");

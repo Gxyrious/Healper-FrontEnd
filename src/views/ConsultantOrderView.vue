@@ -122,6 +122,7 @@
           toUserType: "", //聊天对象的用户类型，比如本人是client，toUserType就是consultant
           orderNum:0,
           orderInfo:[],
+          clientInfo:[],
           page: 1,
           dialogVisible:false,
           codeLink:"",
@@ -150,7 +151,21 @@
               for (var i = 0; i < this.orderInfo.length; i++) {
                 this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
                 this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+                axios({
+                  method:'get',
+                  url:'api/user/info',
+                  params:{
+                    id:this.orderInfo[i].clientId,
+                    userType:"client"
+                    }
+                  }).then((res)=>{
+                    console.log("来访者信息",res.data);
+                    Object.assign(this.orderInfo[i],{clientName: res.data.nickname});
+                    Object.assign(this.orderInfo[i],{clientSex: res.data.sex});
+                    Object.assign(this.orderInfo[i],{clientAge: res.data.age});
+                  })
               }
+              console.log(this.orderInfo);
             }).catch((err) =>{
               console.log(err);
             });
@@ -184,7 +199,7 @@
               status: curStatus
             },
           }).then((res) => {
-              console.log("res", res);
+              console.log("res.status", res.status);
               if (res.status == 200){
                 if(curStatus=='c'){
                   ElMessage({
@@ -194,7 +209,7 @@
                       duration: 2000,
                     });
                 }
-                if(curStatus=='s'){
+                else if(curStatus=='s'){
                   ElMessage({
                       message: "已开始咨询，请进入咨询室！",
                       type: "success",
@@ -202,7 +217,7 @@
                       duration: 2000,
                     });
                 }
-                if(curStatus=='s'){
+                else if(curStatus=='f'){
                   ElMessage({
                       message: "已成功结束咨询，请去订单页撰写档案！",
                       type: "success",
@@ -212,33 +227,33 @@
                 }
                 this.reload();
               }
-          else{
-            if(curStatus=='c'){
-              ElMessage({
-                    message: "订单取消失败，请重试！",
-                    type: "error",
-                    showClose: true,
-                    duration: 2000,
-                });
-              }
-            }
-            if(curStatus=='s'){
-              ElMessage({
-                  message: "开始咨询失败，请重试！",
-                  type: "error",
-                  showClose: true,
-                  duration: 2000,
-                });
-            }
-            if(curStatus=='s'){
-              ElMessage({
-                  message: "结束咨询失败，请重试！",
-                  type: "error",
-                  showClose: true,
-                  duration: 2000,
-                });
-            }
-          }) 
+              else{
+                if(curStatus=='c'){
+                  ElMessage({
+                        message: "订单取消失败，请重试！",
+                        type: "error",
+                        showClose: true,
+                        duration: 2000,
+                    });
+                  }
+                  else if(curStatus=='s'){
+                  ElMessage({
+                      message: "开始咨询失败，请重试！",
+                      type: "error",
+                      showClose: true,
+                      duration: 2000,
+                    });
+                  }
+                  if(curStatus=='f'){
+                    ElMessage({
+                      message: "结束咨询失败，请重试！",
+                      type: "error",
+                      showClose: true,
+                      duration: 2000,
+                    });
+                  }
+                }
+              }) 
         },
         goChat(id) {
           router.push({
@@ -246,9 +261,13 @@
             query: { toUserId: this.id }, //把聊天对象的id传给聊天室
           });
         },
-        getDate(n){
-          n=new Date(n)
-          return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
+        getDate(n) {
+          n = new Date(1000 * n);
+          return (
+          n.toLocaleDateString().replace(/\//g, "-") +
+          " " +
+          n.toTimeString().substr(0, 8)
+          );
         },
       },
     };
