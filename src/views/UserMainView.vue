@@ -82,9 +82,14 @@
         <el-main style="padding-top:0px;padding-left:30px;">
           <div style="background:#fff;padding-top:20px;padding-bottom:5px;">
             <div style="font-weight:bolder;margin-left:30px;margin-bottom:20px;">待开始的咨询</div>
-            <consultation-card>
-            </consultation-card>
-          </div>
+              <!-- <consultation-card>
+              </consultation-card> -->
+              <div style="height:120px;text-align:center;padding-top:30px">
+                <div style="font-size:23px;color:#878787;margin-bottom:10px">暂无待开始的咨询</div>
+                <el-link type="primary"
+                  :underline="false" @click="goConsult">快去预约吧</el-link>
+              </div>
+            </div>
           <div style="padding:20px 30px;background:#fff;margin-top:30px;">
             <div style="font-weight:bolder;margin-bottom:20px;">推荐量表</div>
             <scale-card 
@@ -204,7 +209,7 @@ export default {
       this.$router.replace("/documentRecord");
     },
     goTestResult(){
-      this.$router.replace("/documentRecord");
+      this.$router.replace("/scaleRecord");
     },
     goOrder(){
       this.$router.replace("/order");

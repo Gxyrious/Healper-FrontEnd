@@ -27,7 +27,7 @@
           <br /> <br /> <br /> <br />
         </div>
 
-        <div class="submit">
+        <div class="submit" style="text-align:center">
           <el-button @click="submit" type="primary">提交</el-button>
         </div>
       </div>

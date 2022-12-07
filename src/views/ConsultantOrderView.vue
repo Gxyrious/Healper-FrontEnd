@@ -19,8 +19,8 @@
         >
         <el-row style="margin-bottom: 30px; padding-left: 30px">
           <el-table :data="orderInfo" style="width: 100%">
-            <el-table-column prop="startTime" label="开始时间" width="150" />
-            <el-table-column prop="endTime" label="结束时间" width="150" />
+            <el-table-column prop="startTime" label="开始时间" width="155" />
+            <el-table-column prop="endTime" label="结束时间" width="155" />
             <el-table-column prop="userName" label="来访者" width="100" />
             <el-table-column prop="userSex" label="性别" width="50" />
             <el-table-column prop="userAge" label="年龄" width="50" />
@@ -36,6 +36,9 @@
                 <el-tag type="info" v-if="scope.row.status == 'c'">
                   已取消
                 </el-tag>
+                <el-tag type="warning" v-if="scope.row.status == 's'">
+                  已开始
+                </el-tag>
               </template>
             </el-table-column>
             <el-table-column prop="expense" label="费用" width="90" />
@@ -45,7 +48,7 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status == 'f' || scope.row.status == 'w'
+                    scope.row.status == 's'
                   "
                   @click="goChat(scope.row.clientId)"
                 >
@@ -55,11 +58,31 @@
                   type="primary"
                   :underline="false"
                   v-if="
-                    scope.row.status == 'p' || scope.row.status == 'w'
+                    scope.row.status == 'p'
                   "
                   @click="changeStatus(scope.row.id,'c')"
                 >
                   取消
+                </el-link>
+                <el-link
+                  type="primary"
+                  :underline="false"
+                  v-if="
+                    scope.row.status == 'w'
+                  "
+                  @click="changeStatus(scope.row.id,'s')"
+                >
+                  开始咨询
+                </el-link>
+                <el-link
+                  type="primary"
+                  :underline="false"
+                  v-if="
+                    scope.row.status == 's'
+                  "
+                  @click="changeStatus(scope.row.id,'f')"
+                >
+                  结束咨询
                 </el-link>
                 <el-link
                   type="primary"
@@ -124,27 +147,10 @@
               console.log("订单信息",res.data);
               this.orderInfo=res.data;
               console.log("订单信息Info",this.orderInfo[1]);
-              // for(var i=0;i<this.orderInfo.length;i++)
-              // {
-              //   console.log(this.orderInfo[i]);
-              //   axios({
-              //     method:'get',
-              //     url:'api/user/info',
-              //     params:{
-              //       id:this.orderInfo[i].clientId,
-              //       userType:"client",
-              //     },
-              //   }).then((res)=>{
-              //     console.log("用户信息",res.data);
-              //     console.log("当前用户名",res.data.nickname);
-              //     console.log("当前性别",res.data.sex);
-              //     console.log("当前年龄",res.data.age);
-              //     this.orderInfo[i]["userName"]=res.data.nickname;
-              //     this.orderInfo[i]["userAge"]=res.data.age;
-              //     this.orderInfo[i]["userSex"]=res.data.sex;
-              //     console.log("当前订单",this.orderInfo[i]);
-              //   })
-              // }
+              for (var i = 0; i < this.orderInfo.length; i++) {
+                this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
+                this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+              }
             }).catch((err) =>{
               console.log(err);
             });
@@ -182,7 +188,23 @@
               if (res.status == 200){
                 if(curStatus=='c'){
                   ElMessage({
-                      message: "取消成功",
+                      message: "订单取消成功！",
+                      type: "success",
+                      showClose: true,
+                      duration: 2000,
+                    });
+                }
+                if(curStatus=='s'){
+                  ElMessage({
+                      message: "已开始咨询，请进入咨询室！",
+                      type: "success",
+                      showClose: true,
+                      duration: 2000,
+                    });
+                }
+                if(curStatus=='s'){
+                  ElMessage({
+                      message: "已成功结束咨询，请去订单页撰写档案！",
                       type: "success",
                       showClose: true,
                       duration: 2000,
@@ -193,12 +215,28 @@
           else{
             if(curStatus=='c'){
               ElMessage({
-                    message: "取消失败",
+                    message: "订单取消失败，请重试！",
                     type: "error",
                     showClose: true,
                     duration: 2000,
                 });
               }
+            }
+            if(curStatus=='s'){
+              ElMessage({
+                  message: "开始咨询失败，请重试！",
+                  type: "error",
+                  showClose: true,
+                  duration: 2000,
+                });
+            }
+            if(curStatus=='s'){
+              ElMessage({
+                  message: "结束咨询失败，请重试！",
+                  type: "error",
+                  showClose: true,
+                  duration: 2000,
+                });
             }
           }) 
         },
@@ -207,6 +245,10 @@
             name: "chat",
             query: { toUserId: this.id }, //把聊天对象的id传给聊天室
           });
+        },
+        getDate(n){
+          n=new Date(n)
+          return n.toLocaleDateString().replace(/\//g, "-") + " " + n.toTimeString().substr(0, 8)
         },
       },
     };

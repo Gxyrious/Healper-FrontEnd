@@ -11,6 +11,7 @@
 
     <el-main style="margin:20px 30px; background:#ffffff;">
       <el-row style="font-weight:bolder;margin-bottom:30px;padding-left:30px">{{ scaleName }}</el-row>
+      <el-row style="padding-left:30px">您的测评结果是：</el-row>
       <el-row justify="center">
         <el-col :span="23">
           <ResultChart :factors="factors" :values="values"></ResultChart>

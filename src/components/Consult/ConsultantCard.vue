@@ -31,10 +31,13 @@
                 </div>
             </el-col>
             <el-col :span="6">
-                <el-button type="text" v-if="this.status==false" 
+                <el-button type="text" v-if="this.status=='0'" 
                 @click="appoint()" style="margin-left:40%"
                 >预约</el-button>
-                <el-button type="text" v-if="this.status==true" @click="goChat()">进入咨询室</el-button>
+                <el-button type="text" v-if="this.status=='1'" 
+                @click="changeStatus(this.historyId,'c')" style="margin-left:22%"
+                >取消预约</el-button>
+                <el-button type="text" v-if="this.status=='2'" @click="goChat()">进入咨询室</el-button>
             </el-col>
         </el-row>
     </el-card>
@@ -46,8 +49,12 @@ import axios from "axios";
 import { ElMessage } from "element-plus";
 export default {
   name: 'ConsultantCard',
-  props:['info','status','clientID'],
+  props:['info','status','clientID','historyId'],
   inject: ['reload'],
+  data() {
+        return {
+        };
+    },
   computed: {
   },
   created(){
@@ -72,7 +79,22 @@ export default {
           if(res.status==200)
           {
             console.log("预约成功");
+            console.log("res",res.data);
             this.reload();
+            ElMessage({
+                message: "预约成功，请去订单页支付！",
+                type: "success",
+                showClose: true,
+                duration: 2000,
+            });
+          }
+          else{
+          ElMessage({
+                message: "预约失败，请重试！",
+                type: "error",
+                showClose: true,
+                duration: 2000,
+            });
           }
         }).catch((err) =>{
           console.log(err);
@@ -83,7 +105,40 @@ export default {
         name: "chat",
         query: { toUserId: this.info?.id }, //把聊天对象的id传给聊天室
       });
-    }
+    },
+    changeStatus(orderId,curStatus){
+      axios({
+        method: "put",
+        url: "api/history/status",
+        data: {
+          historyId: orderId,
+          status: curStatus
+        },
+      }).then((res) => {
+          console.log("res", res);
+          if (res.status == 200){
+            if(curStatus=='c'){
+              ElMessage({
+                  message: "取消成功！",
+                  type: "success",
+                  showClose: true,
+                  duration: 2000,
+                });
+            }
+            this.reload();
+          }
+      else{
+        if(curStatus=='c'){
+          ElMessage({
+                message: "取消失败，请重试！",
+                type: "error",
+                showClose: true,
+                duration: 2000,
+            });
+          }
+        }
+      })
+    },
   }
 }
 </script>
