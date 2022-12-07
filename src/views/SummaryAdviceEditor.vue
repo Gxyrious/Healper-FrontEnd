@@ -57,7 +57,8 @@
 
 <script>
 import MyEditor from "../components/Editor/MyEditor.vue";
-
+import axios from "axios";
+import { ElMessage } from "element-plus";
 export default {
   components: {
     MyEditor,
