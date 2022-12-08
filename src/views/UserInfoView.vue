@@ -86,14 +86,14 @@
               </template>
               <div v-if="!isEditingName">
                 {{ userName }}
-                <el-button class="ebutton" @click="editName" circle><el-icon :style="iconStyle">
+                <el-button class="ebutton" @click="editName" circle size="small"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
               <div v-else>
                 <el-input v-model="userName">
                   <template #append>
-                    <el-button class="ebutton" @click="saveName"><el-icon :style="iconStyle">
+                    <el-button class="ebutton" size="small" @click="saveName"><el-icon :style="iconStyle">
                         <Check />
                       </el-icon></el-button>
                   </template>
@@ -110,7 +110,7 @@
               </template>
               <div v-if="!isEditingGender">
                 {{ gender }}
-                <el-button class="ebutton" circle @click="editGender"><el-icon :style="iconStyle">
+                <el-button class="ebutton" size="small" circle @click="editGender"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
@@ -122,7 +122,7 @@
                     </el-select>
                   </el-col>
                   <el-col :span="12">
-                    <el-button class="ebutton" @click="saveGender"><el-icon :style="iconStyle">
+                    <el-button class="ebutton" @click="saveGender" size="small"><el-icon :style="iconStyle">
                         <Check />
                       </el-icon></el-button>
                   </el-col>
@@ -137,7 +137,7 @@
               </template>
               <div v-if="!isEditingAge">
                 {{ age }}
-                <el-button class="ebutton" circle @click="editAge"><el-icon :style="iconStyle">
+                <el-button class="ebutton" circle @click="editAge" size="small"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
@@ -146,7 +146,7 @@
                 <el-input-number v-model="age" :min="0" :max="120" controls-position="right" />
 
 
-                <el-button class="ebutton" @click="saveAge"><el-icon :style="iconStyle">
+                <el-button class="ebutton" @click="saveAge" size="small"><el-icon :style="iconStyle">
                     <Check />
                   </el-icon></el-button>
               </div>
@@ -174,8 +174,8 @@
           </p>
 
           <el-table :data="recentScale" border style="width: 100%">
-            <el-table-column prop="endTime" label="时间" width="170" />
-            <el-table-column prop="scaleName" label="名称" width="170" />
+            <el-table-column prop="endTime" label="时间" width="160" />
+            <el-table-column prop="scaleName" label="名称" width="160" />
             <el-table-column label="操作">
               <template #default="scope">
                 <el-button link size="small" @click="viewResult(scope.row.scaleRecordId)">查看</el-button>
@@ -189,8 +189,8 @@
             <el-button type="primary" class="ebutton" @click="viewAllDocument">查看全部</el-button>
           </p>
           <el-table :data="recentDocument" border style="width: 100%">
-            <el-table-column prop="endTime" label="时间" width="170" />
-            <el-table-column prop="consultantRealName" label="咨询师" width="170" />
+            <el-table-column prop="endTime" label="时间" width="160" />
+            <el-table-column prop="consultantRealName" label="咨询师" width="160" />
             <el-table-column label="操作">
               <template #default="scope">
                 <el-popover placement="top-start" title="建议" :width="400" trigger="click" :content="scope.row.advice">
