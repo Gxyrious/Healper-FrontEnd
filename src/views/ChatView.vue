@@ -206,7 +206,7 @@ export default {
     getChatRecord() {
       axios({
         method: "get",
-        url: "api/chat/records",
+        url: "api/consult/records",
         params: {
           clientId: this.clientId,
           consultantId: this.consultantId,

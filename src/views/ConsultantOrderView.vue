@@ -238,7 +238,7 @@ export default {
     goChat(id,orderID,status) {
       router.push({
         name: "chat",
-        query: { toUserId: this.id, orderId:orderID, orderStatus:status }, //把聊天对象的id传给聊天室
+        query: { toUserId: id, orderId:orderID, orderStatus:status }, //把聊天对象的id传给聊天室
       });
     },
     getDate(n) {
