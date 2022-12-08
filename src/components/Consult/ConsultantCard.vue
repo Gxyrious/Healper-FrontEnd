@@ -1,26 +1,28 @@
 <template>
     <el-card shadow="hover">
         <el-row>
-            <el-col :span="16">
+            <el-col :span="12">
                 <el-avatar shape="square" :size="this.avatarSize" :src="this.info?.profile" />
             </el-col>
-            <el-col :span="8">
-                <div style="font-size:30px;font-weight:500;display:flex;justify-content: flex-end;padding-right:20px;padding-top:18px">
+            <el-col :span="12">
+                <div style="font-size:28px;font-weight:500;display:flex;justify-content: flex-end;padding-top:18px">
                     {{this.info?.realname}}
                 </div>
-                <div style="font-size:13px;font-weight:300;display:flex;justify-content: flex-end;padding-right:25px;margin-top:2px">
+                <div style="font-size:13px;font-weight:300;display:flex;justify-content: flex-end;padding-right:8px;margin-top:2px">
                     {{ this.info?.sex=='m'?'男':'女' }} | {{this.info?.age}}
                 </div>
-                <div style="display:flex;justify-content: flex-end;margin-top:60px;padding-right:8px">
-                    <el-tag v-for="i in this.info?.label" :key="i">{{i}}</el-tag>
-                </div>
             </el-col>
+        </el-row>
+        <el-row style="justify-content:flex-end">
+          <div style="display:flex;justify-content: flex-end;margin-top:30px;">
+            <el-tag v-for="i in this.info?.label" :key="i">{{i}}</el-tag>
+          </div>
         </el-row>
         <el-row style="margin-top:20px;margin-left:15px;font-size:25px;font-weight:400">
             <el-col :span="8" style="padding-top:5px;padding-left:5px">
                 {{this.info?.expense}}￥
             </el-col>
-            <el-col :span="5">
+            <el-col :span="7">
             </el-col>
             <el-col :span="6">
                 <el-button type="text" size="large" v-if="this.status=='0'" 
@@ -188,9 +190,9 @@ export default {
 
 <style scoped>
 .el-card{
-    height:300px;
-    margin-left:30px;
-    margin-right:40px;
+    height:240px+"this.avatarSize";
+    margin-left:20px;
+    margin-right:20px;
     margin-bottom:40px;
     padding-bottom:20px;
 }

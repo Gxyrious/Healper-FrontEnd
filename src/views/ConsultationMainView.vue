@@ -39,7 +39,7 @@ export default {
     return {
         id:this.$store.state.userInfo.user.id,
         consultantInfo:[],
-        size:120,
+        size:100,
     };
   },
   created(){
@@ -59,6 +59,11 @@ export default {
         {
             console.log(this.consultantInfo[i].info.label);
             this.consultantInfo[i].info.label=JSON.parse(this.consultantInfo[i].info.label);
+            console.log(this.consultantInfo[i].info.label);
+            if(this.consultantInfo[i].info.label.length>3)
+            {
+                this.consultantInfo[i].info.label=this.consultantInfo[i].info.label.slice(0,3);
+            }
         }
         console.log(this.consultantInfo[0]);
     }).catch((err) => {

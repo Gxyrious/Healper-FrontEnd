@@ -9,7 +9,6 @@ import DocumentRecordView from '../views/DocumentRecordView.vue'
 import ScaleMainView from '../views/ScaleMainView.vue'
 import OrderView from '../views/OrderView.vue'
 import ScaleDetailView from '../views/ScaleDetailView.vue'
-import ConsultantMainView from '../views/ConsultantMainView.vue'
 import ConsultantInfoView from '../views/ConsultantInfoView.vue'
 import SummaryAdviceEditor from '../views/SummaryAdviceEditor.vue'
 import ChatView from '../views/ChatView.vue'
@@ -67,11 +66,6 @@ const routes = [
     path: '/scaleDetail',
     name: 'scaleDetail',
     component: ScaleDetailView,
-  },
-  {
-    path: '/consultantMain',
-    name: 'consultantMain',
-    component: ConsultantMainView,
   },
   {
     path: '/consultantInfo',

@@ -136,7 +136,7 @@ export default {
       consultantInfo:[],
       appointedInfo:{},
       isAppointed:false,
-      size1:120,
+      size1:130,
       size2:110,
     };
   },
@@ -194,12 +194,17 @@ export default {
         {
             if(this.consultantInfo[i].info.label!=""){
               this.consultantInfo[i].info.label=JSON.parse(this.consultantInfo[i].info.label);
+              if(this.consultantInfo[i].info.label.length>3)
+              {
+                this.consultantInfo[i].info.label=this.consultantInfo[i].info.label.slice(0,3);
+              }
             }
         }
         console.log("ok");
     }).catch((err) => {
         console.log(err);
     });
+    console.log("现在开始查询是否有预约的");
     axios({
         url: 'api/history/order/waiting',
         method: 'get',
@@ -207,12 +212,20 @@ export default {
             clientId:this.id,
         },
     }).then((res) => {
-        console.log("预约订单",res);
+        console.log("预约订单",res.data);
         if(res.data!="")
         {
           this.isAppointed=true;
           this.appointedInfo=res.data;
         }
+        for(var i=0;i<this.appointedInfo.length;i++)
+        {
+          this.appointedInfo[i].age=this.appointedInfo[i].consultantAge;
+          this.appointedInfo[i].sex=this.appointedInfo[i].consultantSex;
+          this.appointedInfo[i].profile=this.appointedInfo[i].consultantProfile;
+          this.appointedInfo[i].label=this.appointedInfo[i].consultantLabel;
+        }
+        console.log("当前预约状态",this.isAppointed);
     }).catch((err) => {
         console.log(err);
     });
