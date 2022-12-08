@@ -75,7 +75,7 @@
       <el-row justify="center">
         <el-column :span="22">
           <el-descriptions title="详细信息" :column="3" size="large" border>
-            <el-descriptions-item width="150px">
+            <el-descriptions-item width="200px">
               <template #label>
                 <div class="cell-item">
                   <el-icon :style="iconStyle">
