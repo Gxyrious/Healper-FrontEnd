@@ -22,11 +22,15 @@
     </el-tab-pane>
     <el-tab-pane label="历史记录" name="second">
   <el-table :data="scaleRecord"  style="width: 100%">
-    <el-table-column prop="endTime" label="时间" width="400" />
-    <el-table-column prop="scaleName" label="名称" width="400" />
+    <el-table-column prop="endTime" label="时间" width="350" />
+    <el-table-column prop="scaleName" label="名称" width="350" />
     <el-table-column  label="操作">
         <template #default="scope">
+          <el-row>
+            <el-col :span="12">
         <el-button link  size="small" @click="viewResult(scope.row.scaleRecordId)">查看</el-button>
+            </el-col>
+            <el-col :span="12">
         <el-popconfirm title="您确定要删除这条测评记录吗？" confirm-button-text="是"
     cancel-button-text="否" @confirm="deleteRecord(scope.row.scaleRecordId)">
     
@@ -34,7 +38,8 @@
       <el-button link  size="small">删除</el-button>
     </template>
   </el-popconfirm>
-        
+</el-col>
+</el-row>
         </template>
     </el-table-column>
   </el-table>

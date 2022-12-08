@@ -28,7 +28,7 @@
       </span>
     </template>
   </el-dialog>
-  <el-dialog v-model="isCheckingQR" title="查看付款二维码" style="text-align:center">
+  <el-dialog v-model="isCheckingQR" title="查看付款二维码" style="text-align:center" >
     <img v-if="QR" :src="QR" width="200"/>
     <el-icon v-else class="avatar-uploader-icon">
       <Close />
@@ -116,11 +116,11 @@
         </el-col>
         <el-col :span="11">
           <div class="password">
-            <el-button type="primary" class="pdbutton" @click="isCheckingQR = true"><el-icon class="el-icon--left">
+            <el-button type="primary" class="pdbutton" @click="isCheckingQR = true" size="small"><el-icon class="el-icon--left">
                 <Link>
                 </Link>
               </el-icon>我的付款二维码</el-button>
-            <el-button type="primary" class="pdbutton" @click="isEditingPassword = true"><el-icon class="el-icon--left">
+            <el-button type="primary" class="pdbutton" @click="isEditingPassword = true" size="small"><el-icon class="el-icon--left">
                 <Edit></Edit>
               </el-icon>修改密码</el-button>
           </div>
@@ -140,14 +140,14 @@
               </template>
               <div v-if="!isEditingName">
                 {{ userName }}
-                <el-button class="ebutton" @click="editName" circle><el-icon :style="iconStyle">
+                <el-button class="ebutton" @click="editName" circle size="small"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
               <div v-else>
                 <el-input v-model="userName">
                   <template #append>
-                    <el-button class="ebutton" @click="saveName"><el-icon :style="iconStyle">
+                    <el-button class="ebutton" @click="saveName" size="small"><el-icon :style="iconStyle">
                         <Check />
                       </el-icon></el-button>
                   </template>
@@ -164,7 +164,7 @@
               </template>
               <div v-if="!isEditingGender">
                 {{ gender }}
-                <el-button class="ebutton" circle @click="editGender"><el-icon :style="iconStyle">
+                <el-button class="ebutton" circle @click="editGender" size="small"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
@@ -176,7 +176,7 @@
                     </el-select>
                   </el-col>
                   <el-col :span="12">
-                    <el-button class="ebutton" @click="saveGender"><el-icon :style="iconStyle">
+                    <el-button class="ebutton" @click="saveGender" size="small"><el-icon :style="iconStyle">
                         <Check />
                       </el-icon></el-button>
                   </el-col>
@@ -191,7 +191,7 @@
               </template>
               <div v-if="!isEditingAge">
                 {{ age }}
-                <el-button class="ebutton" circle @click="editAge"><el-icon :style="iconStyle">
+                <el-button class="ebutton" circle @click="editAge" size="small"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
@@ -200,7 +200,7 @@
                 <el-input-number v-model="age" :min="0" :max="120" controls-position="right" />
 
 
-                <el-button class="ebutton" @click="saveAge"><el-icon :style="iconStyle">
+                <el-button class="ebutton" @click="saveAge" size="small"><el-icon :style="iconStyle">
                     <Check />
                   </el-icon></el-button>
               </div>
@@ -213,7 +213,7 @@
               </template>
               <div v-if="!isEditingFee">
                 {{ fee }}
-                <el-button class="ebutton" circle @click="editFee"><el-icon :style="iconStyle">
+                <el-button class="ebutton" circle @click="editFee" size="small"><el-icon :style="iconStyle">
                     <Edit />
                   </el-icon></el-button>
               </div>
@@ -222,7 +222,7 @@
                 <el-input-number v-model="fee" :min="0" :max="99999" :controls="false" />
 
 
-                <el-button class="ebutton" @click="saveFee"><el-icon :style="iconStyle">
+                <el-button class="ebutton" @click="saveFee" size="small"><el-icon :style="iconStyle">
                     <Check />
                   </el-icon></el-button>
               </div>
@@ -234,7 +234,7 @@
                 </div>
               </template>
               <el-tag v-for="item in label" style="margin: 5px" :key="item">{{ item }}</el-tag>
-              <el-button class="ebutton" circle @click="isEditingLabel = true"><el-icon :style="iconStyle">
+              <el-button class="ebutton" circle @click="isEditingLabel = true" size="small"><el-icon :style="iconStyle">
                   <Edit />
                 </el-icon></el-button>
             </el-descriptions-item>
