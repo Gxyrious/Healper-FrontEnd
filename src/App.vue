@@ -47,7 +47,7 @@ export default {
       if (userInfo.userType == 'client')
         router.replace('/main');
       else if (userInfo.userType == 'consultant')
-        router.replace('/consultantMain');
+        router.replace('/consultantOrder');
     }
   })
 },
