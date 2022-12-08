@@ -50,6 +50,7 @@
 <script>
 import router from "@/router";
 import store from "@/store";
+import axios from "axios";
 import {  
     House,
     ChatDotRound,
@@ -78,6 +79,10 @@ export default {
       localStorage.clear();
       router.replace('/login');
       this.$emit('logout');
+      axios({
+        url:"api/user/logout",
+        method: "post",
+      })
     },
   },
 };

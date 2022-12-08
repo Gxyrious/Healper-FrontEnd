@@ -108,7 +108,7 @@ export default {
               name = userInfo.user.nickname;
             }
             else if (userInfo.userType == "consultant"){
-              this.$router.replace("/consultantMain");
+              this.$router.replace("/consultantOrder");
               name = userInfo.user.realname;
             }
             ElMessage({
