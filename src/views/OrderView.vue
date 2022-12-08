@@ -136,11 +136,17 @@ export default {
           }
         }).then((res)=>{
           console.log("现在开始请求");
-          console.log("订单信息",res.data);
+          console.log(res.data);
           this.orderInfo=res.data;
           for (var i = 0; i < this.orderInfo.length; i++) {
             this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
+            if (this.orderInfo[i].startTime == null) {
+              this.orderInfo[i].startTime = "待开始";
+            } 
             this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+            if (this.orderInfo[i].endTime == null) {
+              this.orderInfo[i].endTime = "待结束";
+            }
           }
         }).catch((err) =>{
           console.log(err);
@@ -228,6 +234,7 @@ export default {
     },
     pay(consultantId,orderId){
       console.log("orderId:",orderId);
+      console.log("consultantId:",consultantId);
       this.orderId=orderId;
       axios({
           method: 'get',
@@ -282,12 +289,17 @@ export default {
       router.push({ name: "SAEditor" });
     },
     getDate(n) {
-      n = new Date(1000 * n);
-      return (
-        n.toLocaleDateString().replace(/\//g, "-") +
-        " " +
-        n.toTimeString().substr(0, 8)
-      );
+      if (n == null) {
+        return null;
+      } else {
+        n = new Date(1000 * n);
+        return (
+          n.toLocaleDateString().replace(/\//g, "-") +
+          " " +
+          n.toTimeString().substr(0, 8)
+        );
+      }
+      
     },
   },
 };

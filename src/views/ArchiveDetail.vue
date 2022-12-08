@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     getDate(n) {
-      n = new Date(n);
+      n = new Date(n * 1000);
       return (
         n.toLocaleDateString().replace(/\//g, "-") +
         " " +
@@ -66,8 +66,6 @@ export default {
     },
     init() {
       this.archive = JSON.parse(this.$route.query.archiveContent);
-      this.archive.startTime = this.getDate(this.archive.startTime);
-      this.archive.endTime = this.getDate(this.archive.endTime);
       console.log(this.archive.advice);
       if (this.archive.advice != null) {
         this.hasAdvice = true;
