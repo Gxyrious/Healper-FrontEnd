@@ -135,12 +135,23 @@ export default {
         console.log("res", res);
         this.documentRecord = res.data;
         for (var i = 0; i < this.documentRecord.length; i++) {
-          this.documentRecord[i].endTime = this.getDate(
-            this.documentRecord[i].endTime
-          );
-          this.documentRecord[i].startTime = this.getDate(
-            this.documentRecord[i].startTime
-          );
+          if(this.documentRecord[i].startTime!=null)
+            {
+              this.documentRecord[i].startTime = this.getDate(this.documentRecord[i].startTime);
+            }
+            else
+            {
+              this.documentRecord[i].startTime = "待开始";
+            }
+            console.log("结束时间",this.documentRecord[i].endTime);
+            if(this.documentRecord[i].endTime!=null)
+            {
+              this.documentRecord[i].endTime = this.getDate(this.documentRecord[i].endTime);
+            }
+            else
+            {
+              this.documentRecord[i].endTime = "待结束";
+            }
         }
       }
     });
@@ -170,12 +181,23 @@ export default {
         console.log("res", res);
         this.documentRecord = res.data;
         for (var i = 0; i < this.documentRecord.length; i++) {
-          this.documentRecord[i].endTime = this.getDate(
-            this.documentRecord[i].endTime
-          );
-          this.documentRecord[i].startTime = this.getDate(
-            this.documentRecord[i].startTime
-          );
+            if(this.documentRecord[i].startTime!=null)
+            {
+              this.documentRecord[i].startTime = this.getDate(this.documentRecord[i].startTime);
+            }
+            else
+            {
+              this.documentRecord[i].startTime = "待开始";
+            }
+            console.log("结束时间",this.documentRecord[i].endTime);
+            if(this.documentRecord[i].endTime!=null)
+            {
+              this.documentRecord[i].endTime = this.getDate(this.documentRecord[i].endTime);
+            }
+            else
+            {
+              this.documentRecord[i].endTime = "待结束";
+            }
         }
       });
     },

@@ -257,7 +257,10 @@ export default {
       console.log("res", res);
       this.recentDocument = res.data;
       for (var i = 0; i < this.recentDocument.length; i++) {
-        this.recentDocument[i].endTime = this.getDate(this.recentDocument[i].endTime);
+        if(this.recentDocument[i].endTime!=null)
+        {
+          this.recentDocument[i].endTime = this.getDate(this.recentDocument[i].endTime);
+        }
       }
     });
 

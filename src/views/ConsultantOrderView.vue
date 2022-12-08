@@ -148,8 +148,24 @@ export default {
           console.log("当前订单1",this.orderInfo);
           for (var i = 0; i < this.orderInfo.length; i++) {
             console.log("开始遍历");
-            this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
-            this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+            console.log(this.orderInfo[i].startTime);
+            if(this.orderInfo[i].startTime!=null)
+            {
+              this.orderInfo[i].startTime = this.getDate(this.orderInfo[i].startTime);
+            }
+            else
+            {
+              this.orderInfo[i].startTime = "待开始";
+            }
+            console.log("结束时间",this.orderInfo[i].endTime);
+            if(this.orderInfo[i].endTime!=null)
+            {
+              this.orderInfo[i].endTime = this.getDate(this.orderInfo[i].endTime);
+            }
+            else
+            {
+              this.orderInfo[i].endTime = "待结束";
+            }
             this.orderInfo[i].clientSex = this.orderInfo[i].clientSex=="f"?"女":"男";
           }
         });
