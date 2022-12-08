@@ -15,7 +15,18 @@
     // Try 'horizontal'
     orient: 'horizontal',
     //right: 10,
-    top: 'bottom'
+    top: 'bottom',
+    selected:{
+      '躯体化': true,
+      '强迫': false,
+      '人际关系敏感': false,
+      '抑郁': false,
+      '焦虑': false,
+      '敌对': false,
+      '恐怖': false,
+      '偏执': false,
+      '精神病性': false,
+    }
   },
                 //legend:[props.analysis[0].factor, props.analysis[1].factor, props.analysis[2].factor, props.analysis[3].factor, props.analysis[4].factor, props.analysis[5].factor, props.analysis[6].factor, props.analysis[7].factor, props.analysis[8].factor,],
                 dataset:[{
