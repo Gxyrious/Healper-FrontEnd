@@ -7,8 +7,8 @@
         <el-breadcrumb-item>心理量表</el-breadcrumb-item>
       </el-breadcrumb>
     </el-header>
-
-    <el-main>
+<el-container style="background: #f4f4f5">
+    <el-main style="margin: 20px 30px; background: #ffffff">
       <div class="scale-name">
         <span>量表名称：{{ this.scaleName }}</span>
       </div>
@@ -32,7 +32,7 @@
         </div>
       </div>
     </el-main>
-
+  </el-container>
   </el-container>
 
   <div class="scale-question">
@@ -154,6 +154,7 @@ export default {
   border-bottom: 0.6px solid rgb(174, 174, 174);
   padding-top: 20px;
   padding-bottom: 20px;
+  background: #ffffff;
 }
 
 .scale-name {
@@ -161,13 +162,13 @@ export default {
 }
 
 .question {
-  margin: 10px;
+  margin: 5px;
   text-align: center;
 }
 
 .el-radio {
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
   padding-left: 40px;
   padding-right: 40px;
 }
@@ -181,4 +182,5 @@ export default {
   margin: 20px;
 
 }
+
 </style>
