@@ -217,14 +217,16 @@ export default {
         {
           this.isAppointed=true;
           this.appointedInfo=res.data;
+          this.appointedInfo["age"]=this.appointedInfo.consultantAge;
+          this.appointedInfo["sex"]=this.appointedInfo.consultantSex;
+          this.appointedInfo["profile"]=this.appointedInfo.consultantProfile;
+          this.appointedInfo["label"]=JSON.parse(this.appointedInfo.consultantLabel);
+          if(this.appointedInfo.label.length>3)
+          {
+            this.appointedInfo.label=this.appointedInfo.label.slice(0,3);
+          }
         }
-        for(var i=0;i<this.appointedInfo.length;i++)
-        {
-          this.appointedInfo[i].age=this.appointedInfo[i].consultantAge;
-          this.appointedInfo[i].sex=this.appointedInfo[i].consultantSex;
-          this.appointedInfo[i].profile=this.appointedInfo[i].consultantProfile;
-          this.appointedInfo[i].label=this.appointedInfo[i].consultantLabel;
-        }
+        console.log(this.appointedInfo);
         console.log("当前预约状态",this.isAppointed);
     }).catch((err) => {
         console.log(err);

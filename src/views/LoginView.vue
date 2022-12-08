@@ -3,7 +3,7 @@
       <el-container>
         <el-header>
           <div id="registerTips">
-            <el-link type="primary" style="font-size: small" @click="goRegister">
+            <el-link type="primary" style="font-size: small;margin-top:30px" @click="goRegister">
               <span>还没有账号，注册——</span>
             </el-link>
           </div>
