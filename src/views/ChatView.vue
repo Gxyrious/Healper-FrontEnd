@@ -312,14 +312,28 @@ export default {
           }).then((res) => {
           console.log("res.status", res.status);
             if (res.status == 200) {
-              ElMessage({
-                message: "咨询结束，请去订单页面撰写档案！",
-                type: "success",
-                showClose: true,
-                duration: 2000,
-              });
-              this.orderStatus="f";
-              this.$router.replace("/consultantOrder");
+              if(this.userType=="consultant")
+              {
+                ElMessage({
+                  message: "咨询结束，请去订单页面撰写档案！",
+                  type: "success",
+                  showClose: true,
+                  duration: 2000,
+                });
+                this.orderStatus="f";
+                this.$router.replace("/consultantOrder");
+              }
+              else if(this.userType=="client")
+              {
+                ElMessage({
+                  message: "咨询结束！",
+                  type: "success",
+                  showClose: true,
+                  duration: 2000,
+                });
+                this.orderStatus="f";
+                this.$router.replace("/main");
+              }
             }
             else
             {

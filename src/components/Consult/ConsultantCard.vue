@@ -188,7 +188,7 @@ export default {
 
 <style scoped>
 .el-card{
-    height:250px;
+    height:300px;
     margin-left:30px;
     margin-right:40px;
     margin-bottom:40px;
