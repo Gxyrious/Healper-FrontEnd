@@ -184,7 +184,6 @@ export default {
             clientId:this.id,
             page:1,
             size:4,
-            label: "",
         },
     }).then((res) => {
         console.log("这是首页");
