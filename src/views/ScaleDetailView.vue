@@ -27,6 +27,16 @@
           <br /> <br /> <br /> <br />
         </div>
 
+        <div class="question" v-for="(subjective, index) in this.subjectives" :key="index">
+          <span class="single-question">{{ this.quesNum + index + 1 }}. {{ subjective }}</span>
+          <el-input 
+          v-model="this.answers[index]" 
+          style="margin-top: 10px; margin-bottom: 20px"
+          type="textarea"
+          :autosize="{ minRows: 3, maxRows: 5 }"
+          placeholder=""></el-input>
+        </div>
+
         <div class="submit" style="text-align:center">
           <el-button @click="submit" type="primary">提交</el-button>
         </div>
@@ -60,6 +70,8 @@ export default {
       factors: {},
       choices: {},
       questions: [],
+      subjectives: [],
+      answers: {},
     }
   },
   created() {
@@ -72,24 +84,28 @@ export default {
       }
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 200) {
           var resData = res.data;
           this.quesNum = resData.quesNum;
           this.scaleName = resData.name;
           this.questions = JSON.parse(resData.content.replaceAll('/', ''));
-          console.log(this.questions);
+          this.subjectives = JSON.parse(resData.subjective.replaceAll('/', ''));
+          // console.log(this.questions);
           for (var i = 0; i < this.questions.length; i++) {
             var ques = this.questions[i];
             this.choices[i] = 0;
             this.factors[ques["factor"]] = 0;
           }
-          console.log(this.choices);
+          for (var i = 0; i < this.subjectives.length; i++) {
+            this.answers[i] = "";
+          }
+          // console.log(this.choices);
         }
       })
   },
   methods: {
-    submit() {
+    async submit() {
       // 提交量表
       console.log(this.choices);
       for (let i = 0; i < this.questions.length; i++) {
@@ -105,7 +121,7 @@ export default {
         let factor = this.questions[i]["factor"];
         this.factors[factor] += score;
       }
-      console.log(this.factors);
+      // console.log(this.factors);
       let factorKeys = Object.keys(this.factors);
       let jsonFactors = []
       for (let i = 0; i < factorKeys.length; i++) {
@@ -114,7 +130,33 @@ export default {
           "value": this.factors[factorKeys[i]],
         })
       }
+      // console.log("原来的因子：", jsonFactors);
+      let listAnswers = []
+      for (let i = 0; i < this.subjectives.length; i++) {
+        let question = this.subjectives[i];
+        let answer = this.answers[i];
+        listAnswers.push({
+          "question": question,
+          "answer": answer,
+        });
+      }
       axios({
+        url: "http://81.68.102.171:5000/scale/subjective",
+        method: "post",
+        data: listAnswers,
+      }).then(async res => {
+        let subjectiveFactors = res.data;
+        for (let i = 0; i < subjectiveFactors.length; i++) {
+          let factor = subjectiveFactors[i]["factor"];
+          let value = subjectiveFactors[i]["value"];
+          for (let j = 0; j < jsonFactors.length; j++) {
+            if (jsonFactors[j]["factor"] == factor) {
+              jsonFactors[j]["value"] += parseInt(value);
+            }
+          }
+        }
+        // console.log("最终的因子：", jsonFactors);
+        await axios({
         url: "api/scale/update",
         method: "post",
         data: {
@@ -123,12 +165,11 @@ export default {
           isHidden: 0,
           scaleId: this.scaleId + 1,
           record: JSON.stringify(jsonFactors),
+          subjective: JSON.stringify(listAnswers),
         }
-      })
-      .then((res) => {
-        console.log(res);
+      }).then((res) => {
+        // console.log(res);
         let recordId = parseInt(res.data.id);
-        console.log(recordId);
         this.$router.push({
           path: "/scaleResult",
           query: {
@@ -136,8 +177,8 @@ export default {
           },
         });
       })
-      .catch((err) => {
-        console.log(err);
+      }).catch(err => {
+        // console.log(err);
         ElMessage({
           message: "提交失败！",
           type: "warning"
