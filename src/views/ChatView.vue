@@ -15,7 +15,16 @@
           <div style="text-align: center; line-height: 40px">
             咨询聊天室 ( {{ toUserTypeCH }}: {{ toName }} )
           </div>
-          <div style="text-align: center; margin-bottom: 10px;">
+          <el-row>
+            <el-col :span="8"/>
+            <el-col :span="3">姓名：{{this.clientNickname}}</el-col>
+            <el-col :span="3">性别：{{this.clientSex}}</el-col>
+            <el-col :span="3">年龄：{{this.clientAge}}</el-col>
+          </el-row>
+          <el-row style="padding-left:60px;font-size:14px;font-weight:400;margin-top:10px;color:grey">
+            <el-col :span="4" v-for="i in scale">{{i.factor}}：{{i.value}}</el-col>
+          </el-row>
+          <div style="text-align: center; margin-top:10px; margin-bottom: 20px;">
             <el-button v-if="userType=='consultant'" type="primary" @click="changeStatus(orderId,'s')">开始咨询</el-button>
             <el-button type="primary" @click="changeStatus(orderId,'f')">结束咨询</el-button>
           </div>
@@ -75,6 +84,10 @@ export default {
       chatRecord: [], //聊天记录
       orderId: this.$route.query.orderId,
       orderStatus: this.$route.query.orderStatus,
+      clientNickname:"",
+      clientSex:"",
+      clientAge:0,
+      scale:[],
     };
   },
   created() {
@@ -92,6 +105,35 @@ export default {
     }
     this.setButton();
     this.getChatRecord();
+    axios({
+        method: "get",
+        url: "api/user/client/info",
+        params: {
+          clientId: this.clientId,
+        },
+      }).then((res) => {
+        console.log("这是用户信息");
+        console.log("res", res);
+        this.clientNickname=res.data.nickname;
+        if(res.data.sex="f")
+        {
+          this.clientSex="女";
+        }
+        else if(res.data.sex="m")
+        {
+          this.clientSex="男";
+        }
+        this.clientAge=res.data.age;
+        for(var i=0;i<9;i++)
+        {
+          this.scale[i]=JSON.parse(res.data.scale)[i];
+        }
+        console.log(this.scale[0]);
+        // for(var i=0;i<this.scale.length();i++)
+        // {
+        //   console.log("i:",this.scale[i].factor,this.scale[i].value);
+        // }
+      })
   },
   methods: {
     setInfo() {
