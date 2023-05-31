@@ -113,7 +113,8 @@ export default {
           data:{
             clientId: this.clientID,
             consultantId: this.info?.id,
-            expense:this.info?.expense
+            expense:this.info?.expense,
+            status:"p",
           }
         }).then((res)=>{
           console.log("现在开始请求");

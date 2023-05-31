@@ -29,8 +29,8 @@
                 <el-row>
                   <el-col :span="12">
                     <el-input
+                      id="input-userphone"
                       v-model="userPhone"
-                      class="w-50 m-2"
                       :input-style="this.input_style"
                     >
                       <template #suffix>
@@ -46,8 +46,8 @@
                 <el-row>
                   <el-col :span="12">
                     <el-input
+                      id="input-password"
                       v-model="userPassword"
-                      class="w-50 m-2"
                       type="password"
                       clearable
                     />

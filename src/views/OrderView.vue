@@ -64,7 +64,7 @@
                 <el-dialog :modal=false :append-to-body="true" v-model="dialogVisible" title="请扫码支付给咨询师对应金额">
                   <div style="text-align:center">
                     <img :src="this.codeLink" width="200"/><br/>
-                    <el-button type="primary" plain @click="payFinish()" style="margin-top:10px">支付完成</el-button>
+                    <el-button type="primary" plain @click="payFinish()" style="margin-top:10px" id="complete-pay">支付完成</el-button>
                   </div>
                 </el-dialog>
                 <el-link
